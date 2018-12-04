@@ -222,6 +222,12 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Number of worker threads in controller thread pool")
          ("contracts-console", bpo::bool_switch()->default_value(false),
           "print contract's output to console")
+         ("deep-mind-test", bpo::bool_switch()->default_value(false),
+          "enable testing instrumentation for deep-mind patches")
+         ("deep-mind", bpo::bool_switch()->default_value(false),
+          "print tx traces and blocks to console")
+         ("deep-mind-db", bpo::bool_switch()->default_value(false),
+          "print db deltas to console")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -340,6 +346,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
                ("root_key", genesis_state::eosio_root_key));
          throw;
       }
+
+      eosio::chain::chain_config::deep_mind_enabled = options.at( "deep-mind" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_test_enabled = options.at( "deep-mind-test" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_db_enabled = options.at( "deep-mind-db" ).as<bool>();
 
       my->chain_config = controller::config();
 
@@ -674,6 +684,12 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
             } );
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
+         if (eosio::chain::chain_config::deep_mind_enabled) {
+            dmlog( "ACCEPTED_BLOCK ${num} ${blk}",
+              ("num", blk->block_num)
+              ("blk", chain().to_variant_with_abi(blk, fc::microseconds(5000000)))
+            );
+         }
          my->accepted_block_channel.publish( blk );
       } );
 
@@ -688,6 +704,12 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( const transaction_trace_ptr& trace ) {
+               if (eosio::chain::chain_config::deep_mind_enabled) {
+                  dmlog( "APPLIED_TRANSACTION ${block} ${traces}",
+                        ("traces", chain().to_variant_with_abi(trace, fc::microseconds(5000000)))
+                        ("block", chain().pending_block_state()->block_num)
+                  );
+               }
                my->applied_transaction_channel.publish( trace );
             } );
 
