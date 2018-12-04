@@ -78,6 +78,10 @@ namespace eosio { namespace chain {
             bool                     allow_ram_billing_in_notify = false;
             bool                     disable_all_subjective_mitigations = false; //< for testing purposes only
 
+            bool                     schnapps_enable = false;
+            uint32_t                 schnapps_block_interval = 50000;
+            path                     schnapps_snapshots_path = ".";
+
             genesis_state            genesis;
             wasm_interface::vm_type  wasm_runtime = chain::config::default_wasm_runtime;
 
@@ -106,7 +110,7 @@ namespace eosio { namespace chain {
          void add_indices();
          void startup( std::function<bool()> shutdown, const snapshot_reader_ptr& snapshot = nullptr );
 
-         void preactivate_feature( const digest_type& feature_digest );
+         void preactivate_feature( uint32_t action_id, const digest_type& feature_digest );
 
          vector<digest_type> get_preactivated_protocol_features()const;
 
@@ -275,7 +279,7 @@ namespace eosio { namespace chain {
          void set_greylist_limit( uint32_t limit );
          uint32_t get_greylist_limit()const;
 
-         void add_to_ram_correction( account_name account, uint64_t ram_bytes );
+         void add_to_ram_correction( account_name account, uint64_t ram_bytes, uint32_t action_id, const char* event_id );
          bool all_subjective_mitigations_disabled()const;
 
          static fc::optional<uint64_t> convert_exception_to_error_code( const fc::exception& e );

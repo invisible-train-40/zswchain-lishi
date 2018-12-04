@@ -3,6 +3,7 @@
  *  @copyright defined in eos/LICENSE
  */
 
+#include <eosio/chain/chain_config.hpp>
 #include <eosio/chain/protocol_feature_manager.hpp>
 #include <eosio/chain/protocol_state_object.hpp>
 #include <eosio/chain/exceptions.hpp>
@@ -643,6 +644,13 @@ either the account authorized the action or the action's net effect on RAM usage
                   "cannot activate already activated builtin feature with digest: ${digest}",
                   ("digest", feature_digest)
       );
+
+      if (eosio::chain::chain_config::deep_mind_enabled) {
+         dmlog("FEATURE_OP ACTIVATE ${feature_digest} ${feature}",
+            ("feature_digest", feature_digest)
+            ("feature", itr->to_variant())
+         );
+      }
 
       _activated_protocol_features.push_back( protocol_feature_entry{itr, current_block_num} );
       _builtin_protocol_features[indx].previous = _head_of_builtin_activation_list;

@@ -207,6 +207,13 @@ chain_plugin::~chain_plugin(){}
 void chain_plugin::set_program_options(options_description& cli, options_description& cfg)
 {
    cfg.add_options()
+         ("schnapps-enable", bpo::bool_switch()->default_value(false),
+          "Create automatic snapshots when replaying from block log at regular interval controlled by schnapps-block-frequency")
+         ("schnapps-block-interval", bpo::value<uint32_t>()->default_value(50000),
+          "Block frequency at which snapshots should be taken when performing replay from block log")
+         ("schnapps-snapshots-path", bpo::value<bfs::path>(),
+          "Block frequency at which snapshots should be taken when performing replay from block log")
+
          ("blocks-dir", bpo::value<bfs::path>()->default_value("blocks"),
           "the location of the blocks directory (absolute path or relative to application data dir)")
          ("protocol-features-dir", bpo::value<bfs::path>()->default_value("protocol_features"),
@@ -225,6 +232,12 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Number of worker threads in controller thread pool")
          ("contracts-console", bpo::bool_switch()->default_value(false),
           "print contract's output to console")
+         ("deep-mind", bpo::bool_switch()->default_value(false),
+          "print deeper information about eosio software")
+         ("deep-mind-console", bpo::bool_switch()->default_value(false),
+          "add smart contract console logging to deep mind")
+         ("deep-mind-subjective-mitigations-disabled", bpo::bool_switch()->default_value(false),
+          "disable all subjectives mitigations so you can still create now impossible transaction")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -305,7 +318,6 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
            "export reversible block database in portable format into specified file and then exit")
          ("snapshot", bpo::value<bfs::path>(), "File to read Snapshot State from")
          ;
-
 }
 
 #define LOAD_VALUE_SET(options, name, container) \
@@ -564,6 +576,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
          throw;
       }
 
+      eosio::chain::chain_config::deep_mind_enabled = options.at( "deep-mind" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_console_enabled = options.at( "deep-mind-console" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_subjective_mitigations_disabled = options.at( "deep-mind-subjective-mitigations-disabled" ).as<bool>();
+
       my->chain_config = controller::config();
 
       LOAD_VALUE_SET( options, "sender-bypass-whiteblacklist", my->chain_config->sender_bypass_whiteblacklist );
@@ -784,6 +800,29 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
          wlog("The --import-reversible-blocks option should be used by itself.");
       }
 
+      if( options.count( "schnapps-enable" )) {
+         my->chain_config->schnapps_enable = options.at( "schnapps-enable" ).as<bool>();
+      }
+
+      if( options.count( "schnapps-block-interval" )) {
+         my->chain_config->schnapps_block_interval = options.at( "schnapps-block-interval" ).as<uint32_t>();
+      }
+
+      if( options.count( "schnapps-snapshots-path" )) {
+         auto sd = options.at( "schnapps-snapshots-path" ).as<bfs::path>();
+         if( sd.is_relative()) {
+            my->chain_config->schnapps_snapshots_path = app().data_dir() / sd;
+            if (!fc::exists(my->chain_config->schnapps_snapshots_path)) {
+               fc::create_directories(my->chain_config->schnapps_snapshots_path);
+            }
+         } else {
+            my->chain_config->schnapps_snapshots_path = sd;
+         }
+
+         EOS_ASSERT( fc::is_directory(my->chain_config->schnapps_snapshots_path), snapshot_directory_not_found_exception,
+                     "No such directory '${dir}'", ("dir", my->chain_config->schnapps_snapshots_path.generic_string()) );
+      }
+
       if (options.count( "snapshot" )) {
          my->snapshot_path = options.at( "snapshot" ).as<bfs::path>();
          EOS_ASSERT( fc::exists(*my->snapshot_path), plugin_config_exception,
@@ -937,6 +976,13 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
             } );
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
+         if (eosio::chain::chain_config::deep_mind_enabled) {
+            dmlog("ACCEPTED_BLOCK ${num} ${blk}",
+               ("num", blk->block_num)
+               ("blk", chain().to_variant_with_abi(blk, fc::microseconds(5000000)))
+            );
+         }
+
          my->accepted_block_channel.publish( priority::high, blk );
       } );
 
@@ -951,6 +997,13 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( std::tuple<const transaction_trace_ptr&, const signed_transaction&> t ) {
+               if (eosio::chain::chain_config::deep_mind_enabled) {
+                  dmlog("APPLIED_TRANSACTION ${block} ${traces}",
+                     ("block", chain().head_block_num() + 1)
+                     ("traces", chain().to_variant_with_abi(std::get<0>(t), fc::microseconds(5000000)))
+                  );
+               }
+
                my->applied_transaction_channel.publish( priority::low, std::get<0>(t) );
             } );
 
@@ -989,6 +1042,7 @@ void chain_plugin::plugin_startup()
 } FC_CAPTURE_AND_RETHROW() }
 
 void chain_plugin::plugin_shutdown() {
+   ilog("chain shutdown");
    my->pre_accepted_block_connection.reset();
    my->accepted_block_header_connection.reset();
    my->accepted_block_connection.reset();
@@ -998,6 +1052,7 @@ void chain_plugin::plugin_shutdown() {
    if(app().is_quiting())
       my->chain->get_wasm_interface().indicate_shutting_down();
    my->chain.reset();
+   ilog("chain done");
 }
 
 chain_apis::read_write::read_write(controller& db, const fc::microseconds& abi_serializer_max_time)
