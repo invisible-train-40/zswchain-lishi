@@ -185,7 +185,7 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
    EOS_ASSERT( state.pending_net_usage <= config.net_limit_parameters.max, block_resource_exhausted, "Block has insufficient net resources" );
 }
 
-void resource_limits_manager::add_pending_ram_usage( const account_name account, int64_t ram_delta ) {
+void resource_limits_manager::add_pending_ram_usage( const account_name account, int64_t ram_delta, uint32_t action_id ) {
    if (ram_delta == 0) {
       return;
    }
@@ -199,6 +199,19 @@ void resource_limits_manager::add_pending_ram_usage( const account_name account,
 
    _db.modify( usage, [&]( auto& u ) {
      u.ram_usage += ram_delta;
+
+     if (eosio::chain::chain_config::deep_mind_enabled) {
+        dmlog("RAM_CONSUMED ${rev} ${action_id} ${operation} ${payer} ${new_usage} ${delta}",
+            ("rev", _db.revision()-1)
+            ("action_id", action_id)
+            ("operation", ram_trace::operation == NULL ? "n/a" : ram_trace::operation)
+            ("payer", account)
+            ("new_usage", u.ram_usage)
+            ("delta", ram_delta)
+        );
+
+        ram_trace::operation = NULL;
+     }
    });
 }
 

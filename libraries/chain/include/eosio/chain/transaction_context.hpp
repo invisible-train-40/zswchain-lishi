@@ -5,6 +5,18 @@
 
 namespace eosio { namespace chain {
 
+   class action_id {
+      public:
+        action_id(): id(0) {}
+
+        inline void increment() { id++; }
+        inline uint32_t current() { return id; }
+
+      private:
+        uint32_t id;
+   };
+
+
    struct deadline_timer {
          deadline_timer();
          ~deadline_timer();
@@ -102,6 +114,8 @@ namespace eosio { namespace chain {
          int64_t                       billed_cpu_time_us = 0;
          bool                          explicit_billed_cpu_time = false;
 
+         /// kept to track ids of action_traces push via this transaction
+         action_id                     action_id;
       private:
          bool                          is_initialized = false;
 

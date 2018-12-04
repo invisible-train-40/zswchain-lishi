@@ -114,10 +114,13 @@ void apply_context::exec( action_trace& trace )
 {
    _notified.push_back(receiver);
    exec_one( trace );
+   trx_context.action_id.increment();
+
    for( uint32_t i = 1; i < _notified.size(); ++i ) {
       receiver = _notified[i];
       trace.inline_traces.emplace_back( );
       exec_one( trace.inline_traces.back() );
+      trx_context.action_id.increment();
    }
 
    if( _cfa_inline_actions.size() > 0 || _inline_actions.size() > 0 ) {
@@ -289,14 +292,38 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
    if ( auto ptr = db.find<generated_transaction_object,by_sender_id>(boost::make_tuple(receiver, sender_id)) ) {
       EOS_ASSERT( replace_existing, deferred_tx_duplicate, "deferred transaction with the same sender_id and payer already exists" );
 
+      // DEEP_MIND: skip this, we want to test it, as it happened on mainnet before
+      // DEEP_MIND: this means we NEVER should use `deep_mind` on our producer nodes.
+      if (!eosio::chain::chain_config::deep_mind_test_enabled) {
       // TODO: Remove the following subjective check when the deferred trx replacement RAM bug has been fixed with a hard fork.
       EOS_ASSERT( !control.is_producing_block(), subjective_block_production_exception,
                   "Replacing a deferred transaction is temporarily disabled." );
+      }
 
       // TODO: The logic of the next line needs to be incorporated into the next hard fork.
+      // ram_trace::operation = "deferred_trx_cancel";
       // add_ram_usage( ptr->payer, -(config::billable_size_v<generated_transaction_object> + ptr->packed_trx.size()) );
 
       db.modify<generated_transaction_object>( *ptr, [&]( auto& gtx ) {
+            if (eosio::chain::chain_config::deep_mind_enabled) {
+
+              // unpack gtx->packed_trx into `trx` REVISE THIS!
+              fc::datastream<const char*> ds( gtx.packed_trx.data(), gtx.packed_trx.size() );
+              transaction dtrx;
+              fc::raw::unpack(ds, static_cast<transaction&>(dtrx) );
+
+              dmlog("DEFRTRX MODIFY_CANCEL ${rev} ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+                      ("rev", db.revision()-1)
+                      ("action_id", trx_context.action_id.current())
+                      ("sender", receiver)
+                      ("sender_id", sender_id)
+                      ("payer", gtx.payer)
+                      ("published", gtx.published)
+                      ("delay", gtx.delay_until)
+                      ("expiration", gtx.expiration)
+                      ("trx_id", dtrx.id())
+                      ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(5000000))));
+            }
             gtx.sender      = receiver;
             gtx.sender_id   = sender_id;
             gtx.payer       = payer;
@@ -305,6 +332,20 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
             gtx.expiration  = gtx.delay_until + fc::seconds(control.get_global_properties().configuration.deferred_trx_expiration_window);
 
             trx_size = gtx.set( trx );
+
+            if (eosio::chain::chain_config::deep_mind_enabled) {
+                dmlog("DEFRTRX MODIFY_CREATE ${rev} ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+                        ("rev", db.revision()-1)
+                        ("action_id", trx_context.action_id.current())
+                        ("sender", receiver)
+                        ("sender_id", sender_id)
+                        ("payer", payer)
+                        ("published", gtx.published)
+                        ("delay", gtx.delay_until)
+                        ("expiration", gtx.expiration)
+                        ("trx_id", trx.id())
+                        ("trx", control.to_variant_with_abi(trx, fc::microseconds(5000000))));
+            }
          });
    } else {
       db.create<generated_transaction_object>( [&]( auto& gtx ) {
@@ -317,11 +358,27 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
             gtx.expiration  = gtx.delay_until + fc::seconds(control.get_global_properties().configuration.deferred_trx_expiration_window);
 
             trx_size = gtx.set( trx );
+
+            if (eosio::chain::chain_config::deep_mind_enabled) {
+                dmlog("DEFRTRX CREATE ${rev} ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+                        ("rev", db.revision()-1)
+                        ("action_id", trx_context.action_id.current())
+                        ("sender", receiver)
+                        ("sender_id", sender_id)
+                        ("payer", payer)
+                        ("published", gtx.published)
+                        ("delay", gtx.delay_until)
+                        ("expiration", gtx.expiration)
+                        ("trx_id", trx.id())
+                        ("trx", control.to_variant_with_abi(trx, fc::microseconds(5000000))));
+            }
          });
    }
 
    EOS_ASSERT( control.is_ram_billing_in_notify_allowed() || (receiver == act.account) || (receiver == payer) || privileged,
                subjective_block_production_exception, "Cannot charge RAM to other accounts during notify." );
+
+   ram_trace::operation = "deferred_trx_add";
    add_ram_usage( payer, (config::billable_size_v<generated_transaction_object> + trx_size) );
 }
 
@@ -329,6 +386,27 @@ bool apply_context::cancel_deferred_transaction( const uint128_t& sender_id, acc
    auto& generated_transaction_idx = db.get_mutable_index<generated_transaction_multi_index>();
    const auto* gto = db.find<generated_transaction_object,by_sender_id>(boost::make_tuple(sender, sender_id));
    if ( gto ) {
+      if (eosio::chain::chain_config::deep_mind_enabled) {
+        // unpack gtx->packed_trx into `dtrx` REVISE THIS!
+        auto gtx = generated_transaction(*gto);
+        fc::datastream<const char*> ds( gtx.packed_trx.data(), gtx.packed_trx.size() );
+        transaction dtrx;
+        fc::raw::unpack(ds, static_cast<transaction&>(dtrx) );
+
+        dmlog("DEFRTRX CANCEL ${rev} ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+                ("rev", db.revision()-1)
+                ("action_id", trx_context.action_id.current())
+                ("sender", receiver)
+                ("sender_id", sender_id)
+                ("payer", gto->payer)
+                ("published", gto->published)
+                ("delay", gto->delay_until)
+                ("expiration", gto->expiration)
+                ("trx_id", dtrx.id())
+                ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(5000000))));
+      }
+
+      ram_trace::operation = "deferred_trx_cancel";
       add_ram_usage( gto->payer, -(config::billable_size_v<generated_transaction_object> + gto->packed_trx.size()) );
       generated_transaction_idx.remove(*gto);
    }
@@ -345,6 +423,7 @@ const table_id_object& apply_context::find_or_create_table( name code, name scop
       return *existing_tid;
    }
 
+   ram_trace::operation = "create_table";
    update_db_usage(payer, config::billable_size_v<table_id_object>);
 
    return db.create<table_id_object>([&](table_id_object &t_id){
@@ -356,6 +435,7 @@ const table_id_object& apply_context::find_or_create_table( name code, name scop
 }
 
 void apply_context::remove_table( const table_id_object& tid ) {
+   ram_trace::operation = "remove_table";
    update_db_usage(tid.payer, - config::billable_size_v<table_id_object>);
    db.remove(tid);
 }
@@ -457,7 +537,22 @@ int apply_context::db_store_i64( uint64_t code, uint64_t scope, uint64_t table, 
    });
 
    int64_t billable_size = (int64_t)(buffer_size + config::billable_size_v<key_value_object>);
+   ram_trace::operation = "primary_index_add";
    update_db_usage( payer, billable_size);
+
+   if (eosio::chain::chain_config::deep_mind_db_enabled) {
+      auto table_obj = tab;
+      dmlog("DB_OPERATION INS ${rev} ${action_id} ${payer} ${table_code} ${scope} ${table_name} ${primkey} ${ndata}",
+              ("rev", db.revision()-1)
+              ("action_id", trx_context.action_id.current())
+              ("payer", payer)
+              ("table_code", table_obj.code)
+              ("scope", table_obj.scope)
+              ("table_name", table_obj.table)
+              ("primkey", name(obj.primary_key))
+              ("ndata", to_hex(buffer, buffer_size))
+      );
+   }
 
    keyval_cache.cache_table( tab );
    return keyval_cache.add( obj );
@@ -479,12 +574,30 @@ void apply_context::db_update_i64( int iterator, account_name payer, const char*
 
    if( account_name(obj.payer) != payer ) {
       // refund the existing payer
+      ram_trace::operation = "primary_index_update_remove_old_payer";
       update_db_usage( obj.payer,  -(old_size) );
       // charge the new payer
+      ram_trace::operation = "primary_index_update_add_new_payer";
       update_db_usage( payer,  (new_size));
    } else if(old_size != new_size) {
       // charge/refund the existing payer the difference
+      ram_trace::operation = "primary_index_update";
       update_db_usage( obj.payer, new_size - old_size);
+   }
+
+   if (eosio::chain::chain_config::deep_mind_db_enabled) {
+      dmlog("DB_OPERATION UPD ${rev} ${action_id} ${opayer}:${npayer} ${table_code} ${scope} ${table_name} ${primkey} ${odata} ${ndata}",
+              ("rev", db.revision()-1)
+              ("action_id", trx_context.action_id.current())
+              ("opayer", obj.payer)
+              ("npayer", payer)
+              ("table_code", table_obj.code)
+              ("scope", table_obj.scope)
+              ("table_name", table_obj.table)
+              ("primkey", name(obj.primary_key))
+              ("odata", to_hex(obj.value.data(),obj.value.size()))
+              ("ndata", to_hex(buffer, buffer_size))
+      );
    }
 
    db.modify( obj, [&]( auto& o ) {
@@ -502,7 +615,21 @@ void apply_context::db_remove_i64( int iterator ) {
 
 //   require_write_lock( table_obj.scope );
 
+   ram_trace::operation = "primary_index_remove";
    update_db_usage( obj.payer,  -(obj.value.size() + config::billable_size_v<key_value_object>) );
+
+   if (eosio::chain::chain_config::deep_mind_db_enabled) {
+      dmlog("DB_OPERATION REM ${rev} ${action_id} ${payer} ${table_code} ${scope} ${table_name} ${primkey} ${odata}",
+              ("rev", db.revision()-1)
+              ("action_id", trx_context.action_id.current())
+              ("payer", obj.payer)
+              ("table_code", table_obj.code)
+              ("scope", table_obj.scope)
+              ("table_name", table_obj.table)
+              ("primkey", name(obj.primary_key))
+              ("odata", to_hex(obj.value.data(), obj.value.size()))
+      );
+   }
 
    db.modify( table_obj, [&]( auto& t ) {
       --t.count;

@@ -196,6 +196,7 @@ class apply_context {
                  ++t.count;
                });
 
+               ram_trace::operation = "secondary_index_add";
                context.update_db_usage( payer, config::billable_size_v<ObjectType> );
 
                itr_cache.cache_table( tab );
@@ -204,6 +205,7 @@ class apply_context {
 
             void remove( int iterator ) {
                const auto& obj = itr_cache.get( iterator );
+               ram_trace::operation = "secondary_index_remove";
                context.update_db_usage( obj.payer, -( config::billable_size_v<ObjectType> ) );
 
                const auto& table_obj = itr_cache.get_table( obj.t_id );
@@ -236,7 +238,9 @@ class apply_context {
                int64_t billing_size =  config::billable_size_v<ObjectType>;
 
                if( obj.payer != payer ) {
+                  ram_trace::operation = "secondary_index_update_remove_old_payer";
                   context.update_db_usage( obj.payer, -(billing_size) );
+                  ram_trace::operation = "secondary_index_update_add_new_payer";
                   context.update_db_usage( payer, +(billing_size) );
                }
 
