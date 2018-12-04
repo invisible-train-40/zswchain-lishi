@@ -196,7 +196,7 @@ class apply_context {
                  ++t.count;
                });
 
-               context.update_db_usage( payer, config::billable_size_v<ObjectType> );
+               context.update_db_usage( payer, config::billable_size_v<ObjectType>, "secondary_index_add" );
 
                itr_cache.cache_table( tab );
                return itr_cache.add( obj );
@@ -204,7 +204,7 @@ class apply_context {
 
             void remove( int iterator ) {
                const auto& obj = itr_cache.get( iterator );
-               context.update_db_usage( obj.payer, -( config::billable_size_v<ObjectType> ) );
+               context.update_db_usage( obj.payer, -( config::billable_size_v<ObjectType> ), "secondary_index_remove" );
 
                const auto& table_obj = itr_cache.get_table( obj.t_id );
                EOS_ASSERT( table_obj.code == context.receiver, table_access_violation, "db access violation" );
@@ -236,8 +236,8 @@ class apply_context {
                int64_t billing_size =  config::billable_size_v<ObjectType>;
 
                if( obj.payer != payer ) {
-                  context.update_db_usage( obj.payer, -(billing_size) );
-                  context.update_db_usage( payer, +(billing_size) );
+                  context.update_db_usage( obj.payer, -(billing_size), "secondary_index_update_remove_old_payer" );
+                  context.update_db_usage( payer, +(billing_size), "secondary_index_update_add_new_payer" );
                }
 
                context.db.modify( obj, [&]( auto& o ) {
@@ -538,7 +538,7 @@ class apply_context {
    /// Database methods:
    public:
 
-      void update_db_usage( const account_name& payer, int64_t delta );
+      void update_db_usage( const account_name& payer, int64_t delta, const char* string );
 
       int  db_store_i64( uint64_t scope, uint64_t table, const account_name& payer, uint64_t id, const char* buffer, size_t buffer_size );
       void db_update_i64( int iterator, account_name payer, const char* buffer, size_t buffer_size );
@@ -572,7 +572,7 @@ class apply_context {
       uint64_t next_recv_sequence( account_name receiver );
       uint64_t next_auth_sequence( account_name actor );
 
-      void add_ram_usage( account_name account, int64_t ram_delta );
+      void add_ram_usage( account_name account, int64_t ram_delta, const char* operation );
       void finalize_trace( action_trace& trace, const fc::time_point& start );
 
    /// Fields:

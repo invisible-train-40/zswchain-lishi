@@ -5,6 +5,18 @@
 
 namespace eosio { namespace chain {
 
+   class action_id {
+      public:
+        action_id(): id(0) {}
+
+        inline void increment() { id++; }
+        inline uint32_t current() { return id; }
+
+      private:
+        uint32_t id;
+   };
+
+
    struct deadline_timer {
          deadline_timer();
          ~deadline_timer();
@@ -62,7 +74,7 @@ namespace eosio { namespace chain {
          friend struct controller_impl;
          friend class apply_context;
 
-         void add_ram_usage( account_name account, int64_t ram_delta );
+         void add_ram_usage( account_name account, int64_t ram_delta, const char* operation );
 
          void dispatch_action( action_trace& trace, const action& a, account_name receiver, bool context_free = false, uint32_t recurse_depth = 0 );
          inline void dispatch_action( action_trace& trace, const action& a, bool context_free = false ) {
@@ -103,6 +115,8 @@ namespace eosio { namespace chain {
          int64_t                       billed_cpu_time_us = 0;
          bool                          explicit_billed_cpu_time = false;
 
+         /// kept to track ids of action_traces push via this transaction
+         action_id                     action_id;
       private:
          bool                          is_initialized = false;
 

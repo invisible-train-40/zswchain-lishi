@@ -35,6 +35,7 @@ namespace eosio { namespace chain {
                                                      permission_name name,
                                                      permission_id_type parent,
                                                      const authority& auth,
+                                                     uint32_t action_id,
                                                      time_point initial_creation_time = time_point()
                                                    );
 
@@ -42,12 +43,13 @@ namespace eosio { namespace chain {
                                                      permission_name name,
                                                      permission_id_type parent,
                                                      authority&& auth,
+                                                     uint32_t action_id,
                                                      time_point initial_creation_time = time_point()
                                                    );
 
-         void modify_permission( const permission_object& permission, const authority& auth );
+         void modify_permission( const permission_object& permission, const authority& auth, uint32_t action_id );
 
-         void remove_permission( const permission_object& permission );
+         void remove_permission( const permission_object& permission, uint32_t action_id );
 
          void update_permission_usage( const permission_object& permission );
 
@@ -119,7 +121,7 @@ namespace eosio { namespace chain {
          static std::function<void()> _noop_checktime;
 
       private:
-         const controller&    _control;
+         controller&    _control;
          chainbase::database& _db;
 
          void             check_updateauth_authorization( const updateauth& update, const vector<permission_level>& auths )const;

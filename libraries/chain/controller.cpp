@@ -617,9 +617,9 @@ struct controller_impl {
       });
 
       const auto& owner_permission  = authorization.create_permission(name, config::owner_name, 0,
-                                                                      owner, conf.genesis.initial_timestamp );
+                                                                      owner, 0, conf.genesis.initial_timestamp );
       const auto& active_permission = authorization.create_permission(name, config::active_name, owner_permission.id,
-                                                                      active, conf.genesis.initial_timestamp );
+                                                                      active, 0, conf.genesis.initial_timestamp );
 
       resource_limits.initialize_account(name);
 
@@ -628,7 +628,7 @@ struct controller_impl {
       ram_delta += owner_permission.auth.get_billable_size();
       ram_delta += active_permission.auth.get_billable_size();
 
-      resource_limits.add_pending_ram_usage(name, ram_delta);
+      resource_limits.add_pending_ram_usage(name, ram_delta, 0, "newaccount");
       resource_limits.verify_account_ram_usage(name);
    }
 
@@ -665,11 +665,13 @@ struct controller_impl {
                                                                              config::majority_producers_permission_name,
                                                                              active_permission.id,
                                                                              active_producers_authority,
+                                                                             0,
                                                                              conf.genesis.initial_timestamp );
       const auto& minority_permission     = authorization.create_permission( config::producers_account_name,
                                                                              config::minority_producers_permission_name,
                                                                              majority_permission.id,
                                                                              active_producers_authority,
+                                                                             0,
                                                                              conf.genesis.initial_timestamp );
    }
 
@@ -778,7 +780,9 @@ struct controller_impl {
    void remove_scheduled_transaction( const generated_transaction_object& gto ) {
       resource_limits.add_pending_ram_usage(
          gto.payer,
-         -(config::billable_size_v<generated_transaction_object> + gto.packed_trx.size())
+         -(config::billable_size_v<generated_transaction_object> + gto.packed_trx.size()),
+         0,
+         "deferred_trx_removed"
       );
       // No need to verify_account_ram_usage since we are only reducing memory
 
@@ -904,6 +908,12 @@ struct controller_impl {
          trace->except = e;
          trace->except_ptr = std::current_exception();
          trace->elapsed = fc::time_point::now() - trx_context.start;
+
+         if (eosio::chain::chain_config::deep_mind_enabled) {
+            dmlog("DTRX_OP FAILED ${action_id}",
+               ("action_id", trx_context.action_id.current())
+            );
+         }
       }
       trx_context.undo();
 
