@@ -522,9 +522,9 @@ namespace bacc = boost::accumulators;
       }
    }
 
-   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta ) {
+   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const char* operation ) {
       auto& rl = control.get_mutable_resource_limits_manager();
-      rl.add_pending_ram_usage( account, ram_delta );
+      rl.add_pending_ram_usage( account, ram_delta, action_id.current(), operation );
       if( ram_delta > 0 ) {
          validate_ram_usage.insert( account );
       }
@@ -571,6 +571,12 @@ namespace bacc = boost::accumulators;
       acontext.context_free = context_free;
       acontext.receiver     = receiver;
 
+      if (eosio::chain::chain_config::deep_mind_enabled && recurse_depth == 0) {
+         dmlog("CREATION_OP ROOT ${action_id}",
+            ("action_id", action_id.current())
+         );
+      }
+
       acontext.exec( trace );
    }
 
@@ -595,9 +601,23 @@ namespace bacc = boost::accumulators;
         gto.delay_until = gto.published + delay;
         gto.expiration  = gto.delay_until + fc::seconds(control.get_global_properties().configuration.deferred_trx_expiration_window);
         trx_size = gto.set( trx );
+
+        if (eosio::chain::chain_config::deep_mind_enabled) {
+            dmlog("DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+               ("action_id", action_id.current())
+               ("sender", gto.sender)
+               ("sender_id", gto.sender_id)
+               ("payer", gto.payer)
+               ("published", gto.published)
+               ("delay", gto.delay_until)
+               ("expiration", gto.expiration)
+               ("trx_id", trx.id())
+               ("trx", control.to_variant_with_abi(trx, fc::microseconds(5000000)))
+            );
+         }
       });
 
-      add_ram_usage( cgto.payer, (config::billable_size_v<generated_transaction_object> + trx_size) );
+      add_ram_usage( cgto.payer, (config::billable_size_v<generated_transaction_object> + trx_size), "deferred_trx_pushed" );
    }
 
    void transaction_context::record_transaction( const transaction_id_type& id, fc::time_point_sec expire ) {

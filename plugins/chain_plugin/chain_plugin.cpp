@@ -222,6 +222,12 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Number of worker threads in controller thread pool")
          ("contracts-console", bpo::bool_switch()->default_value(false),
           "print contract's output to console")
+         ("deep-mind", bpo::bool_switch()->default_value(false),
+          "print deeper information about eosio software")
+         ("deep-mind-console", bpo::bool_switch()->default_value(false),
+          "add smart contract console logging to deep mind")
+         ("deep-mind-test", bpo::bool_switch()->default_value(false),
+          "enable testing instrumentation for deep-mind patches")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -340,6 +346,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
                ("root_key", genesis_state::eosio_root_key));
          throw;
       }
+
+      eosio::chain::chain_config::deep_mind_enabled = options.at( "deep-mind" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_console_enabled = options.at( "deep-mind-console" ).as<bool>();
+      eosio::chain::chain_config::deep_mind_test_enabled = options.at( "deep-mind-test" ).as<bool>();
 
       my->chain_config = controller::config();
 
@@ -679,6 +689,13 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
             } );
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
+         if (eosio::chain::chain_config::deep_mind_enabled) {
+            dmlog( "ACCEPTED_BLOCK ${num} ${blk}",
+              ("num", blk->block_num)
+              ("blk", chain().to_variant_with_abi(blk, fc::microseconds(5000000)))
+            );
+         }
+
          my->accepted_block_channel.publish( priority::high, blk );
       } );
 
@@ -693,6 +710,13 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( const transaction_trace_ptr& trace ) {
+               if (eosio::chain::chain_config::deep_mind_enabled) {
+                  dmlog("APPLIED_TRANSACTION ${block} ${traces}",
+                     ("block", chain().pending_block_state()->block_num)
+                     ("traces", chain().to_variant_with_abi(trace, fc::microseconds(5000000)))
+                  );
+               }
+
                my->applied_transaction_channel.publish( priority::low, trace );
             } );
 
@@ -731,6 +755,7 @@ void chain_plugin::plugin_startup()
 } FC_CAPTURE_AND_RETHROW() }
 
 void chain_plugin::plugin_shutdown() {
+   ilog("chain shutdown");
    my->pre_accepted_block_connection.reset();
    my->accepted_block_header_connection.reset();
    my->accepted_block_connection.reset();
@@ -740,6 +765,7 @@ void chain_plugin::plugin_shutdown() {
    my->chain->get_thread_pool().stop();
    my->chain->get_thread_pool().join();
    my->chain.reset();
+   ilog("chain done");
 }
 
 chain_apis::read_write::read_write(controller& db, const fc::microseconds& abi_serializer_max_time)
@@ -1091,7 +1117,7 @@ uint64_t convert_to_type(const string& str, const string& desc) {
    try {
       return boost::lexical_cast<uint64_t>(str.c_str(), str.size());
    } catch( ... ) { }
-   
+
    try {
       auto trimmed_str = str;
       boost::trim(trimmed_str);
@@ -1105,7 +1131,7 @@ uint64_t convert_to_type(const string& str, const string& desc) {
          return symb.value();
       } catch( ... ) { }
    }
-   
+
    try {
       return ( eosio::chain::string_to_symbol( 0, str.c_str() ) >> 8 );
    } catch( ... ) {
