@@ -121,8 +121,7 @@ void apply_eosio_newaccount(apply_context& context) {
    ram_delta += owner_permission.auth.get_billable_size();
    ram_delta += active_permission.auth.get_billable_size();
 
-   ram_trace::operation = "newaccount";
-   context.add_ram_usage(create.name, ram_delta);
+   context.add_ram_usage(create.name, ram_delta, "newaccount");
 
 } FC_CAPTURE_AND_RETHROW( (create) ) }
 
@@ -168,8 +167,7 @@ void apply_eosio_setcode(apply_context& context) {
    });
 
    if (new_size != old_size) {
-      ram_trace::operation = "setcode";
-      context.add_ram_usage( act.account, new_size - old_size );
+      context.add_ram_usage( act.account, new_size - old_size, "setcode" );
    }
 }
 
@@ -198,8 +196,7 @@ void apply_eosio_setabi(apply_context& context) {
    });
 
    if (new_size != old_size) {
-      ram_trace::operation = "setabi";
-      context.add_ram_usage( act.account, new_size - old_size );
+      context.add_ram_usage( act.account, new_size - old_size, "setabi" );
    }
 }
 
@@ -257,15 +254,13 @@ void apply_eosio_updateauth(apply_context& context) {
 
       int64_t new_size = (int64_t)(config::billable_size_v<permission_object> + permission->auth.get_billable_size());
 
-      ram_trace::operation = "updateauth_update";
-      context.add_ram_usage( permission->owner, new_size - old_size );
+      context.add_ram_usage( permission->owner, new_size - old_size, "updateauth_update" );
    } else {
       const auto& p = authorization.create_permission( update.account, update.permission, parent_id, update.auth );
 
       int64_t new_size = (int64_t)(config::billable_size_v<permission_object> + p.auth.get_billable_size());
 
-      ram_trace::operation = "updateauth_create";
-      context.add_ram_usage( update.account, new_size );
+      context.add_ram_usage( update.account, new_size, "updateauth_create" );
    }
 }
 
@@ -296,8 +291,7 @@ void apply_eosio_deleteauth(apply_context& context) {
 
    authorization.remove_permission( permission );
 
-   ram_trace::operation = "deleteauth";
-   context.add_ram_usage( remove.account, -old_size );
+   context.add_ram_usage( remove.account, -old_size, "deleteauth" );
 }
 
 void apply_eosio_linkauth(apply_context& context) {
@@ -339,10 +333,10 @@ void apply_eosio_linkauth(apply_context& context) {
             link.required_permission = requirement.requirement;
          });
 
-         ram_trace::operation = "linkauth";
          context.add_ram_usage(
             l.account,
-            (int64_t)(config::billable_size_v<permission_link_object>)
+            (int64_t)(config::billable_size_v<permission_link_object>),
+            "linkauth"
          );
       }
 
@@ -361,10 +355,10 @@ void apply_eosio_unlinkauth(apply_context& context) {
    auto link = db.find<permission_link_object, by_action_name>(link_key);
    EOS_ASSERT(link != nullptr, action_validate_exception, "Attempting to unlink authority, but no link found");
 
-   ram_trace::operation = "unlinkauth";
    context.add_ram_usage(
       link->account,
-      -(int64_t)(config::billable_size_v<permission_link_object>)
+      -(int64_t)(config::billable_size_v<permission_link_object>),
+      "unlinkauth"
    );
 
    db.remove(*link);

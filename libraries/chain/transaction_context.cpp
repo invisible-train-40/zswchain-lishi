@@ -523,9 +523,9 @@ namespace bacc = boost::accumulators;
       }
    }
 
-   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta ) {
+   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const char* operation ) {
       auto& rl = control.get_mutable_resource_limits_manager();
-      rl.add_pending_ram_usage( account, ram_delta, action_id.current() );
+      rl.add_pending_ram_usage( account, ram_delta, action_id.current(), operation );
       if( ram_delta > 0 ) {
          validate_ram_usage.insert( account );
       }
@@ -612,8 +612,7 @@ namespace bacc = boost::accumulators;
         }
       });
 
-      ram_trace::operation = "deferred_trx_pushed";
-      add_ram_usage( cgto.payer, (config::billable_size_v<generated_transaction_object> + trx_size) );
+      add_ram_usage( cgto.payer, (config::billable_size_v<generated_transaction_object> + trx_size), "deferred_trx_pushed" );
    }
 
    void transaction_context::record_transaction( const transaction_id_type& id, fc::time_point_sec expire ) {

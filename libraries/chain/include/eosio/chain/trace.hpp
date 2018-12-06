@@ -10,10 +10,6 @@
 
 namespace eosio { namespace chain {
 
-   struct ram_trace {
-       static const char* operation;
-   };
-
    struct account_delta {
       account_delta( const account_name& n, int64_t d):account(n),delta(d){}
       account_delta(){}

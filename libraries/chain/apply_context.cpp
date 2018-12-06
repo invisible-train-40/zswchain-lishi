@@ -313,8 +313,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
       }
 
       // TODO: The logic of the next line needs to be incorporated into the next hard fork.
-      // ram_trace::operation = "deferred_trx_cancel";
-      // add_ram_usage( ptr->payer, -(config::billable_size_v<generated_transaction_object> + ptr->packed_trx.size()) );
+      // add_ram_usage( ptr->payer, -(config::billable_size_v<generated_transaction_object> + ptr->packed_trx.size()), "deferred_trx_cancel" );
 
       db.modify<generated_transaction_object>( *ptr, [&]( auto& gtx ) {
             if (eosio::chain::chain_config::deep_mind_enabled) {
@@ -390,8 +389,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
    EOS_ASSERT( control.is_ram_billing_in_notify_allowed() || (receiver == act.account) || (receiver == payer) || privileged,
                subjective_block_production_exception, "Cannot charge RAM to other accounts during notify." );
 
-   ram_trace::operation = "deferred_trx_add";
-   add_ram_usage( payer, (config::billable_size_v<generated_transaction_object> + trx_size) );
+   add_ram_usage( payer, (config::billable_size_v<generated_transaction_object> + trx_size), "deferred_trx_add" );
 }
 
 bool apply_context::cancel_deferred_transaction( const uint128_t& sender_id, account_name sender ) {
@@ -418,8 +416,7 @@ bool apply_context::cancel_deferred_transaction( const uint128_t& sender_id, acc
                 ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(5000000))));
       }
 
-      ram_trace::operation = "deferred_trx_cancel";
-      add_ram_usage( gto->payer, -(config::billable_size_v<generated_transaction_object> + gto->packed_trx.size()) );
+      add_ram_usage( gto->payer, -(config::billable_size_v<generated_transaction_object> + gto->packed_trx.size()), "deferred_trx_cancel" );
       generated_transaction_idx.remove(*gto);
    }
    return gto;
@@ -435,8 +432,7 @@ const table_id_object& apply_context::find_or_create_table( name code, name scop
       return *existing_tid;
    }
 
-   ram_trace::operation = "create_table";
-   update_db_usage(payer, config::billable_size_v<table_id_object>);
+   update_db_usage(payer, config::billable_size_v<table_id_object>, "create_table");
 
    return db.create<table_id_object>([&](table_id_object &t_id){
       t_id.code = code;
@@ -447,8 +443,7 @@ const table_id_object& apply_context::find_or_create_table( name code, name scop
 }
 
 void apply_context::remove_table( const table_id_object& tid ) {
-   ram_trace::operation = "remove_table";
-   update_db_usage(tid.payer, - config::billable_size_v<table_id_object>);
+   update_db_usage(tid.payer, - config::billable_size_v<table_id_object>, "remove_table");
    db.remove(tid);
 }
 
@@ -472,7 +467,7 @@ bytes apply_context::get_packed_transaction() {
    return r;
 }
 
-void apply_context::update_db_usage( const account_name& payer, int64_t delta ) {
+void apply_context::update_db_usage( const account_name& payer, int64_t delta, const char* operation ) {
    if( delta > 0 ) {
       if( !(privileged || payer == account_name(receiver)) ) {
          EOS_ASSERT( control.is_ram_billing_in_notify_allowed() || (receiver == act.account),
@@ -480,7 +475,7 @@ void apply_context::update_db_usage( const account_name& payer, int64_t delta ) 
          require_authorization( payer );
       }
    }
-   add_ram_usage(payer, delta);
+   add_ram_usage(payer, delta, operation);
 }
 
 
@@ -549,8 +544,7 @@ int apply_context::db_store_i64( uint64_t code, uint64_t scope, uint64_t table, 
    });
 
    int64_t billable_size = (int64_t)(buffer_size + config::billable_size_v<key_value_object>);
-   ram_trace::operation = "primary_index_add";
-   update_db_usage( payer, billable_size);
+   update_db_usage( payer, billable_size, "primary_index_add" );
 
    if (eosio::chain::chain_config::deep_mind_db_enabled) {
       auto table_obj = tab;
@@ -586,15 +580,12 @@ void apply_context::db_update_i64( int iterator, account_name payer, const char*
 
    if( account_name(obj.payer) != payer ) {
       // refund the existing payer
-      ram_trace::operation = "primary_index_update_remove_old_payer";
-      update_db_usage( obj.payer,  -(old_size) );
+      update_db_usage( obj.payer, -(old_size), "primary_index_update_remove_old_payer" );
       // charge the new payer
-      ram_trace::operation = "primary_index_update_add_new_payer";
-      update_db_usage( payer,  (new_size));
+      update_db_usage( payer,  (new_size), "primary_index_update_add_new_payer" );
    } else if(old_size != new_size) {
       // charge/refund the existing payer the difference
-      ram_trace::operation = "primary_index_update";
-      update_db_usage( obj.payer, new_size - old_size);
+      update_db_usage( obj.payer, new_size - old_size, "primary_index_update" );
    }
 
    if (eosio::chain::chain_config::deep_mind_db_enabled) {
@@ -627,8 +618,7 @@ void apply_context::db_remove_i64( int iterator ) {
 
 //   require_write_lock( table_obj.scope );
 
-   ram_trace::operation = "primary_index_remove";
-   update_db_usage( obj.payer,  -(obj.value.size() + config::billable_size_v<key_value_object>) );
+   update_db_usage( obj.payer,  -(obj.value.size() + config::billable_size_v<key_value_object>), "primary_index_remove" );
 
    if (eosio::chain::chain_config::deep_mind_db_enabled) {
       dmlog("DB_OPERATION REM ${rev} ${action_id} ${payer} ${table_code} ${scope} ${table_name} ${primkey} ${odata}",
@@ -792,8 +782,8 @@ uint64_t apply_context::next_auth_sequence( account_name actor ) {
    return rs.auth_sequence;
 }
 
-void apply_context::add_ram_usage( account_name account, int64_t ram_delta ) {
-   trx_context.add_ram_usage( account, ram_delta );
+void apply_context::add_ram_usage( account_name account, int64_t ram_delta, const char* operation ) {
+   trx_context.add_ram_usage( account, ram_delta, operation );
 
    auto p = _account_ram_deltas.emplace( account, ram_delta );
    if( !p.second ) {

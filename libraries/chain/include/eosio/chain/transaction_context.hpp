@@ -75,7 +75,7 @@ namespace eosio { namespace chain {
          friend struct controller_impl;
          friend class apply_context;
 
-         void add_ram_usage( account_name account, int64_t ram_delta );
+         void add_ram_usage( account_name account, int64_t ram_delta, const char* operation );
 
          void dispatch_action( action_trace& trace, const action& a, account_name receiver, bool context_free = false, uint32_t recurse_depth = 0 );
          inline void dispatch_action( action_trace& trace, const action& a, bool context_free = false ) {

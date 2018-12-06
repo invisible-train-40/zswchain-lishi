@@ -54,7 +54,7 @@ namespace eosio { namespace chain { namespace resource_limits {
          void update_account_usage( const flat_set<account_name>& accounts, uint32_t ordinal );
          void add_transaction_usage( const flat_set<account_name>& accounts, uint64_t cpu_usage, uint64_t net_usage, uint32_t ordinal );
 
-         void add_pending_ram_usage( const account_name account, int64_t ram_delta, uint32_t action_id );
+         void add_pending_ram_usage( const account_name account, int64_t ram_delta, uint32_t action_id, const char* operation );
          void verify_account_ram_usage( const account_name accunt )const;
 
          /// set_account_limits returns true if new ram_bytes limit is more restrictive than the previously set one
