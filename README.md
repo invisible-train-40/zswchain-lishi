@@ -1,4 +1,4 @@
-(See [dfuse README](./README.dfuse.md))
+**Note** This is a **private** dfuse fork for `nodeos` client, see [README.dfuse.md](./README.dfuse.md) for instructions on how to manage this repository.
 
 # EOSIO - The Most Powerful Infrastructure for Decentralized Applications
 

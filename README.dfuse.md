@@ -10,22 +10,18 @@ structure, it's easier to work with the dfuse fork when you use
 the same names and settings.
 
     cd ~/work
-    git clone git@github.com:eoscanada/eosio-eos-private.git
+    git clone --branch="deep-mind" --recursive git@github.com:eoscanada/eosio-eos-private.git
     cd eosio-eos-private
 
     git remote rename origin eoscanada-private
     git remote add origin https://github.com/EOSIO/eos
     git fetch origin
 
-    git checkout deep-mind
-    git submodule update --init --recursive
-
     cd libraries/fc
+    git checkout deep-mind
     git remote rename origin eoscanada-private
     git remote add origin https://github.com/EOSIO/FC
     git fetch origin
-
-    git checkout deep-mind
 
 This will clone our own fork as well as initializing submodules. Ensure that you are
 on a dfuse branch (one ending with `-deep-mind`) so that initial submodule fetching is
@@ -63,7 +59,11 @@ those with your own values.
 Let's first pull latest changes:
 
     git checkout deep-mind
-    git pull
+    git pull -p
+
+    cd libraries/fc
+    git checkout deep-mind
+    git pull -p
 
 You first fetch the origin repository new data from Git:
 
@@ -77,19 +77,25 @@ and update submodule there
 
     git merge v1.8.7
 
-Then, ensure that `libraries/fc` submodule is up to date with the one our
-fork
+This might generates conflicts in the main module as well as will the
+`libraries/fc` module directly.
 
-    git checkout v1.8.5
-    git submodule update --init --recursive
-    git submodule | grep "libraries/fc"
-    # Note the commit id that shows above
+If you encounter a conflicts with `libraries/fc`, here how to **correctly**
+solve it.
 
-    git checkout deep-mind
-    git submodule update --init --recursive
+The idea is reset to current version (which will be a commit in `deep-mind`),
+note the commit from the merged branch (`v1.8.7`), then merge that commit inside
+our own fork of `libraries/fc`.
+
+    git reset v1.8.7 libraries/fc
+    git diff libraries/fc | grep "\-Subproject commit" | grep -Eo '[0-9a-f]{40}'
+    # Note the previous commit that is outputted by command above
+
     cd libraries/fc
     git checkout deep-mind
-    git merge <commit id noted above>
+    git merge <noted commit id above>
+
+    # Resolves any conflicts that have happened here
 
     cd ../..
     git add libraries/fc
@@ -97,9 +103,38 @@ fork
 By doing this, you ensure that you own fork has the same set of changes in
 the `libraries/fc` module as above.
 
-You can then build everything to ensure it's working as expected.
+You can then continue solving other conflicts from the main module as usual.
+Once all conflicts have been resolved, build the version following the `Building`
+step below, once satisfied:
+
+    # If there is any submodules changes, you are sure to have them picked up with this
+    git add libraries/*
+
+    git commit
+    git push eoscanada-private deep-mind
+
+    cd libraries/fc
+    git push eoscanada-private deep-mind
 
 #### Building
+
+##### Locally
+
+Simply use the `build_debug.sh` script that can be found at the
+root of the project to build the `nodeos` process (and all other
+tools) in debug mode.
+
+    ./build_debug.sh
+
+This will install the necessary dependencies as well as installing some
+local version of some critical EOSIO dependencies mainly `clang8` and
+`boost`. Those two are compiled from source.
+
+This means the first time you run the script, it might take around
+1 hour to install and compile dependencies. In this period, your CPU
+will often be maxed out at 100% utilization rate, that's normal.
+
+##### Using Docker
 
 TBC
 
