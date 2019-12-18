@@ -5,7 +5,7 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 function main {
   version="$1"
   if [[ $version == "" ]]; then
-    echo "First argument should be version tag to create (like 1.8.5). Don't add the 'v' prefix!"
+    echo "First argument should be version tag to create (like 1.8.7). Don't add the 'v' prefix!"
     exit 1
   fi
   shift
@@ -22,7 +22,7 @@ function main {
   echo "Tagged release '${tag_name}', pushing it to remote in 5s ..."
   sleep 5
 
-  git push origin $tag_name
+  git push eoscanada-private $tag_name
 }
 
 main $@
