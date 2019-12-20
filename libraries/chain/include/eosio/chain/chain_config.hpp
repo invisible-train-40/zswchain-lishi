@@ -2,6 +2,7 @@
 
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/config.hpp>
+#include <dfuse/dm/logger.hpp>
 
 namespace eosio { namespace chain {
 

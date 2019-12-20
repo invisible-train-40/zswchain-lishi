@@ -193,13 +193,6 @@ chain_plugin::~chain_plugin(){}
 void chain_plugin::set_program_options(options_description& cli, options_description& cfg)
 {
    cfg.add_options()
-         ("schnapps-enable", bpo::bool_switch()->default_value(false),
-          "Create automatic snapshots when replaying from block log at regular interval controlled by schnapps-block-frequency")
-         ("schnapps-block-interval", bpo::value<uint32_t>()->default_value(50000),
-          "Block frequency at which snapshots should be taken when performing replay from block log")
-         ("schnapps-snapshots-path", bpo::value<bfs::path>(),
-          "Block frequency at which snapshots should be taken when performing replay from block log")
-
          ("blocks-dir", bpo::value<bfs::path>()->default_value("blocks"),
           "the location of the blocks directory (absolute path or relative to application data dir)")
          ("protocol-features-dir", bpo::value<bfs::path>()->default_value("protocol_features"),
