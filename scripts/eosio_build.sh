@@ -51,11 +51,7 @@ function usage() {
 
 TIME_BEGIN=$( date -u +%s )
 if [ $# -ne 0 ]; then
-<<<<<<< HEAD
-   while getopts "o:s:b:i:ycdhmPf" opt; do
-=======
-   while getopts "o:s:b:i:ycdhmnP" opt; do
->>>>>>> Added a `-n` option on `eosio_build.sh` file to only install dependencies + configure
+   while getopts "o:s:b:i:ycdhmPfn" opt; do
       case "${opt}" in
          o )
             options=( "Debug" "Release" "RelWithDebInfo" "MinSizeRel" )
