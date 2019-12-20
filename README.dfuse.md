@@ -50,11 +50,15 @@ and `Y` the deep mind version.
 
 ##### Locally
 
-Simply use the `build_debug.sh` script that can be found at the
-root of the project to build the `nodeos` process (and all other
-tools) in debug mode.
+On first build, you should call the `./build_debug.sh` script to
+install requires dependencies and configure the project.
 
     ./build_debug.sh
+
+**Note** Only call this if you you have a fresh clone of upgrading
+between feature/major versions as this will force a re-compilation of
+everything. In most cases, you should configure only once and then
+use `make -jX` while inside the `build` folder, see below
 
 This will install the necessary dependencies as well as installing some
 local version of some critical EOSIO dependencies mainly `clang8` and
@@ -64,11 +68,13 @@ This means the first time you run the script, it might take around
 1 hour to install and compile dependencies. In this period, your CPU
 will often be maxed out at 100% utilization rate, that's normal.
 
-**Important** You are doing active development? Use `./build_debug.sh` only
-once, to properly configure your environment or when updating to a new
-upstream version. Always re-running `./build_debug.sh` does not re-use existing
-compiled objects, which greatly speed up the feedback loop when doing active
-development. Instead, use `cd build && make`.
+The dependencies are installed and the project is configured, next step
+is to invoke the compilation step.
+
+For this, simply go in the `build` directory and then call `max -jX` where
+X is the amount of cores that you want to dedicate to compilation. On my
+machine which have 8 virtual cores, I use 6 so I have some room for other
+tasks.
 
 ##### Using Docker
 
