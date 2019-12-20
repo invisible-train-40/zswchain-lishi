@@ -1,8 +1,3 @@
-/**
- *  @file
- *  @copyright defined in eos/LICENSE
- */
-
 #include <eosio/chain/authorization_manager.hpp>
 #include <eosio/chain/exceptions.hpp>
 #include <eosio/chain/permission_object.hpp>
@@ -14,6 +9,7 @@
 #include <eosio/chain/generated_transaction_object.hpp>
 #include <boost/tuple/tuple_io.hpp>
 #include <eosio/chain/database_utils.hpp>
+#include <eosio/chain/protocol_state_object.hpp>
 
 
 namespace eosio { namespace chain {
@@ -141,6 +137,10 @@ namespace eosio { namespace chain {
                                                                       time_point initial_creation_time
                                                                     )
    {
+      for(const key_weight& k: auth.keys)
+         EOS_ASSERT(k.key.which() < _db.get<protocol_state_object>().num_supported_key_types, unactivated_key_type,
+           "Unactivated key type used when creating permission");
+
       auto creation_time = initial_creation_time;
       if( creation_time == time_point() ) {
          creation_time = _control.pending_block_time();
@@ -175,6 +175,10 @@ namespace eosio { namespace chain {
                                                                       time_point initial_creation_time
                                                                     )
    {
+      for(const key_weight& k: auth.keys)
+         EOS_ASSERT(k.key.which() < _db.get<protocol_state_object>().num_supported_key_types, unactivated_key_type,
+           "Unactivated key type used when creating permission");
+
       auto creation_time = initial_creation_time;
       if( creation_time == time_point() ) {
          creation_time = _control.pending_block_time();
@@ -201,7 +205,11 @@ namespace eosio { namespace chain {
       });
    }
 
-   void authorization_manager::modify_permission( const permission_object& permission, const authority& auth, uint32_t action_id) {
+   void authorization_manager::modify_permission( const permission_object& permission, const authority& auth, uint32_t action_id ) {
+      for(const key_weight& k: auth.keys)
+         EOS_ASSERT(k.key.which() < _db.get<protocol_state_object>().num_supported_key_types, unactivated_key_type,
+           "Unactivated key type used when modifying permission");
+
       _db.modify( permission, [&](permission_object& po) {
          const permission_object old_permission(po);
 
@@ -272,7 +280,7 @@ namespace eosio { namespace chain {
          auto link = _db.find<permission_link_object, by_action_name>(key);
          // If no specific link found, check for a contract-wide default
          if (link == nullptr) {
-            boost::get<2>(key) = "";
+            boost::get<2>(key) = {};
             link = _db.find<permission_link_object, by_action_name>(key);
          }
 
@@ -366,7 +374,7 @@ namespace eosio { namespace chain {
                   "the owner of the linked permission needs to be the actor of the declared authorization" );
 
       if( link.code == config::system_account_name
-            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) ) 
+            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) )
       {
          EOS_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
                      "Cannot link eosio::updateauth to a minimum permission" );

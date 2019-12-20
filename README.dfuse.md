@@ -46,6 +46,34 @@ into the `deep-mind` branch so we have the latest code. The older deep mind code
 previous release is tagged with `v<X>-dm-v<Y>` where `X` is the EOSIO release version
 and `Y` the deep mind version.
 
+#### Building
+
+##### Locally
+
+Simply use the `build_debug.sh` script that can be found at the
+root of the project to build the `nodeos` process (and all other
+tools) in debug mode.
+
+    ./build_debug.sh
+
+This will install the necessary dependencies as well as installing some
+local version of some critical EOSIO dependencies mainly `clang8` and
+`boost`. Those two are compiled from source.
+
+This means the first time you run the script, it might take around
+1 hour to install and compile dependencies. In this period, your CPU
+will often be maxed out at 100% utilization rate, that's normal.
+
+**Important** You are doing active development? Use `./build_debug.sh` only
+once, to properly configure your environment or when updating to a new
+upstream version. Always re-running `./build_debug.sh` does not re-use existing
+compiled objects, which greatly speed up the feedback loop when doing active
+development. Instead, use `cd build && make`.
+
+##### Using Docker
+
+TBC
+
 ### Update to New Upstream Version
 
 We assume you are in the top directory of the repository when performing the following
@@ -73,9 +101,10 @@ You first fetch the origin repository new data from Git:
     cd ../..
 
 Once fetched, go back to top level and checkout the tag you want to update to
-and update submodule there
+and update submodule once merge has been performed (even if there is conflicts!):
 
     git merge v1.8.7
+    git submodule update --init --recursive
 
 This might generates conflicts in the main module as well as will the
 `libraries/fc` module directly.
@@ -87,15 +116,16 @@ The idea is reset to current version (which will be a commit in `deep-mind`),
 note the commit from the merged branch (`v1.8.7`), then merge that commit inside
 our own fork of `libraries/fc`.
 
-    git reset v1.8.7 libraries/fc
-    git diff libraries/fc | grep "\-Subproject commit" | grep -Eo '[0-9a-f]{40}'
+    git ls-tree v1.8.7 libraries/fc | grep -Eo '[0-9a-f]{40}'
     # Note the previous commit that is outputted by command above
 
     cd libraries/fc
     git checkout deep-mind
     git merge <noted commit id above>
+    git submodule update --init --recursive
 
     # Resolves any conflicts that have happened here
+    git commit
 
     cd ../..
     git add libraries/fc
@@ -103,42 +133,30 @@ our own fork of `libraries/fc`.
 By doing this, you ensure that you own fork has the same set of changes in
 the `libraries/fc` module as above.
 
+Got any other `libraries/*` submodule problem? Simply reset them to the
+commit id pointed by the merged version. We do not modify those, so assuming
+git complains about `libraries/chainbase`, the operations to perform are:
+
+    git ls-tree v1.8.7 libraries/chainbase | grep -Eo '[0-9a-f]{40}'
+    # Note the previous commit that is outputted by command above
+
+    cd libraries/chainbase
+    git checkout <noted commit id above>
+    cd ../..
+
+    git add libraries/chainbase
+
 You can then continue solving other conflicts from the main module as usual.
 Once all conflicts have been resolved, build the version following the `Building`
 step below, once satisfied:
 
-    # If there is any submodules changes, you are sure to have them picked up with this
-    git add libraries/*
-
     git commit
-    git push eoscanada-private deep-mind
+    git push eoscanada-private deep-mind v1.8.7
 
     cd libraries/fc
     git push eoscanada-private deep-mind
 
-#### Building
-
-##### Locally
-
-Simply use the `build_debug.sh` script that can be found at the
-root of the project to build the `nodeos` process (and all other
-tools) in debug mode.
-
-    ./build_debug.sh
-
-This will install the necessary dependencies as well as installing some
-local version of some critical EOSIO dependencies mainly `clang8` and
-`boost`. Those two are compiled from source.
-
-This means the first time you run the script, it might take around
-1 hour to install and compile dependencies. In this period, your CPU
-will often be maxed out at 100% utilization rate, that's normal.
-
-##### Using Docker
-
-TBC
-
-#### Tagging
+#### Release
 
 Once you are satisfied, you can tag the repository for later building with
 the script
@@ -159,3 +177,5 @@ Would create and push tag `v1.8.7-dm-v10.2-hotfix`.
 * From `gitk`: `gitk --no-merges --first-parent v1.8.7..deep-mind`
 * From terminal: `git log --decorate --pretty=oneline --abbrev-commit --no-merges --first-parent v1.8.7..deep-mind`
 * From `GitHub`: [https://github.com/eoscanada/eosio-eos-private/compare/v1.8.7...deep-mind](https://github.com/eoscanada/go-ethereum-private/compare/v1.8.7...deep-mind)
+
+* Modified files in our fork: `git diff --submodule=log --name-status v1.8.7..deep-mind | grep -E "^M" | cut -d $'\t' -f 2`

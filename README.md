@@ -1,4 +1,3 @@
-**Note** This is a **private** dfuse fork for `nodeos` client, see [README.dfuse.md](./README.dfuse.md) for instructions on how to manage this repository.
 
 # EOSIO - The Most Powerful Infrastructure for Decentralized Applications
 
@@ -21,7 +20,7 @@ Some of the groundbreaking features of EOSIO include:
 1. Designed for Parallel Execution of Context Free Validation Logic
 1. Designed for Inter Blockchain Communication
 
-EOSIO is released under the open source MIT license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the EOSIO software depends in part on how it is used, configured, and deployed. EOSIO is built upon many third-party libraries such as WABT (Apache License) and WAVM (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, Block.one makes no representation or guarantee that EOSIO or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement EOSIO, you do so at your own risk. In no event will Block.one be liable to any party for any damages whatsoever, even if it had been advised of the possibility of damage.
+EOSIO is released under the open source MIT license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the EOSIO software depends in part on how it is used, configured, and deployed. EOSIO is built upon many third-party libraries such as WABT (Apache License) and WAVM (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, Block.one makes no representation or guarantee that EOSIO or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement EOSIO, you do so at your own risk. In no event will Block.one be liable to any party for any damages whatsoever, even if it had been advised of the possibility of damage.  
 
 Block.one is neither launching nor operating any initial public blockchains based upon the EOSIO software. This release refers only to version 1.0 of our open source software. We caution those who wish to use blockchains built on EOSIO to carefully vet the companies and organizations launching blockchains based on EOSIO before disclosing any private keys to their derivative software.
 
@@ -45,13 +44,13 @@ $ brew remove eosio
 
 #### Ubuntu 18.04 Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v1.8.7/eosio_1.8.7-1-ubuntu-18.04_amd64.deb
-$ sudo apt install ./eosio_1.8.7-1-ubuntu-18.04_amd64.deb
+$ wget https://github.com/eosio/eos/releases/download/v2.0.0-rc3/eosio_2.0.0-rc3-ubuntu-18.04_amd64.deb
+$ sudo apt install ./eosio_2.0.0-rc3-ubuntu-18.04_amd64.deb
 ```
 #### Ubuntu 16.04 Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v1.8.7/eosio_1.8.7-1-ubuntu-16.04_amd64.deb
-$ sudo apt install ./eosio_1.8.7-1-ubuntu-16.04_amd64.deb
+$ wget https://github.com/eosio/eos/releases/download/v2.0.0-rc3/eosio_2.0.0-rc3-ubuntu-16.04_amd64.deb
+$ sudo apt install ./eosio_2.0.0-rc3-ubuntu-16.04_amd64.deb
 ```
 #### Ubuntu Package Uninstall
 ```sh
@@ -59,8 +58,8 @@ $ sudo apt remove eosio
 ```
 #### Centos RPM Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v1.8.7/eosio-1.8.7-1.el7.x86_64.rpm
-$ sudo yum install ./eosio-1.8.7-1.el7.x86_64.rpm
+$ wget https://github.com/eosio/eos/releases/download/v2.0.0-rc3/eosio-2.0.0-rc3.el7.x86_64.rpm
+$ sudo yum install ./eosio-2.0.0-rc3.el7.x86_64.rpm
 ```
 #### Centos RPM Package Uninstall
 ```sh
@@ -75,7 +74,7 @@ If you have previously installed EOSIO using build scripts, you can execute `eos
 - Passing in `-i` allows you to specify where your eosio installation is located
 
 ## Supported Operating Systems
-EOSIO currently supports the following operating systems:
+EOSIO currently supports the following operating systems:  
 1. Amazon Linux 2
 2. CentOS 7
 3. Ubuntu 16.04
