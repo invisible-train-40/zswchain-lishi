@@ -30,9 +30,6 @@
 #include <fc/scoped_exit.hpp>
 #include <fc/variant_object.hpp>
 
-#include <boost/filesystem/path.hpp>
-namespace bfs = boost::filesystem;
-
 namespace eosio { namespace chain {
 
 using resource_limits::resource_limits_manager;
@@ -453,26 +450,6 @@ struct controller_impl {
    }
 
    void replay(std::function<bool()> shutdown) {
-      auto create_snapshot = [&](bfs::path snapshots_path) -> void {
-         auto head_id = head->id;
-         const auto& snapshot_path = snapshots_path / fc::format_string(
-            "snapshot-${id}.bin", fc::mutable_variant_object()("id", head_id)
-         );
-
-         auto snap_out = std::ofstream(snapshot_path.generic_string(), (std::ios::out | std::ios::binary));
-         auto writer = std::make_shared<ostream_snapshot_writer>(snap_out);
-
-         ilog( "creating snapshot ${head}-${id} (${path})",
-            ("head", head->block_num)
-            ("id", head->id)
-            ("path", snapshot_path.generic_string())
-         );
-         add_to_snapshot(writer);
-         writer->finalize();
-         snap_out.flush();
-         snap_out.close();
-      };
-
       auto blog_head = blog.head();
       auto blog_head_time = blog_head->timestamp.to_time_point();
       replay_head_time = blog_head_time;
@@ -487,16 +464,6 @@ struct controller_impl {
          try {
             while( auto next = blog.read_block_by_num( head->block_num + 1 ) ) {
                replay_push_block( next, controller::block_status::irreversible );
-
-               if (conf.schnapps_enable) {
-                  if( next->block_num() % conf.schnapps_block_interval == 0 ||
-                     next->block_num() == 176 || next->block_num() == 214
-
-                     // next->block_num() == 53701 || next->block_num() == 103611 || next->block_num() == 154656 || next->block_num() == 251684 || next->block_num() ==  303009
-                  ) {
-                     create_snapshot(conf.schnapps_snapshots_path);
-                  }
-               }
 
                if( next->block_num() % 500 == 0 ) {
                   ilog( "${n} of ${head}", ("n", next->block_num())("head", blog_head->block_num()) );

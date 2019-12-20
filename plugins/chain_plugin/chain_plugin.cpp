@@ -207,13 +207,6 @@ chain_plugin::~chain_plugin(){}
 void chain_plugin::set_program_options(options_description& cli, options_description& cfg)
 {
    cfg.add_options()
-         ("schnapps-enable", bpo::bool_switch()->default_value(false),
-          "Create automatic snapshots when replaying from block log at regular interval controlled by schnapps-block-frequency")
-         ("schnapps-block-interval", bpo::value<uint32_t>()->default_value(50000),
-          "Block frequency at which snapshots should be taken when performing replay from block log")
-         ("schnapps-snapshots-path", bpo::value<bfs::path>(),
-          "Block frequency at which snapshots should be taken when performing replay from block log")
-
          ("blocks-dir", bpo::value<bfs::path>()->default_value("blocks"),
           "the location of the blocks directory (absolute path or relative to application data dir)")
          ("protocol-features-dir", bpo::value<bfs::path>()->default_value("protocol_features"),
@@ -798,29 +791,6 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       if( options.count("import-reversible-blocks") ) {
          wlog("The --import-reversible-blocks option should be used by itself.");
-      }
-
-      if( options.count( "schnapps-enable" )) {
-         my->chain_config->schnapps_enable = options.at( "schnapps-enable" ).as<bool>();
-      }
-
-      if( options.count( "schnapps-block-interval" )) {
-         my->chain_config->schnapps_block_interval = options.at( "schnapps-block-interval" ).as<uint32_t>();
-      }
-
-      if( options.count( "schnapps-snapshots-path" )) {
-         auto sd = options.at( "schnapps-snapshots-path" ).as<bfs::path>();
-         if( sd.is_relative()) {
-            my->chain_config->schnapps_snapshots_path = app().data_dir() / sd;
-            if (!fc::exists(my->chain_config->schnapps_snapshots_path)) {
-               fc::create_directories(my->chain_config->schnapps_snapshots_path);
-            }
-         } else {
-            my->chain_config->schnapps_snapshots_path = sd;
-         }
-
-         EOS_ASSERT( fc::is_directory(my->chain_config->schnapps_snapshots_path), snapshot_directory_not_found_exception,
-                     "No such directory '${dir}'", ("dir", my->chain_config->schnapps_snapshots_path.generic_string()) );
       }
 
       if (options.count( "snapshot" )) {
