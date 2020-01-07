@@ -78,6 +78,8 @@ Testing/*
 build.tar.gz
 build/*
 build-debug/*
+/build
+/build-*
 
 etc/eosio/node_*
 var/lib/node_*
