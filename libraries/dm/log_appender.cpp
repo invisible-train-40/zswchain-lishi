@@ -22,14 +22,10 @@ namespace dfuse { namespace dm {
    };
 
    log_appender::log_appender( const fc::variant& args )
-   :my(new impl){
-      std::cout << "Log appender constructor with args called!" << std::endl;
-   }
+   :my(new impl){}
 
    log_appender::log_appender()
-   :my(new impl){
-      std::cout << "Log appender default constructor called!" << std::endl;
-   }
+   :my(new impl){}
 
    log_appender::~log_appender() {}
 
