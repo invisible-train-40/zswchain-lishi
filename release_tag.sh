@@ -25,8 +25,6 @@ function main {
   sleep 5
 
   git push eoscanada-private $tag_name
-  cd ../..
-  git push eoscanada-private $tag_name
 }
 
 main $@

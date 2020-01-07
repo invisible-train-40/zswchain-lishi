@@ -193,12 +193,12 @@ TBC
 Once you are satisfied, you can tag the repository for later building with
 the script
 
-    ./tag_release.sh 1.8.7
+    ./release_tag.sh 1.8.7
 
 This will create and push tag `v1.8.7-dm-v10.2`. Note that if you pass a second argument,
 it overrides the default deep mind revision stored in the script
 
-    ./tag_release.sh 1.8.7 v10.2-hotfix
+    ./release_tag.sh 1.8.7 v10.2-hotfix
 
 Would create and push tag `v1.8.7-dm-v10.2-hotfix`.
 
