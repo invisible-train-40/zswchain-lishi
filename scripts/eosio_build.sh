@@ -224,7 +224,7 @@ $ENABLE_COVERAGE_TESTING && LOCAL_CMAKE_FLAGS="-DENABLE_COVERAGE_TESTING='${ENAB
 
 execute bash -c "$CMAKE -DCMAKE_BUILD_TYPE='${CMAKE_BUILD_TYPE}' -DCORE_SYMBOL_NAME='${CORE_SYMBOL_NAME}' -DCMAKE_INSTALL_PREFIX='${EOSIO_INSTALL_DIR}' ${LOCAL_CMAKE_FLAGS} '${REPO_ROOT}'"
 
-if $SKIP_BUILD_STEP; then
+if [[ $SKIP_BUILD_STEP ]]; then
    echo ""
    echo "To build:"
    echo "cd $BUILD_DIR && make -j$JOBS"
@@ -247,13 +247,13 @@ echo "(_______/(_______)\_______)\_______/(_______)"
 echo "=============================================${COLOR_NC}"
 
 TASK="built"
-if $SKIP_BUILD_STEP; then
+if [[ $SKIP_BUILD_STEP ]]; then
    TASK="configured"
 fi
 
 echo "${COLOR_GREEN}EOSIO has been successfully $TASK. $(($TIME_END/3600)):$(($TIME_END%3600/60)):$(($TIME_END%60))"
 
-if ! $SKIP_BUILD_STEP; then
+if [[ ! $SKIP_BUILD_STEP ]]; then
    echo "${COLOR_GREEN}You can now install using: ${SCRIPT_DIR}/eosio_install.sh${COLOR_NC}"
    echo "${COLOR_YELLOW}Uninstall with: ${SCRIPT_DIR}/eosio_uninstall.sh${COLOR_NC}"
 

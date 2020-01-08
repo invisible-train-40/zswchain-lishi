@@ -10,7 +10,7 @@ function main {
   fi
   shift
 
-  revision="v10.3"
+  revision="v10.4"
   if [[ $1 != "" ]]; then
     revision=$1; shift
   fi
