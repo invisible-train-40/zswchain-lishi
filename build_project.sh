@@ -25,6 +25,9 @@ main() {
   if [[ ! -L "./build" ]]; then
     rm -rf "./build" &> /dev/null || true
     ln -s $build_dir build
+  elif [[ -L "./build" ]]; then
+    rm "./build"
+    ln -s $build_dir build
   fi
 
   cd $build_dir
