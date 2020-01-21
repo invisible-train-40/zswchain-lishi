@@ -18,8 +18,13 @@ main() {
 
   echo "Building in ${build_dir} with ${cpu_cores} CPU cores"
 
-  if [[ ! -d $build_dir ]]; then
-    BUILD_DIR_SUFFIX=$build_suffix ./configure_project.sh
+  if [[ ! -d "$build_dir" ]]; then
+    ./configure_project.sh "$build_suffix"
+  fi
+
+  if [[ ! -L "./build" ]]; then
+    rm -rf "./build" &> /dev/null || true
+    ln -s $build_dir build
   fi
 
   cd $build_dir
