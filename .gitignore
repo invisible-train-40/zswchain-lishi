@@ -87,3 +87,6 @@ var/lib/node_*
 .idea/
 *.iws
 .DS_Store
+
+# dfuse Deep Mind
+/dmeos_db/*
