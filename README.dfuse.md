@@ -151,35 +151,32 @@ and `Y` the deep mind version.
 
 ##### Locally
 
-On first build, you should call the `./configure_project.sh` script to
-install requires dependencies and configure the project.
+On first build, you should call the `./build_project.sh` script to
+perform the build. If the project was never configured before, the
+`configure_project.sh` is called first.
 
-    ./configure_project.sh
+    ./build_project.sh 1.8.x
 
-**Note** Only call this if you you have a fresh clone of upgrading
-between feature/major versions as this will force a re-compilation of
-everything. In most cases, you should configure only once and then
-use `make -jX` while inside the `build` folder, see below
+**Note** If something is fishy regarding C++ configuration, sometimes
+deleting the build directory and re-running `./build_project.sh 1.8.x`
+which triggers a re-configure can help solve some problems.
 
-**Tips** Are you going to work on multiple spanning version like 1.8.x
-and 2.0.x? Use `BUILD_DIR_SUFFIX=1.8.x ./configure_project.sh` to create
-a different build directory for each branch.
+**Tips** Usually, the idea is to use a suffix by big branch you are
+actively working on so you don't need to rebuild from scratch when
+for example moving from working on a 1.8.x version and a 2.x version.
+You can also use `default` which mimics old behavior.
 
-This will install the necessary dependencies as well as installing some
-local version of some critical EOSIO dependencies mainly `clang8` and
-`boost`. Those two are compiled from source.
+If it's the first time you work with the project, it will install
+the necessary dependencies as well as installing some local version
+of some critical EOSIO dependencies mainly `clang8` and `boost`. Those
+two are compiled from source.
 
 This means the first time you run the script, it might take around
 1 hour to install and compile dependencies. In this period, your CPU
 will often be maxed out at 100% utilization rate, that's normal.
 
-The dependencies are installed and the project is configured, next step
-is to invoke the compilation step.
-
-For this, simply go in the `build` directory and then call `max -jX` where
-X is the amount of cores that you want to dedicate to compilation. On my
-machine which have 8 virtual cores, I use 6 so I have some room for other
-tasks.
+The dependencies are installed and the project is configured, the script
+automatically continue building the full suit.
 
 **Tips** Want to speed compilation a bit by skipping not required targets
 like tests? Use `make nodeos -jX` instead to build only `nodeos` binary.

@@ -88,6 +88,6 @@ var/lib/node_*
 *.iws
 .DS_Store
 
-
-# dfuse Specific
+# dfuse Deep Mind
+/dmeos_db/*
 /patches
