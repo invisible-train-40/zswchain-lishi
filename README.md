@@ -74,13 +74,13 @@ $ brew remove eosio
 
 #### Ubuntu 18.04 Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v2.0.0/eosio_2.0.0-1-ubuntu-18.04_amd64.deb
-$ sudo apt install ./eosio_2.0.0-1-ubuntu-18.04_amd64.deb
+$ wget https://github.com/eosio/eos/releases/download/v2.0.1/eosio_2.0.1-1-ubuntu-18.04_amd64.deb
+$ sudo apt install ./eosio_2.0.1-1-ubuntu-18.04_amd64.deb
 ```
 #### Ubuntu 16.04 Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v2.0.0/eosio_2.0.0-1-ubuntu-16.04_amd64.deb
-$ sudo apt install ./eosio_2.0.0-1-ubuntu-16.04_amd64.deb
+$ wget https://github.com/eosio/eos/releases/download/v2.0.1/eosio_2.0.1-1-ubuntu-16.04_amd64.deb
+$ sudo apt install ./eosio_2.0.1-1-ubuntu-16.04_amd64.deb
 ```
 #### Ubuntu Package Uninstall
 ```sh
@@ -91,8 +91,8 @@ $ sudo apt remove eosio
 
 #### RPM Package Install
 ```sh
-$ wget https://github.com/eosio/eos/releases/download/v2.0.0/eosio-2.0.0-1.el7.x86_64.rpm
-$ sudo yum install ./eosio-2.0.0-1.el7.x86_64.rpm
+$ wget https://github.com/eosio/eos/releases/download/v2.0.1/eosio-2.0.1-1.el7.x86_64.rpm
+$ sudo yum install ./eosio-2.0.1-1.el7.x86_64.rpm
 ```
 #### RPM Package Uninstall
 ```sh
@@ -106,13 +106,13 @@ To uninstall the EOSIO built/installed binaries and dependencies, run:
 ```
 
 ## Documentation
-1. [Nodeos](http://eosio.github.io/eos/nodeos/)
-    - [Usage](http://eosio.github.io/eos/nodeos/usage/index)
-    - [Replays](http://eosio.github.io/eos/nodeos/replays/index)
-    - [Chain API Reference](http://eosio.github.io/eos/nodeos/plugins/chain_api_plugin/api-reference/index)
-    - [Troubleshooting](http://eosio.github.io/eos/nodeos/troubleshooting/index)
-1. [Cleos](http://eosio.github.io/eos/cleos/)
-1. [Keosd](http://eosio.github.io/eos/keosd/)
+1. [Nodeos](http://eosio.github.io/eos/latest/nodeos/)
+    - [Usage](http://eosio.github.io/eos/latest/nodeos/usage/index)
+    - [Replays](http://eosio.github.io/eos/latest/nodeos/replays/index)
+    - [Chain API Reference](http://eosio.github.io/eos/latest/nodeos/plugins/chain_api_plugin/api-reference/index)
+    - [Troubleshooting](http://eosio.github.io/eos/latest/nodeos/troubleshooting/index)
+1. [Cleos](http://eosio.github.io/eos/latest/cleos/)
+1. [Keosd](http://eosio.github.io/eos/latest/keosd/)
 
 ## Resources
 1. [Website](https://eos.io)
