@@ -1,7 +1,6 @@
 ## dfuse Fork of `EOSIO` (`nodeos` client)
 
-This is our private instrumented fork of [eosio/eos](https://github.com/eosio/eos) repository. In this README, you will find instructions about how to work with this repository, which uses submodules and for
-which we also have a private submodule for one of the dependencies
+This is our private instrumented fork of [eosio/eos](https://github.com/eosio/eos) repository. In this README, you will find instructions about how to work with this repository, which uses submodules.
 
 ### Initialization
 
