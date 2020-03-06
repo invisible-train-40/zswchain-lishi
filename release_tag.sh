@@ -20,6 +20,7 @@ function main {
   echo "Tagged release '${tag_name}', pushing it to remote in 5s ..."
   sleep 5
 
+  git tag $tag_name
   git push eoscanada-private $tag_name
 }
 
