@@ -22,7 +22,8 @@ main() {
       usage_error "Build type must be Debug or Release, got '$build_type'"
   fi
 
-  build_suffix="$1"; shift
+  input_build_suffix="$1"; shift
+  build_suffix="$input_build_suffix"
   if [[ $build_suffix == "" ]]; then
     usage_error "argument <build_suffix> is required"
   fi
@@ -37,7 +38,8 @@ main() {
   [[ $QUICK == "true" ]] || sleep 3
 
   if [[ ! -d "$build_dir" ]]; then
-    ./configure_project.sh "$build_suffix" "$build_type"
+    # We use the `$input_build_suffix` because `configure_project` re-creates the full directory itself
+    ./configure_project.sh -o "$build_type" "$input_build_suffix"
   fi
 
   if [[ ! -L "./build" ]]; then
