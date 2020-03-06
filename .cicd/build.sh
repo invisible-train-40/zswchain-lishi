@@ -3,7 +3,7 @@ set -eo pipefail
 . ./.cicd/helpers/general.sh
 mkdir -p $BUILD_DIR
 CMAKE_EXTRAS="-DCMAKE_BUILD_TYPE='Release' -DENABLE_MULTIVERSION_PROTOCOL_TEST=true"
-if [[ "$(uname)" == 'Darwin' ]]; then
+if [[ "$(uname)" == 'Darwin' && $FORCE_LINUX != true ]]; then
     # You can't use chained commands in execute
     if [[ "$TRAVIS" == 'true' ]]; then
         export PINNED=false
@@ -55,6 +55,8 @@ else # Linux
     elif [[ "$TRAVIS" == 'true' ]]; then
         ARGS="$ARGS -v /usr/lib/ccache -v $HOME/.ccache:/opt/.ccache -e JOBS -e TRAVIS -e CCACHE_DIR=/opt/.ccache"
         COMMANDS="ccache -s && $BUILD_COMMANDS"
+    else
+        COMMANDS="$BUILD_COMMANDS"
     fi
     . $HELPERS_DIR/file-hash.sh $CICD_DIR/platforms/$PLATFORM_TYPE/$IMAGE_TAG.dockerfile
     COMMANDS="$PRE_COMMANDS && $COMMANDS"
