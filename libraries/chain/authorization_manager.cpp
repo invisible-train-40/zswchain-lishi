@@ -158,7 +158,7 @@ namespace eosio { namespace chain {
          p.last_updated = creation_time;
          p.auth         = auth;
 
-         if (eosio::chain::chain_config::deep_mind_enabled) {
+         if (auto dm_logger = _control.get_deep_mind_logger()) {
             dmlog("PERM_OP INS ${action_id} ${data}",
                ("action_id", action_id)
                ("data", p)
@@ -192,7 +192,7 @@ namespace eosio { namespace chain {
          p.last_updated = creation_time;
          p.auth         = std::move(auth);
 
-         if (eosio::chain::chain_config::deep_mind_enabled) {
+         if (auto dm_logger = _control.get_deep_mind_logger()) {
             dmlog("PERM_OP INS ${action_id} ${data}",
                ("action_id", action_id)
                ("data", p)
@@ -208,7 +208,7 @@ namespace eosio { namespace chain {
          po.auth = auth;
          po.last_updated = _control.pending_block_time();
 
-         if (eosio::chain::chain_config::deep_mind_enabled) {
+         if (auto dm_logger = _control.get_deep_mind_logger()) {
             dmlog("PERM_OP UPD ${action_id} ${data}",
                ("action_id", action_id)
                ("data", fc::mutable_variant_object()
@@ -228,7 +228,7 @@ namespace eosio { namespace chain {
 
       _db.get_mutable_index<permission_usage_index>().remove_object( permission.usage_id._id );
 
-      if (eosio::chain::chain_config::deep_mind_enabled) {
+      if (auto dm_logger = _control.get_deep_mind_logger()) {
          dmlog("PERM_OP REM ${action_id} ${data}",
               ("action_id", action_id)
               ("data", permission)
@@ -366,7 +366,7 @@ namespace eosio { namespace chain {
                   "the owner of the linked permission needs to be the actor of the declared authorization" );
 
       if( link.code == config::system_account_name
-            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) ) 
+            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) )
       {
          EOS_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
                      "Cannot link eosio::updateauth to a minimum permission" );

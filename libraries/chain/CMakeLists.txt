@@ -1,6 +1,8 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/eosio/chain/core_symbol.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/eosio/chain/core_symbol.hpp)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/genesis_state_root_key.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/genesis_state_root_key.cpp)
 
+option(EOSIO_ENABLE_DEVELOPER_OPTIONS "enable developer options for EOSIO" OFF)
+
 file(GLOB HEADERS "include/eosio/chain/*.hpp"
                   "include/eosio/chain/webassembly/*.hpp"
                   "${CMAKE_CURRENT_BINARY_DIR}/include/eosio/chain/core_symbol.hpp" )
@@ -52,8 +54,12 @@ add_library( eosio_chain
              genesis_intrinsics.cpp
              whitelisted_intrinsics.cpp
              thread_utils.cpp
+             deep_mind.cpp
+
              ${HEADERS}
              )
+
+
 
 target_link_libraries( eosio_chain fc dfuse_dm chainbase Logging IR WAST WASM Runtime
                        softfloat builtins wabt
@@ -64,6 +70,11 @@ target_include_directories( eosio_chain
                                    "${CMAKE_SOURCE_DIR}/libraries/wabt"
                                    "${CMAKE_BINARY_DIR}/libraries/wabt"
                             )
+
+if(EOSIO_ENABLE_DEVELOPER_OPTIONS)
+     message(WARNING "EOSIO Developer Options are enabled; these are NOT supported")
+     target_compile_definitions(eosio_chain PUBLIC EOSIO_DEVELOPER)
+endif()
 
 install( TARGETS eosio_chain
    RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}

@@ -27,6 +27,9 @@
 #include <signal.h>
 #include <cstdlib>
 
+const fc::string deep_mind_logger_name("deep-mind");
+fc::logger _deep_mind_log;
+
 namespace eosio {
 
 //declare operator<< and validate funciton for read_mode in the same namespace as read_mode itself
@@ -227,10 +230,6 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "print contract's output to console")
          ("deep-mind", bpo::bool_switch()->default_value(false),
           "print deeper information about eosio software")
-         ("deep-mind-console", bpo::bool_switch()->default_value(false),
-          "add smart contract console logging to deep mind")
-         ("deep-mind-subjective-mitigations-disabled", bpo::bool_switch()->default_value(false),
-          "disable all subjectives mitigations so you can still create now impossible transaction")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -258,6 +257,10 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "In \"light\" mode all incoming blocks headers will be fully validated; transactions in those validated blocks will be trusted \n")
          ("disable-ram-billing-notify-checks", bpo::bool_switch()->default_value(false),
           "Disable the check which subjectively fails a transaction if a contract bills more RAM to another account within the context of a notification handler (i.e. when the receiver is not the code of the action).")
+#ifdef EOSIO_DEVELOPER
+         ("disable-all-subjective-mitigations", bpo::bool_switch()->default_value(false),
+          "Disable all subjective mitigations checks in the entire codebase.")
+#endif
          ("trusted-producer", bpo::value<vector<string>>()->composing(), "Indicate a producer whose blocks headers signed by it will be fully validated, but transactions in those validated blocks will be trusted.")
          ("database-map-mode", bpo::value<chainbase::pinnable_mapped_file::map_mode>()->default_value(chainbase::pinnable_mapped_file::map_mode::mapped),
           "Database map mode (\"mapped\", \"heap\", or \"locked\").\n"
@@ -568,10 +571,6 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
                ("root_key", genesis_state::eosio_root_key));
          throw;
       }
-
-      eosio::chain::chain_config::deep_mind_enabled = options.at( "deep-mind" ).as<bool>();
-      eosio::chain::chain_config::deep_mind_console_enabled = options.at( "deep-mind-console" ).as<bool>();
-      eosio::chain::chain_config::deep_mind_subjective_mitigations_disabled = options.at( "deep-mind-subjective-mitigations-disabled" ).as<bool>();
 
       my->chain_config = controller::config();
 
@@ -906,6 +905,11 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
       my->chain.emplace( *my->chain_config, std::move(pfs) );
       my->chain_id.emplace( my->chain->get_chain_id());
 
+      // initialize deep mind logging
+      if ( options.at( "deep-mind" ).as<bool>() ) {
+         my->chain->enable_deep_mind( &_deep_mind_log );
+      }
+
       // set up method providers
       my->get_block_by_number_provider = app().get_method<methods::get_block_by_number>().register_provider(
             [this]( uint32_t block_num ) -> signed_block_ptr {
@@ -946,7 +950,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
             } );
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
-         if (eosio::chain::chain_config::deep_mind_enabled) {
+         if (auto dm_logger = my->chain->get_deep_mind_logger()) {
             dmlog("ACCEPTED_BLOCK ${num} ${blk}",
                ("num", blk->block_num)
                ("blk", chain().to_variant_with_abi(blk, fc::microseconds(5000000)))
@@ -967,7 +971,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( std::tuple<const transaction_trace_ptr&, const signed_transaction&> t ) {
-               if (eosio::chain::chain_config::deep_mind_enabled) {
+               if (auto dm_logger = my->chain->get_deep_mind_logger()) {
                   dmlog("APPLIED_TRANSACTION ${block} ${traces}",
                      ("block", chain().head_block_num() + 1)
                      ("traces", chain().to_variant_with_abi(std::get<0>(t), fc::microseconds(5000000)))
@@ -984,6 +988,8 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
 void chain_plugin::plugin_startup()
 { try {
+   handle_sighup(); // Sets loggers
+
    try {
       auto shutdown = [](){ return app().is_quiting(); };
       if (my->snapshot_path) {
@@ -1010,6 +1016,10 @@ void chain_plugin::plugin_startup()
 
    my->chain_config.reset();
 } FC_CAPTURE_AND_RETHROW() }
+
+void chain_plugin::handle_sighup() {
+   fc::logger::update( deep_mind_logger_name, _deep_mind_log );
+}
 
 void chain_plugin::plugin_shutdown() {
    ilog("chain shutdown");
