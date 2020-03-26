@@ -556,9 +556,9 @@ namespace bacc = boost::accumulators;
       }
    }
 
-   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const char* event_id, const char* family, const char* operation, const char* legacy_tag ) {
+   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const ram_trace&& ram_trace ) {
       auto& rl = control.get_mutable_resource_limits_manager();
-      rl.add_pending_ram_usage( account, ram_delta, action_id.current(), event_id, family, operation, legacy_tag );
+      rl.add_pending_ram_usage( account, ram_delta, std::move(ram_trace) );
       if( ram_delta > 0 ) {
          validate_ram_usage.insert( account );
       }
@@ -675,10 +675,12 @@ namespace bacc = boost::accumulators;
    void transaction_context::execute_action( uint32_t action_ordinal, uint32_t recurse_depth ) {
       apply_context acontext( control, *this, action_ordinal, recurse_depth );
 
-      if (eosio::chain::chain_config::deep_mind_enabled && recurse_depth == 0) {
-         dmlog("CREATION_OP ROOT ${action_id}",
-            ("action_id", action_id.current())
-         );
+      if (recurse_depth == 0) {
+         if (auto dm_logger = control.get_deep_mind_logger()) {
+            fc_dlog(*dm_logger, "CREATION_OP ROOT ${action_id}",
+               ("action_id", get_action_id())
+            );
+         }
       }
 
       acontext.exec();
@@ -708,11 +710,11 @@ namespace bacc = boost::accumulators;
         gto.expiration  = gto.delay_until + fc::seconds(control.get_global_properties().configuration.deferred_trx_expiration_window);
         trx_size = gto.set( trx );
 
-        if (eosio::chain::chain_config::deep_mind_enabled) {
-            event_id = ramEventId("${id}", ("id", gto.id));
+        if (auto dm_logger = control.get_deep_mind_logger()) {
+            event_id = RAM_EVENT_ID("${id}", ("id", gto.id));
 
             dmlog("DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
-               ("action_id", action_id.current())
+               ("action_id", get_action_id())
                ("sender", gto.sender)
                ("sender_id", gto.sender_id)
                ("payer", gto.payer)
@@ -726,7 +728,7 @@ namespace bacc = boost::accumulators;
       });
 
       int64_t ram_delta = (config::billable_size_v<generated_transaction_object> + trx_size);
-      add_ram_usage( cgto.payer, ram_delta, event_id.c_str(), "deferred_trx", "push", "deferred_trx_pushed" );
+      add_ram_usage( cgto.payer, ram_delta, ram_trace(get_action_id(), event_id.c_str(), "deferred_trx", "push", "deferred_trx_pushed") );
       trace->account_ram_delta = account_delta( cgto.payer, ram_delta );
    }
 

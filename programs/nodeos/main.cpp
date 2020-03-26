@@ -54,6 +54,12 @@ void logging_conf_handler()
    ilog("Received HUP.  Reloading logging configuration from ${p}.", ("p", config_path.string()));
    if(fc::exists(config_path))
       ::detail::configure_logging(config_path);
+   else {
+      auto cfg = fc::logging_config::default_config();
+
+      fc::configure_logging( add_deep_mind_logger(cfg) );
+   }
+
    fc::log_config::initialize_appenders( app().get_io_service() );
 }
 

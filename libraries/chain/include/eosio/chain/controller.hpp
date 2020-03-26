@@ -1,5 +1,6 @@
 #pragma once
 #include <eosio/chain/block_state.hpp>
+#include <eosio/chain/deep_mind.hpp>
 #include <eosio/chain/trace.hpp>
 #include <eosio/chain/genesis_state.hpp>
 #include <chainbase/pinnable_mapped_file.hpp>
@@ -277,6 +278,9 @@ namespace eosio { namespace chain {
 
          void add_to_ram_correction( account_name account, uint64_t ram_bytes, uint32_t action_id, const char* event_id );
          bool all_subjective_mitigations_disabled()const;
+
+         fc::logger* get_deep_mind_logger() const;
+         void enable_deep_mind( fc::logger* logger );
 
          static fc::optional<uint64_t> convert_exception_to_error_code( const fc::exception& e );
 
