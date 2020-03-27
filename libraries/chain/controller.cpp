@@ -245,6 +245,8 @@ struct controller_impl {
    uint32_t                       snapshot_head_block = 0;
    named_thread_pool              thread_pool;
    platform_timer                 timer;
+   fc::logger*                    deep_mind_logger = nullptr;
+
 #if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
    vm::wasm_allocator                 wasm_alloc;
 #endif
@@ -308,9 +310,9 @@ struct controller_impl {
     blog( cfg.blocks_dir ),
     fork_db( cfg.state_dir ),
     wasmif( cfg.wasm_runtime, cfg.eosvmoc_tierup, db, cfg.state_dir, cfg.eosvmoc_config ),
-    resource_limits( db ),
+    resource_limits( db, [&s]() { return s.get_deep_mind_logger(); }),
     authorization( s, db ),
-    protocol_features( std::move(pfs) ),
+    protocol_features( std::move(pfs), [&s]() { return s.get_deep_mind_logger(); } ),
     conf( cfg ),
     chain_id( chain_id ),
     read_mode( cfg.read_mode ),
@@ -1026,12 +1028,12 @@ struct controller_impl {
       ram_delta += owner_permission.auth.get_billable_size();
       ram_delta += active_permission.auth.get_billable_size();
 
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         event_id = ramEventId("${name}", ("name", name));
+      std::string event_id;
+      if (get_deep_mind_logger() != nullptr) {
+         event_id = RAM_EVENT_ID("${name}", ("name", name));
       }
 
-      resource_limits.add_pending_ram_usage(name, ram_delta, 0, event_id.c_str(), "account", "add", "newaccount");
+      resource_limits.add_pending_ram_usage(name, ram_delta, ram_trace(0, event_id.c_str(), "account", "add", "newaccount"));
       resource_limits.verify_account_ram_usage(name);
    }
 
@@ -1135,8 +1137,8 @@ struct controller_impl {
          etrx.set_reference_block( self.head_block_id() );
       }
 
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         dmlog("TRX_OP CREATE onerror ${id} ${trx}",
+      if (auto dm_logger = get_deep_mind_logger()) {
+         fc_dlog(*dm_logger, "TRX_OP CREATE onerror ${id} ${trx}",
             ("id", etrx.id())
             ("trx", self.to_variant_with_abi(etrx, fc::microseconds(5000000)))
          );
@@ -1177,13 +1179,13 @@ struct controller_impl {
    }
 
    int64_t remove_scheduled_transaction( const generated_transaction_object& gto ) {
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         event_id = ramEventId("${id}", ("id", gto.id));
+      std::string event_id;
+      if (get_deep_mind_logger() != nullptr) {
+         event_id = RAM_EVENT_ID("${id}", ("id", gto.id));
       }
 
       int64_t ram_delta = -(config::billable_size_v<generated_transaction_object> + gto.packed_trx.size());
-      resource_limits.add_pending_ram_usage( gto.payer, ram_delta, 0, event_id.c_str(), "deferred_trx", "remove", "deferred_trx_removed" );
+      resource_limits.add_pending_ram_usage( gto.payer, ram_delta, ram_trace(0, event_id.c_str(), "deferred_trx", "remove", "deferred_trx_removed") );
       // No need to verify_account_ram_usage since we are only reducing memory
 
       db.remove( gto );
@@ -1325,9 +1327,9 @@ struct controller_impl {
          trace->except_ptr = std::current_exception();
          trace->elapsed = fc::time_point::now() - trx_context.start;
 
-         if (eosio::chain::chain_config::deep_mind_enabled) {
-            dmlog("DTRX_OP FAILED ${action_id}",
-               ("action_id", trx_context.action_id.current())
+         if (auto dm_logger = get_deep_mind_logger()) {
+            fc_dlog(*dm_logger, "DTRX_OP FAILED ${action_id}",
+               ("action_id", trx_context.get_action_id())
             );
          }
       }
@@ -1536,9 +1538,9 @@ struct controller_impl {
                      controller::block_status s,
                      const optional<block_id_type>& producer_block_id )
    {
-      if (eosio::chain::chain_config::deep_mind_enabled) {
+      if (auto dm_logger = get_deep_mind_logger()) {
          // The head block represents the block just before this on that is about to start, so add 1 to get this block num
-         dmlog("START_BLOCK ${block_num}", ("block_num", head->block_num + 1));
+         fc_dlog(*dm_logger, "START_BLOCK ${block_num}", ("block_num", head->block_num + 1));
       }
 
       EOS_ASSERT( !pending, block_validate_exception, "pending block already exists" );
@@ -2115,8 +2117,8 @@ struct controller_impl {
          ilog("switching forks from ${current_head_id} (block number ${current_head_num}) to ${new_head_id} (block number ${new_head_num})",
               ("current_head_id", head->id)("current_head_num", head->block_num)("new_head_id", new_head->id)("new_head_num", new_head->block_num) );
 
-         if (eosio::chain::chain_config::deep_mind_enabled) {
-            dmlog("SWITCH_FORK ${from_id} ${to_id}",
+         if (auto dm_logger = get_deep_mind_logger()) {
+            fc_dlog(*dm_logger, "SWITCH_FORK ${from_id} ${to_id}",
                ("from_id", head->id)
                ("to_id", new_head->id)
             );
@@ -2431,14 +2433,18 @@ struct controller_impl {
          trx.set_reference_block( self.head_block_id() );
       }
 
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         dmlog("TRX_OP CREATE onblock ${id} ${trx}",
+      if (auto dm_logger = get_deep_mind_logger()) {
+         fc_dlog(*dm_logger, "TRX_OP CREATE onblock ${id} ${trx}",
             ("id", trx.id())
             ("trx", self.to_variant_with_abi(trx, fc::microseconds(5000000)))
          );
       }
 
       return trx;
+   }
+
+   inline fc::logger* get_deep_mind_logger() const {
+      return deep_mind_logger;
    }
 
 }; /// controller_impl
@@ -2605,10 +2611,10 @@ void controller::preactivate_feature( uint32_t action_id, const digest_type& fea
                ("digest", feature_digest)
    );
 
-   if (eosio::chain::chain_config::deep_mind_enabled) {
+   if (auto dm_logger = get_deep_mind_logger()) {
       const auto feature = pfs.get_protocol_feature(feature_digest);
 
-      dmlog("FEATURE_OP PRE_ACTIVATE ${action_id} ${feature_digest} ${feature}",
+      fc_dlog(*dm_logger, "FEATURE_OP PRE_ACTIVATE ${action_id} ${feature_digest} ${feature}",
          ("action_id", action_id)
          ("feature_digest", feature_digest)
          ("feature", feature.to_variant())
@@ -3289,8 +3295,8 @@ void controller::add_to_ram_correction( account_name account, uint64_t ram_bytes
       } );
    }
 
-   if (eosio::chain::chain_config::deep_mind_enabled) {
-      dmlog("RAM_CORRECTION_OP ${action_id} ${correction_id} ${event_id} ${payer} ${delta}",
+   if (auto dm_logger = get_deep_mind_logger()) {
+      fc_dlog(*dm_logger, "RAM_CORRECTION_OP ${action_id} ${correction_id} ${event_id} ${payer} ${delta}",
          ("action_id", action_id)
          ("correction_id", correction_object_id)
          ("event_id", event_id)
@@ -3302,6 +3308,15 @@ void controller::add_to_ram_correction( account_name account, uint64_t ram_bytes
 
 bool controller::all_subjective_mitigations_disabled()const {
    return my->conf.disable_all_subjective_mitigations;
+}
+
+fc::logger* controller::get_deep_mind_logger()const {
+   return my->get_deep_mind_logger();
+}
+
+void controller::enable_deep_mind(fc::logger* logger) {
+   EOS_ASSERT( logger != nullptr, misc_exception, "Invalid logger passed into enable_deep_mind, must be set" );
+   my->deep_mind_logger = logger;
 }
 
 #if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
@@ -3391,12 +3406,12 @@ void controller_impl::on_activation<builtin_protocol_feature_t::replace_deferred
                ("name", itr->name)("adjust", itr->ram_correction)("current", current_ram_usage) );
       }
 
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         event_id = ramEventId("${id}", ("id", itr->id._id));
+      std::string event_id;
+      if (get_deep_mind_logger() != nullptr) {
+         event_id = RAM_EVENT_ID("${id}", ("id", itr->id._id));
       }
 
-      resource_limits.add_pending_ram_usage( itr->name, ram_delta, 0, event_id.c_str(), "deferred_trx", "correction", "deferred_trx_ram_correction" );
+      resource_limits.add_pending_ram_usage( itr->name, ram_delta, ram_trace(0, event_id.c_str(), "deferred_trx", "correction", "deferred_trx_ram_correction") );
       db.remove( *itr );
    }
 }

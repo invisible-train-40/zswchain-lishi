@@ -51,7 +51,7 @@ main() {
   fi
 
   cd $build_dir
-  make -j$cpu_cores $build_target
+  ninja $build_target
 }
 
 usage_error() {

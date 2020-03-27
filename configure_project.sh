@@ -32,7 +32,7 @@ main() {
     echo "Configuring project in 3s (Type: $build_type, Dir: build-$build_suffix)..."
     [[ $QUICK == "true" ]] || sleep 3
 
-    BUILD_DIR_SUFFIX=$build_suffix $ROOT/scripts/eosio_build.sh -n -o $build_type -i $HOME/eosio/1.8 -y $@
+    LOCAL_CMAKE_FLAGS="-GNinja -DEOSIO_ENABLE_DEVELOPER_OPTIONS=true" BUILD_DIR_SUFFIX=$build_suffix $ROOT/scripts/eosio_build.sh -n -o $build_type -i $HOME/eosio/1.8 -y $@
 }
 
 usage_error() {

@@ -106,9 +106,9 @@ void apply_eosio_newaccount(apply_context& context) {
    }
 
    const auto& owner_permission  = authorization.create_permission( create.name, config::owner_name, 0,
-                                                                    std::move(create.owner), context.trx_context.action_id.current() );
+                                                                    std::move(create.owner), context.get_action_id() );
    const auto& active_permission = authorization.create_permission( create.name, config::active_name, owner_permission.id,
-                                                                    std::move(create.active), context.trx_context.action_id.current() );
+                                                                    std::move(create.active), context.get_action_id() );
 
    context.control.get_mutable_resource_limits_manager().initialize_account(create.name);
 
@@ -117,12 +117,12 @@ void apply_eosio_newaccount(apply_context& context) {
    ram_delta += owner_permission.auth.get_billable_size();
    ram_delta += active_permission.auth.get_billable_size();
 
-   fc::string event_id;
-   if (eosio::chain::chain_config::deep_mind_enabled) {
-      event_id = ramEventId("${name}", ("name", create.name));
+   std::string event_id;
+   if (context.control.get_deep_mind_logger() != nullptr) {
+      event_id = RAM_EVENT_ID("${name}", ("name", create.name));
    }
 
-   context.add_ram_usage(create.name, ram_delta, event_id.c_str(), "account", "add", "newaccount");
+   context.add_ram_usage(create.name, ram_delta, ram_trace(context.get_action_id(), event_id.c_str(), "account", "add", "newaccount"));
 
 } FC_CAPTURE_AND_RETHROW( (create) ) }
 
@@ -197,8 +197,8 @@ void apply_eosio_setcode(apply_context& context) {
 
    if (new_size != old_size) {
       std::string operation;
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
+      std::string event_id;
+      if (context.control.get_deep_mind_logger() != nullptr) {
          operation = "update";
          if (old_size <= 0) {
             operation = "add";
@@ -206,10 +206,10 @@ void apply_eosio_setcode(apply_context& context) {
             operation = "remove";
          }
 
-         event_id = ramEventId("${account}", ("account", act.account));
+         event_id = RAM_EVENT_ID("${account}", ("account", act.account));
       }
 
-      context.add_ram_usage( act.account, new_size - old_size, event_id.c_str(), "code", operation.c_str(), "setcode" );
+      context.add_ram_usage( act.account, new_size - old_size, ram_trace(context.get_action_id(), event_id.c_str(), "code", operation.c_str(), "setcode") );
    }
 }
 
@@ -241,8 +241,8 @@ void apply_eosio_setabi(apply_context& context) {
 
    if (new_size != old_size) {
       std::string operation;
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
+      std::string event_id;
+      if (context.control.get_deep_mind_logger() != nullptr) {
          operation = "update";
          if (old_size <= 0) {
             operation = "add";
@@ -250,10 +250,10 @@ void apply_eosio_setabi(apply_context& context) {
             operation = "remove";
          }
 
-         event_id = ramEventId("${account}", ("account", act.account));
+         event_id = RAM_EVENT_ID("${account}", ("account", act.account));
       }
 
-      context.add_ram_usage( act.account, new_size - old_size, event_id.c_str(), "abi", operation.c_str(), "setabi" );
+      context.add_ram_usage( act.account, new_size - old_size, ram_trace(context.get_action_id(), event_id.c_str(), "abi", operation.c_str(), "setabi") );
    }
 }
 
@@ -307,27 +307,27 @@ void apply_eosio_updateauth(apply_context& context) {
 
       int64_t old_size = (int64_t)(config::billable_size_v<permission_object> + permission->auth.get_billable_size());
 
-      authorization.modify_permission( *permission, update.auth, context.trx_context.action_id.current() );
+      authorization.modify_permission( *permission, update.auth, context.get_action_id() );
 
       int64_t new_size = (int64_t)(config::billable_size_v<permission_object> + permission->auth.get_billable_size());
 
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         event_id = ramEventId("${id}", ("id", permission->id));
+      std::string event_id;
+      if (context.control.get_deep_mind_logger() != nullptr) {
+         event_id = RAM_EVENT_ID("${id}", ("id", permission->id));
       }
 
-      context.add_ram_usage( permission->owner, new_size - old_size, event_id.c_str(), "auth", "update", "updateauth_update" );
+      context.add_ram_usage( permission->owner, new_size - old_size, ram_trace(context.get_action_id(), event_id.c_str(), "auth", "update", "updateauth_update") );
    } else {
-      const auto& p = authorization.create_permission( update.account, update.permission, parent_id, update.auth, context.trx_context.action_id.current() );
+      const auto& p = authorization.create_permission( update.account, update.permission, parent_id, update.auth, context.get_action_id() );
 
       int64_t new_size = (int64_t)(config::billable_size_v<permission_object> + p.auth.get_billable_size());
 
-      fc::string event_id;
-      if (eosio::chain::chain_config::deep_mind_enabled) {
-         event_id = ramEventId("${id}", ("id", p.id));
+      std::string event_id;
+      if (context.control.get_deep_mind_logger() != nullptr) {
+         event_id = RAM_EVENT_ID("${id}", ("id", p.id));
       }
 
-      context.add_ram_usage( update.account, new_size, event_id.c_str(), "auth", "add", "updateauth_create" );
+      context.add_ram_usage( update.account, new_size, ram_trace(context.get_action_id(), event_id.c_str(), "auth", "add", "updateauth_create") );
    }
 }
 
@@ -356,14 +356,14 @@ void apply_eosio_deleteauth(apply_context& context) {
    const auto& permission = authorization.get_permission({remove.account, remove.permission});
    int64_t old_size = config::billable_size_v<permission_object> + permission.auth.get_billable_size();
 
-   fc::string event_id;
-   if (eosio::chain::chain_config::deep_mind_enabled) {
-      event_id = ramEventId("${id}", ("id", permission.id));
+   std::string event_id;
+   if (context.control.get_deep_mind_logger() != nullptr) {
+      event_id = RAM_EVENT_ID("${id}", ("id", permission.id));
    }
 
-   authorization.remove_permission( permission, context.trx_context.action_id.current() );
+   authorization.remove_permission( permission, context.get_action_id() );
 
-   context.add_ram_usage( remove.account, -old_size, event_id.c_str(), "auth", "remove", "deleteauth" );
+   context.add_ram_usage( remove.account, -old_size, ram_trace(context.get_action_id(), event_id.c_str(), "auth", "remove", "deleteauth") );
 }
 
 void apply_eosio_linkauth(apply_context& context) {
@@ -413,18 +413,15 @@ void apply_eosio_linkauth(apply_context& context) {
             link.required_permission = requirement.requirement;
          });
 
-         fc::string event_id;
-         if (eosio::chain::chain_config::deep_mind_enabled) {
-            event_id = ramEventId("${id}", ("id", l.id));
+         std::string event_id;
+         if (context.control.get_deep_mind_logger() != nullptr) {
+            event_id = RAM_EVENT_ID("${id}", ("id", l.id));
          }
 
          context.add_ram_usage(
             l.account,
             (int64_t)(config::billable_size_v<permission_link_object>),
-            event_id.c_str(),
-            "auth_link",
-            "add",
-            "linkauth"
+            ram_trace(context.get_action_id(), event_id.c_str(), "auth_link", "add", "linkauth")
          );
       }
 
@@ -443,18 +440,15 @@ void apply_eosio_unlinkauth(apply_context& context) {
    auto link = db.find<permission_link_object, by_action_name>(link_key);
    EOS_ASSERT(link != nullptr, action_validate_exception, "Attempting to unlink authority, but no link found");
 
-   fc::string event_id;
-   if (eosio::chain::chain_config::deep_mind_enabled) {
-      event_id = ramEventId("${id}", ("id", link->id));
+   std::string event_id;
+   if (context.control.get_deep_mind_logger() != nullptr) {
+      event_id = RAM_EVENT_ID("${id}", ("id", link->id));
    }
 
    context.add_ram_usage(
       link->account,
       -(int64_t)(config::billable_size_v<permission_link_object>),
-      event_id.c_str(),
-      "auth_link",
-      "remove",
-      "unlinkauth"
+      ram_trace(context.get_action_id(), event_id.c_str(), "auth_link", "remove", "unlinkauth")
    );
 
    db.remove(*link);

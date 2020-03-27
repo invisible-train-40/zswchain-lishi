@@ -292,6 +292,9 @@ namespace eosio { namespace chain {
          void add_to_ram_correction( account_name account, uint64_t ram_bytes, uint32_t action_id, const char* event_id );
          bool all_subjective_mitigations_disabled()const;
 
+         fc::logger* get_deep_mind_logger() const;
+         void enable_deep_mind( fc::logger* logger );
+
 #if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
          vm::wasm_allocator&  get_wasm_allocator();
 #endif
