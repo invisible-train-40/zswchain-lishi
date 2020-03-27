@@ -81,7 +81,7 @@ void logging_conf_handler()
 
 void initialize_logging()
 {
-   auto success = fc::log_config::register_appender<dfuse::dm::log_appender>( "deep-mind" );
+   auto success = fc::log_config::register_appender<dfuse::dm::log_appender>( "dmlog" );
    if (!success) {
       throw std::runtime_error("Unable to correcty register deep mind log appender");
    }

@@ -614,9 +614,7 @@ bool apply_context::cancel_deferred_transaction( const uint128_t& sender_id, acc
    if ( gto ) {
       std::string event_id;
       if (auto dm_logger = control.get_deep_mind_logger()) {
-         // unpack gtx->packed_trx into `dtrx` REVISE THIS!
-         auto gtx = generated_transaction(*gto);
-         fc::datastream<const char*> ds( gtx.packed_trx.data(), gtx.packed_trx.size() );
+         fc::datastream<const char*> ds( gto->packed_trx.data(), gto->packed_trx.size() );
          transaction dtrx;
          fc::raw::unpack(ds, dtrx);
 
