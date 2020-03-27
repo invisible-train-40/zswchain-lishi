@@ -3,11 +3,9 @@
  *  @copyright defined in eos/LICENSE
  */
 
-#include <eosio/chain/chain_config.hpp>
 #include <eosio/chain/protocol_feature_manager.hpp>
 #include <eosio/chain/protocol_state_object.hpp>
 #include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/controller.hpp>
 
 #include <fc/scoped_exit.hpp>
 
@@ -649,7 +647,7 @@ either the account authorized the action or the action's net effect on RAM usage
       );
 
       if (auto dm_logger = _get_deep_mind_logger()) {
-         dmlog("FEATURE_OP ACTIVATE ${feature_digest} ${feature}",
+         fc_dlog(*dm_logger,"FEATURE_OP ACTIVATE ${feature_digest} ${feature}",
             ("feature_digest", feature_digest)
             ("feature", itr->to_variant())
          );

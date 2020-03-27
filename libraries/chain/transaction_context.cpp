@@ -556,9 +556,9 @@ namespace bacc = boost::accumulators;
       }
    }
 
-   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const ram_trace&& ram_trace ) {
+   void transaction_context::add_ram_usage( account_name account, int64_t ram_delta, const ram_trace& ram_trace ) {
       auto& rl = control.get_mutable_resource_limits_manager();
-      rl.add_pending_ram_usage( account, ram_delta, std::move(ram_trace) );
+      rl.add_pending_ram_usage( account, ram_delta, ram_trace );
       if( ram_delta > 0 ) {
          validate_ram_usage.insert( account );
       }
@@ -698,7 +698,7 @@ namespace bacc = boost::accumulators;
 
       auto first_auth = trx.first_authorizer();
 
-      fc::string event_id;
+      std::string event_id;
       uint32_t trx_size = 0;
       const auto& cgto = control.mutable_db().create<generated_transaction_object>( [&]( auto& gto ) {
         gto.trx_id      = id;
@@ -713,7 +713,7 @@ namespace bacc = boost::accumulators;
         if (auto dm_logger = control.get_deep_mind_logger()) {
             event_id = RAM_EVENT_ID("${id}", ("id", gto.id));
 
-            dmlog("DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+            fc_dlog(*dm_logger,"DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
                ("action_id", get_action_id())
                ("sender", gto.sender)
                ("sender_id", gto.sender_id)
