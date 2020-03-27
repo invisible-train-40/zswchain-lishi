@@ -739,6 +739,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
       my->chain_config->allow_ram_billing_in_notify = options.at( "disable-ram-billing-notify-checks" ).as<bool>();
       my->chain_config->maximum_variable_signature_length = options.at( "maximum-variable-signature-length" ).as<uint32_t>();
 
+#ifdef EOSIO_DEVELOPER
+      my->chain_config->disable_all_subjective_mitigations = options.at( "disable-all-subjective-mitigations" ).as<bool>();
+#endif
+
       if( options.count( "extract-genesis-json" ) || options.at( "print-genesis-json" ).as<bool>()) {
          fc::optional<genesis_state> gs;
 
