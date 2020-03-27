@@ -713,7 +713,7 @@ namespace bacc = boost::accumulators;
         if (auto dm_logger = control.get_deep_mind_logger()) {
             event_id = RAM_EVENT_ID("${id}", ("id", gto.id));
 
-            fc_dlog(*dm_logger,"DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
+            fc_dlog(*dm_logger, "DTRX_OP PUSH_CREATE ${action_id} ${sender} ${sender_id} ${payer} ${published} ${delay} ${expiration} ${trx_id} ${trx}",
                ("action_id", get_action_id())
                ("sender", gto.sender)
                ("sender_id", gto.sender_id)

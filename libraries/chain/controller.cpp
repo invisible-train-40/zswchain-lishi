@@ -996,7 +996,7 @@ struct controller_impl {
       }
 
       if (auto dm_logger = get_deep_mind_logger()) {
-         fc_dlog(*dm_logger,"TRX_OP CREATE onerror ${id} ${trx}",
+         fc_dlog(*dm_logger, "TRX_OP CREATE onerror ${id} ${trx}",
             ("id", etrx.id())
             ("trx", self.to_variant_with_abi(etrx, fc::microseconds(5000000)))
          );
@@ -1184,7 +1184,7 @@ struct controller_impl {
          trace->elapsed = fc::time_point::now() - trx_context.start;
 
          if (auto dm_logger = get_deep_mind_logger()) {
-            fc_dlog(*dm_logger,"DTRX_OP FAILED ${action_id}",
+            fc_dlog(*dm_logger, "DTRX_OP FAILED ${action_id}",
                ("action_id", trx_context.get_action_id())
             );
          }
@@ -1403,7 +1403,7 @@ struct controller_impl {
    {
       if (auto dm_logger = get_deep_mind_logger()) {
          // The head block represents the block just before this on that is about to start, so add 1 to get this block num
-         fc_dlog(*dm_logger,"START_BLOCK ${block_num}", ("block_num", head->block_num + 1));
+         fc_dlog(*dm_logger, "START_BLOCK ${block_num}", ("block_num", head->block_num + 1));
       }
 
       EOS_ASSERT( !pending, block_validate_exception, "pending block already exists" );
@@ -1926,7 +1926,7 @@ struct controller_impl {
               ("current_head_id", head->id)("current_head_num", head->block_num)("new_head_id", new_head->id)("new_head_num", new_head->block_num) );
 
          if (auto dm_logger = get_deep_mind_logger()) {
-            fc_dlog(*dm_logger,"SWITCH_FORK ${from_id} ${to_id}",
+            fc_dlog(*dm_logger, "SWITCH_FORK ${from_id} ${to_id}",
                ("from_id", head->id)
                ("to_id", new_head->id)
             );
@@ -2246,7 +2246,7 @@ struct controller_impl {
       }
 
       if (auto dm_logger = get_deep_mind_logger()) {
-         fc_dlog(*dm_logger,"TRX_OP CREATE onblock ${id} ${trx}",
+         fc_dlog(*dm_logger, "TRX_OP CREATE onblock ${id} ${trx}",
             ("id", trx.id())
             ("trx", self.to_variant_with_abi(trx, fc::microseconds(5000000)))
          );
@@ -2430,7 +2430,7 @@ void controller::preactivate_feature( uint32_t action_id, const digest_type& fea
    if (auto dm_logger = get_deep_mind_logger()) {
       const auto feature = pfs.get_protocol_feature(feature_digest);
 
-      fc_dlog(*dm_logger,"FEATURE_OP PRE_ACTIVATE ${action_id} ${feature_digest} ${feature}",
+      fc_dlog(*dm_logger, "FEATURE_OP PRE_ACTIVATE ${action_id} ${feature_digest} ${feature}",
          ("action_id", action_id)
          ("feature_digest", feature_digest)
          ("feature", feature.to_variant())
@@ -3111,7 +3111,7 @@ void controller::add_to_ram_correction( account_name account, uint64_t ram_bytes
    }
 
    if (auto dm_logger = get_deep_mind_logger()) {
-      fc_dlog(*dm_logger,"RAM_CORRECTION_OP ${action_id} ${correction_id} ${event_id} ${payer} ${delta}",
+      fc_dlog(*dm_logger, "RAM_CORRECTION_OP ${action_id} ${correction_id} ${event_id} ${payer} ${delta}",
          ("action_id", action_id)
          ("correction_id", correction_object_id)
          ("event_id", event_id)
