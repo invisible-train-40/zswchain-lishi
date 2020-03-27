@@ -9,8 +9,6 @@
 
 namespace eosio { namespace chain {
 
-class controller;
-
 enum class protocol_feature_t : uint32_t {
    builtin
 };

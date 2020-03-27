@@ -229,7 +229,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
          ("contracts-console", bpo::bool_switch()->default_value(false),
           "print contract's output to console")
          ("deep-mind", bpo::bool_switch()->default_value(false),
-          "print deeper information about eosio software")
+          "print deeper information about chain operations")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -907,6 +907,30 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       // initialize deep mind logging
       if ( options.at( "deep-mind" ).as<bool>() ) {
+         // The actual `fc::dmlog_appender` implementation that is currently used by deep mind
+         // logger is using `stdout` to prints it's log line out. Deep mind logging outputs
+         // massive amount of data out of the process, which can lead under pressure to some
+         // of the system calls (i.e. `fwrite`) to fail abruptly without fully writing the
+         // entire line.
+         //
+         // Recovering from errors on a buffered (line or full) and continuing retrying write
+         // is merely impossible to do right, because the buffer is actually held by the
+         // underlying `libc` implementation nor the operation system.
+         //
+         // To ensure good functionalities of deep mind tracer, the `stdout` is made unbuffered
+         // and the actual `fc::dmlog_appender` deals with retry when facing error, enabling a much
+         // more robust deep mind output.
+         //
+         // Changing the standard `stdout` behavior from buffered to unbuffered can is disruptive
+         // and can lead to weird scenarios in the logging process if `stdout` is used there too.
+         //
+         // In a future version, the `fc::dmlog_appender` implementation will switch to a `FIFO` file
+         // approach, which will remove the dependency on `stdout` and hence this call.
+         //
+         // For the time being, when `deep-mind = true` is activated, we set `stdout` here to
+         // be an unbuffered I/O stream.
+         setbuf(stdout, NULL);
+
          my->chain->enable_deep_mind( &_deep_mind_log );
       }
 
@@ -951,7 +975,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
          if (auto dm_logger = my->chain->get_deep_mind_logger()) {
-            dmlog("ACCEPTED_BLOCK ${num} ${blk}",
+            fc_dlog(*dm_logger,"ACCEPTED_BLOCK ${num} ${blk}",
                ("num", blk->block_num)
                ("blk", chain().to_variant_with_abi(blk, fc::microseconds(5000000)))
             );
@@ -972,7 +996,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( std::tuple<const transaction_trace_ptr&, const signed_transaction&> t ) {
                if (auto dm_logger = my->chain->get_deep_mind_logger()) {
-                  dmlog("APPLIED_TRANSACTION ${block} ${traces}",
+                  fc_dlog(*dm_logger,"APPLIED_TRANSACTION ${block} ${traces}",
                      ("block", chain().head_block_num() + 1)
                      ("traces", chain().to_variant_with_abi(std::get<0>(t), fc::microseconds(5000000)))
                   );

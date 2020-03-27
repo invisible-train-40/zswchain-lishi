@@ -68,6 +68,9 @@ namespace eosio { namespace chain {
       std::exception_ptr                         except_ptr;
    };
 
+   #define RAM_EVENT_ID( FORMAT, ... ) \
+      fc::format_string( FORMAT, fc::mutable_variant_object()__VA_ARGS__ )
+
    struct ram_trace {
    public:
       ram_trace(uint32_t action_id, const char* event_id, const char* family, const char* operation, const char* legacy_tag);
