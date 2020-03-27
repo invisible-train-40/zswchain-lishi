@@ -159,7 +159,7 @@ namespace eosio { namespace chain {
          p.auth         = auth;
 
          if (auto dm_logger = _control.get_deep_mind_logger()) {
-            fc_dlog(*dm_logger,"PERM_OP INS ${action_id} ${data}",
+            fc_dlog(*dm_logger, "PERM_OP INS ${action_id} ${data}",
                ("action_id", action_id)
                ("data", p)
             );
@@ -193,7 +193,7 @@ namespace eosio { namespace chain {
          p.auth         = std::move(auth);
 
          if (auto dm_logger = _control.get_deep_mind_logger()) {
-            fc_dlog(*dm_logger,"PERM_OP INS ${action_id} ${data}",
+            fc_dlog(*dm_logger, "PERM_OP INS ${action_id} ${data}",
                ("action_id", action_id)
                ("data", p)
             );
@@ -234,7 +234,7 @@ namespace eosio { namespace chain {
       _db.get_mutable_index<permission_usage_index>().remove_object( permission.usage_id._id );
 
       if (auto dm_logger = _control.get_deep_mind_logger()) {
-         fc_dlog(*dm_logger,"PERM_OP REM ${action_id} ${data}",
+         fc_dlog(*dm_logger, "PERM_OP REM ${action_id} ${data}",
               ("action_id", action_id)
               ("data", permission)
          );

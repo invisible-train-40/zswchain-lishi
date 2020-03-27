@@ -647,7 +647,7 @@ either the account authorized the action or the action's net effect on RAM usage
       );
 
       if (auto dm_logger = _get_deep_mind_logger()) {
-         fc_dlog(*dm_logger,"FEATURE_OP ACTIVATE ${feature_digest} ${feature}",
+         fc_dlog(*dm_logger, "FEATURE_OP ACTIVATE ${feature_digest} ${feature}",
             ("feature_digest", feature_digest)
             ("feature", itr->to_variant())
          );
