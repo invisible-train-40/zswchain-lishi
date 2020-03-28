@@ -527,7 +527,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
             ("delay", ptr->delay_until)
             ("expiration", ptr->expiration)
             ("trx_id", dtrx.id())
-            ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(5000000)))
+            ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(config::dmlog_abi_serializer_max_time_us)))
          );
       }
 
@@ -558,7 +558,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
                ("delay", gtx.delay_until)
                ("expiration", gtx.expiration)
                ("trx_id", trx.id())
-               ("trx", control.to_variant_with_abi(trx, fc::microseconds(5000000)))
+               ("trx", control.to_variant_with_abi(trx, fc::microseconds(config::dmlog_abi_serializer_max_time_us)))
             );
          }
       } );
@@ -587,7 +587,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
                ("delay", gtx.delay_until)
                ("expiration", gtx.expiration)
                ("trx_id", trx.id())
-               ("trx", control.to_variant_with_abi(trx, fc::microseconds(5000000)))
+               ("trx", control.to_variant_with_abi(trx, fc::microseconds(config::dmlog_abi_serializer_max_time_us)))
             );
          }
       } );
@@ -625,7 +625,7 @@ bool apply_context::cancel_deferred_transaction( const uint128_t& sender_id, acc
             ("delay", gto->delay_until)
             ("expiration", gto->expiration)
             ("trx_id", dtrx.id())
-            ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(5000000)))
+            ("trx", control.to_variant_with_abi(dtrx, fc::microseconds(config::dmlog_abi_serializer_max_time_us)))
          );
       }
 

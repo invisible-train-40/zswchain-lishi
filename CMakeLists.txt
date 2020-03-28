@@ -185,6 +185,8 @@ else( WIN32 ) # Apple AND Linux
 
 endif( WIN32 )
 
+option(EOSIO_ENABLE_DEVELOPER_OPTIONS "enable developer options for EOSIO" OFF)
+
 set(ENABLE_COVERAGE_TESTING FALSE CACHE BOOL "Build EOSIO for code coverage analysis")
 
 if(ENABLE_COVERAGE_TESTING)
