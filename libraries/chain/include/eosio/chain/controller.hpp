@@ -348,9 +348,9 @@ namespace eosio { namespace chain {
          }
 
          template<typename T>
-         fc::variant maybe_to_variant_with_abi( const T& obj, const fc::microseconds& max_serialization_time ) {
+         fc::variant maybe_to_variant_with_abi( const T& obj, const abi_serializer::yield_function_t& yield ) {
             try {
-               return to_variant_with_abi(obj, max_serialization_time);
+               return to_variant_with_abi(obj, yield);
             } FC_LOG_AND_DROP()
 
             // If we are unable to transform to an ABI aware variant, let's just return the original `obj` as-is

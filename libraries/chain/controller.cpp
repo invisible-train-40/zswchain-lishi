@@ -1140,7 +1140,7 @@ struct controller_impl {
       if (auto dm_logger = get_deep_mind_logger()) {
          fc_dlog(*dm_logger, "TRX_OP CREATE onerror ${id} ${trx}",
             ("id", etrx.id())
-            ("trx", self.maybe_to_variant_with_abi(etrx, self.get_abi_serializer_max_time()))
+            ("trx", self.maybe_to_variant_with_abi(etrx, abi_serializer::create_yield_function(self.get_abi_serializer_max_time())))
          );
       }
 
@@ -2444,7 +2444,7 @@ struct controller_impl {
       if (auto dm_logger = get_deep_mind_logger()) {
          fc_dlog(*dm_logger, "TRX_OP CREATE onblock ${id} ${trx}",
             ("id", trx.id())
-            ("trx", self.maybe_to_variant_with_abi(trx, self.get_abi_serializer_max_time()))
+            ("trx", self.maybe_to_variant_with_abi(trx, abi_serializer::create_yield_function(self.get_abi_serializer_max_time())))
          );
       }
 
