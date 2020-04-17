@@ -620,7 +620,7 @@ namespace eosio { namespace chain {
                ("delay", gto.delay_until)
                ("expiration", gto.expiration)
                ("trx_id", trx.id())
-               ("trx", control.to_variant_with_abi(trx, fc::microseconds(config::dmlog_abi_serializer_max_time_us)))
+               ("trx", control.maybe_to_variant_with_abi(trx, control.get_abi_serializer_max_time()))
             );
          }
       });
