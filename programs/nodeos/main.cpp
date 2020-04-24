@@ -1,11 +1,14 @@
 #include <appbase/application.hpp>
 
+#include <dfuse/dm/log_appender.hpp>
+
 #include <eosio/chain_plugin/chain_plugin.hpp>
 #include <eosio/http_plugin/http_plugin.hpp>
 #include <eosio/net_plugin/net_plugin.hpp>
 #include <eosio/producer_plugin/producer_plugin.hpp>
 #include <eosio/version/version.hpp>
 
+#include <fc/log/logger.hpp>
 #include <fc/log/logger_config.hpp>
 #include <fc/log/appender.hpp>
 #include <fc/exception/exception.hpp>
@@ -20,6 +23,22 @@ using namespace eosio;
 
 namespace detail {
 
+fc::logging_config& add_deep_mind_logger(fc::logging_config& config) {
+   config.appenders.push_back(
+      fc::appender_config( "deep-mind", "dmlog" )
+   );
+
+   fc::logger_config dmlc;
+   dmlc.name = "deep-mind";
+   dmlc.level = fc::log_level::debug;
+   dmlc.enabled = true;
+   dmlc.appenders.push_back("deep-mind");
+
+   config.loggers.push_back( dmlc );
+
+   return config;
+}
+
 void configure_logging(const bfs::path& config_path)
 {
    try {
@@ -27,7 +46,9 @@ void configure_logging(const bfs::path& config_path)
          if( fc::exists( config_path ) ) {
             fc::configure_logging( config_path );
          } else {
-            fc::configure_logging( fc::logging_config::default_config() );
+            auto cfg = fc::logging_config::default_config();
+
+            fc::configure_logging( ::detail::add_deep_mind_logger(cfg) );
          }
       } catch (...) {
          elog("Error reloading logging.json");
@@ -60,9 +81,20 @@ void logging_conf_handler()
 
 void initialize_logging()
 {
+   auto success = fc::log_config::register_appender<dfuse::dm::log_appender>( "dmlog" );
+   if (!success) {
+      throw std::runtime_error("Unable to correcty register deep mind log appender");
+   }
+
    auto config_path = app().get_logging_conf();
    if(fc::exists(config_path))
      fc::configure_logging(config_path); // intentionally allowing exceptions to escape
+   else {
+      auto cfg = fc::logging_config::default_config();
+
+      fc::configure_logging( ::detail::add_deep_mind_logger(cfg) );
+   }
+
    fc::log_config::initialize_appenders( app().get_io_service() );
 
    app().set_sighup_callback(logging_conf_handler);

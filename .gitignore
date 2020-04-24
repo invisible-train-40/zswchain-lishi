@@ -77,6 +77,8 @@ Testing/*
 build.tar.gz
 build/*
 build-debug/*
+/build
+/build-*
 
 etc/eosio/node_*
 var/lib/node_*
@@ -86,3 +88,7 @@ var/lib/node_*
 .DS_Store
 
 !*.swagger.*
+
+# dfuse Deep Mind
+/dmeos_db/*
+/patches

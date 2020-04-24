@@ -43,6 +43,8 @@ function usage() {
   -c          Enable Code Coverage
   -d          Generate Doxygen
   -m          Build MongoDB dependencies
+  -
+  -n          Kind of dry-run, install dependencies + configure, but does not build
    \\n" "$0" 1>&2
    exit 1
 }
@@ -52,7 +54,7 @@ CORE_SYMBOL_NAME=WAX
 
 TIME_BEGIN=$( date -u +%s )
 if [ $# -ne 0 ]; then
-   while getopts "o:s:b:i:ycdhmP" opt; do
+   while getopts "o:s:b:i:ycdhmPn" opt; do
       case "${opt}" in
          o )
             options=( "Debug" "Release" "RelWithDebInfo" "MinSizeRel" )
@@ -92,6 +94,9 @@ if [ $# -ne 0 ]; then
          ;;
          P )
             PIN_COMPILER=true
+         ;;
+         n )
+            SKIP_BUILD_STEP=true
          ;;
          h )
             usage
@@ -150,7 +155,7 @@ ensure-submodules-up-to-date
 
 # Check if cmake already exists
 ( [[ -z "${CMAKE}" ]] && [[ ! -z $(command -v cmake 2>/dev/null) ]] ) && export CMAKE=$(command -v cmake 2>/dev/null) && export CMAKE_CURRENT_VERSION=$($CMAKE --version | grep -E "cmake version[[:blank:]]*" | sed 's/.*cmake version //g')
-# If it exists, check that it's > required version + 
+# If it exists, check that it's > required version +
 if [[ ! -z $CMAKE_CURRENT_VERSION ]] && [[ $((10#$( echo $CMAKE_CURRENT_VERSION | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }' ))) -lt $((10#$( echo $CMAKE_REQUIRED_VERSION | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }' ))) ]]; then
    export CMAKE=
    if [[ $ARCH == 'Darwin' ]]; then
@@ -221,7 +226,15 @@ $ENABLE_DOXYGEN && LOCAL_CMAKE_FLAGS="-DBUILD_DOXYGEN='${DOXYGEN}' ${LOCAL_CMAKE
 $ENABLE_COVERAGE_TESTING && LOCAL_CMAKE_FLAGS="-DENABLE_COVERAGE_TESTING='${ENABLE_COVERAGE_TESTING}' ${LOCAL_CMAKE_FLAGS}"
 
 execute bash -c "$CMAKE -DCMAKE_BUILD_TYPE='${CMAKE_BUILD_TYPE}' -DCORE_SYMBOL_NAME='${CORE_SYMBOL_NAME}' -DCMAKE_INSTALL_PREFIX='${EOSIO_INSTALL_DIR}' ${LOCAL_CMAKE_FLAGS} '${REPO_ROOT}'"
-execute make -j$JOBS
+
+if [[ $SKIP_BUILD_STEP ]]; then
+   echo ""
+   echo "To build:"
+   echo "cd $BUILD_DIR && make -j$JOBS"
+else
+   execute make -j$JOBS
+fi
+
 execute cd $REPO_ROOT 1>/dev/null
 
 TIME_END=$(( $(date -u +%s) - $TIME_BEGIN ))
@@ -233,9 +246,17 @@ printf "\t \        /    |    \/     \ \n"
 printf "\t  \__/\  /\____|__  /___/\  \ \n"
 printf "\t       \/         \/      \_/ \n${COLOR_NC}"
 
-echo "${COLOR_GREEN}\nWAX has been successfully built. $(($TIME_END/3600)):$(($TIME_END%3600/60)):$(($TIME_END%60))"
-echo "${COLOR_GREEN}You can now install using: ${SCRIPT_DIR}/eosio_install.sh${COLOR_NC}"
-echo "${COLOR_YELLOW}Uninstall with: ${SCRIPT_DIR}/eosio_uninstall.sh${COLOR_NC}"
+TASK="built"
+if [[ $SKIP_BUILD_STEP ]]; then
+   TASK="configured"
+fi
+
+echo "${COLOR_GREEN}\nWAX has been successfully $TASK. $(($TIME_END/3600)):$(($TIME_END%3600/60)):$(($TIME_END%60))"
+
+if [[ ! $SKIP_BUILD_STEP ]]; then
+   echo "${COLOR_GREEN}You can now install using: ${SCRIPT_DIR}/eosio_install.sh${COLOR_NC}"
+   echo "${COLOR_YELLOW}Uninstall with: ${SCRIPT_DIR}/eosio_uninstall.sh${COLOR_NC}"
+fi
 
 printf "\\t\nFor more information:\\n"
 printf "\\tWAX website: https://wax.io\\n"
