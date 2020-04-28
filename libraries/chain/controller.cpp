@@ -763,6 +763,7 @@ struct controller_impl {
       }
 
       if (auto dm_logger = get_deep_mind_logger()) {
+         fc_dlog(*dm_logger, "DEEP_MIND_VERSION 1");
          auto idx = db.get_index<account_index>();
          for (auto& row : idx.indices()) {
             if (row.abi.size() != 0) {
