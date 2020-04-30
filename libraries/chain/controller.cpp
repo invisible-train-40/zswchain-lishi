@@ -764,16 +764,19 @@ struct controller_impl {
 
       if (auto dm_logger = get_deep_mind_logger()) {
          fc_dlog(*dm_logger, "DEEP_MIND_VERSION 1");
+
+         fc_dlog(*dm_logger, "ABIDUMP START");
          auto idx = db.get_index<account_index>();
          for (auto& row : idx.indices()) {
             if (row.abi.size() != 0) {
-               fc_dlog(*dm_logger, "ABIDUMP ${block_num} ${contract} ${abi}",
+               fc_dlog(*dm_logger, "ABIDUMP ABI ${block_num} ${contract} ${abi}",
                   ("block_num", head->block_num)
                   ("contract", row.name)
                   ("abi", row.abi)
                );
             }
          }
+         fc_dlog(*dm_logger, "ABIDUMP END");
       }
    }
 
