@@ -1116,9 +1116,11 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
          if (auto dm_logger = my->chain->get_deep_mind_logger()) {
+            auto packed_blk = fc::raw::pack(*blk);
+
             fc_dlog(*dm_logger, "ACCEPTED_BLOCK ${num} ${blk}",
                ("num", blk->block_num)
-               ("blk", blk)
+               ("blk", fc::to_hex(packed_blk))
             );
          }
 
@@ -1137,9 +1139,11 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( std::tuple<const transaction_trace_ptr&, const signed_transaction&> t ) {
                if (auto dm_logger = my->chain->get_deep_mind_logger()) {
+                  auto packed_trace = fc::raw::pack(*std::get<0>(t));
+
                   fc_dlog(*dm_logger, "APPLIED_TRANSACTION ${block} ${traces}",
                      ("block", my->chain->head_block_num() + 1)
-                     ("traces", std::get<0>(t))
+                     ("traces", fc::to_hex(packed_trace))
                   );
                }
 
@@ -1189,7 +1193,8 @@ void chain_plugin::plugin_startup()
    }
 
    my->chain_config.reset();
-} FC_CAPTURE_AND_RETHROW() }
+} FC_CAPTURE_AND_RETHROW()
+}
 
 void chain_plugin::handle_sighup() {
    fc::logger::update( deep_mind_logger_name, _deep_mind_log );

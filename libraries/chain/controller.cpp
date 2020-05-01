@@ -1155,9 +1155,11 @@ struct controller_impl {
       }
 
       if (auto dm_logger = get_deep_mind_logger()) {
+         auto packed_trx = fc::raw::pack(etrx);
+
          fc_dlog(*dm_logger, "TRX_OP CREATE onerror ${id} ${trx}",
             ("id", etrx.id())
-            ("trx", etrx)
+            ("trx", fc::to_hex(packed_trx))
          );
       }
 
@@ -2459,9 +2461,11 @@ struct controller_impl {
       }
 
       if (auto dm_logger = get_deep_mind_logger()) {
+         auto packed_trx = fc::raw::pack(trx);
+
          fc_dlog(*dm_logger, "TRX_OP CREATE onblock ${id} ${trx}",
             ("id", trx.id())
-            ("trx", trx)
+            ("trx", fc::to_hex(packed_trx))
          );
       }
 
