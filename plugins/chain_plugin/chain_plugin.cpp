@@ -33,6 +33,9 @@ FC_REFLECT_ENUM( chainbase::environment::arch_t,
                  (ARCH_X86_64)(ARCH_ARM)(ARCH_RISCV)(ARCH_OTHER) )
 FC_REFLECT(chainbase::environment, (debug)(os)(arch)(boost_version)(compiler) )
 
+const fc::string deep_mind_logger_name("deep-mind");
+fc::logger _deep_mind_log;
+
 namespace eosio {
 
 //declare operator<< and validate funciton for read_mode in the same namespace as read_mode itself
@@ -219,6 +222,8 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Number of worker threads in controller thread pool")
          ("contracts-console", bpo::bool_switch()->default_value(false),
           "print contract's output to console")
+         ("deep-mind", bpo::bool_switch()->default_value(false),
+          "print deeper information about chain operations")
          ("actor-whitelist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Account added to actor whitelist (may specify multiple times)")
          ("actor-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -246,6 +251,10 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "In \"light\" mode all incoming blocks headers will be fully validated; transactions in those validated blocks will be trusted \n")
          ("disable-ram-billing-notify-checks", bpo::bool_switch()->default_value(false),
           "Disable the check which subjectively fails a transaction if a contract bills more RAM to another account within the context of a notification handler (i.e. when the receiver is not the code of the action).")
+#ifdef EOSIO_DEVELOPER
+         ("disable-all-subjective-mitigations", bpo::bool_switch()->default_value(false),
+          "Disable all subjective mitigations checks in the entire codebase.")
+#endif
          ("maximum-variable-signature-length", bpo::value<uint32_t>()->default_value(16384u),
           "Subjectively limit the maximum length of variable components in a variable legnth signature to this size in bytes")
          ("trusted-producer", bpo::value<vector<string>>()->composing(), "Indicate a producer whose blocks headers signed by it will be fully validated, but transactions in those validated blocks will be trusted.")
@@ -691,8 +700,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
       if( options.count( "wasm-runtime" ))
          my->wasm_runtime = options.at( "wasm-runtime" ).as<vm_type>();
 
-      if(options.count("abi-serializer-max-time-ms"))
+      if(options.count("abi-serializer-max-time-ms")) {
          my->abi_serializer_max_time_us = fc::microseconds(options.at("abi-serializer-max-time-ms").as<uint32_t>() * 1000);
+         my->chain_config->abi_serializer_max_time_us = my->abi_serializer_max_time_us;
+      }
 
       my->chain_config->blocks_dir = my->blocks_dir;
       my->chain_config->state_dir = app().data_dir() / config::default_state_dir_name;
@@ -1013,6 +1024,35 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->chain.emplace( *my->chain_config, std::move(pfs), *chain_id );
 
+      // initialize deep mind logging
+      if ( options.at( "deep-mind" ).as<bool>() ) {
+         // The actual `fc::dmlog_appender` implementation that is currently used by deep mind
+         // logger is using `stdout` to prints it's log line out. Deep mind logging outputs
+         // massive amount of data out of the process, which can lead under pressure to some
+         // of the system calls (i.e. `fwrite`) to fail abruptly without fully writing the
+         // entire line.
+         //
+         // Recovering from errors on a buffered (line or full) and continuing retrying write
+         // is merely impossible to do right, because the buffer is actually held by the
+         // underlying `libc` implementation nor the operation system.
+         //
+         // To ensure good functionalities of deep mind tracer, the `stdout` is made unbuffered
+         // and the actual `fc::dmlog_appender` deals with retry when facing error, enabling a much
+         // more robust deep mind output.
+         //
+         // Changing the standard `stdout` behavior from buffered to unbuffered can is disruptive
+         // and can lead to weird scenarios in the logging process if `stdout` is used there too.
+         //
+         // In a future version, the `fc::dmlog_appender` implementation will switch to a `FIFO` file
+         // approach, which will remove the dependency on `stdout` and hence this call.
+         //
+         // For the time being, when `deep-mind = true` is activated, we set `stdout` here to
+         // be an unbuffered I/O stream.
+         setbuf(stdout, NULL);
+
+         my->chain->enable_deep_mind( &_deep_mind_log );
+      }
+
       // set up method providers
       my->get_block_by_number_provider = app().get_method<methods::get_block_by_number>().register_provider(
             [this]( uint32_t block_num ) -> signed_block_ptr {
@@ -1053,6 +1093,15 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
             } );
 
       my->accepted_block_connection = my->chain->accepted_block.connect( [this]( const block_state_ptr& blk ) {
+         if (auto dm_logger = my->chain->get_deep_mind_logger()) {
+            auto packed_blk = fc::raw::pack(*blk);
+
+            fc_dlog(*dm_logger, "ACCEPTED_BLOCK ${num} ${blk}",
+               ("num", blk->block_num)
+               ("blk", fc::to_hex(packed_blk))
+            );
+         }
+
          my->accepted_block_channel.publish( priority::high, blk );
       } );
 
@@ -1067,6 +1116,15 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       my->applied_transaction_connection = my->chain->applied_transaction.connect(
             [this]( std::tuple<const transaction_trace_ptr&, const signed_transaction&> t ) {
+               if (auto dm_logger = my->chain->get_deep_mind_logger()) {
+                  auto packed_trace = fc::raw::pack(*std::get<0>(t));
+
+                  fc_dlog(*dm_logger, "APPLIED_TRANSACTION ${block} ${traces}",
+                     ("block", my->chain->head_block_num() + 1)
+                     ("traces", fc::to_hex(packed_trace))
+                  );
+               }
+
                my->applied_transaction_channel.publish( priority::low, std::get<0>(t) );
             } );
 
@@ -1077,6 +1135,8 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
 void chain_plugin::plugin_startup()
 { try {
+   handle_sighup();
+
    try {
       auto shutdown = [](){ return app().is_quiting(); };
       if (my->snapshot_path) {
@@ -1110,6 +1170,10 @@ void chain_plugin::plugin_startup()
 
    my->chain_config.reset();
 } FC_CAPTURE_AND_RETHROW() }
+
+void chain_plugin::handle_sighup() {
+   fc::logger::update( deep_mind_logger_name, _deep_mind_log );
+}
 
 void chain_plugin::plugin_shutdown() {
    my->pre_accepted_block_connection.reset();
