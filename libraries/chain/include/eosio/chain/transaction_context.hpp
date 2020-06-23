@@ -112,8 +112,6 @@ namespace eosio { namespace chain {
 
          uint32_t get_action_id() const { return action_id.current(); }
 
-         uint32_t get_action_id() const { return action_id.current(); }
-
          void disallow_transaction_extensions( const char* error_msg )const;
 
       /// Fields:
