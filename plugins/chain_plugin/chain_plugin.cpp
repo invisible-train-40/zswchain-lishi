@@ -1185,9 +1185,12 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
                   );
                }
 
+<<<<<<< HEAD
                if (my->_account_query_db) {
                   my->_account_query_db->cache_transaction_trace(std::get<0>(t));
                }
+=======
+>>>>>>> deep-mind-new
                my->applied_transaction_channel.publish( priority::low, std::get<0>(t) );
             } );
 
@@ -1200,8 +1203,11 @@ void chain_plugin::plugin_startup()
 { try {
    handle_sighup();
 
+<<<<<<< HEAD
    EOS_ASSERT( my->chain_config->read_mode != db_read_mode::IRREVERSIBLE || !accept_transactions(), plugin_config_exception,
                "read-mode = irreversible. transactions should not be enabled by enable_accept_transactions" );
+=======
+>>>>>>> deep-mind-new
    try {
       auto shutdown = [](){ return app().is_quiting(); };
       if (my->snapshot_path) {
