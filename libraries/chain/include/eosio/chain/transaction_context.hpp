@@ -6,9 +6,9 @@
 
 namespace eosio { namespace chain {
 
-   class action_id {
+   class action_id_type {
       public:
-        action_id(): id(0) {}
+        action_id_type(): id(0) {}
 
         inline void increment() { id++; }
         inline uint32_t current() const { return id; }
@@ -146,7 +146,7 @@ namespace eosio { namespace chain {
          transaction_checktime_timer   transaction_timer;
 
          /// kept to track ids of action_traces push via this transaction
-         action_id                     action_id;
+         action_id_type                action_id;
 
       private:
          bool                          is_initialized = false;
