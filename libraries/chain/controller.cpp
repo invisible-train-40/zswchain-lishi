@@ -744,8 +744,9 @@ struct controller_impl {
          // FIXME: We should probably feed that from CMake directly somehow ...
          fc_dlog(*dm_logger, "DEEP_MIND_VERSION 13 0");
 
-         fc_dlog(*dm_logger, "ABIDUMP START ${block_num}",
+         fc_dlog(*dm_logger, "ABIDUMP START ${block_num} ${global_sequence_num}",
             ("block_num", head->block_num)
+            ("global_sequence_num", db.get<dynamic_global_property_object>().global_action_sequence)
          );
          auto idx = db.get_index<account_index>();
          for (auto& row : idx.indices()) {
