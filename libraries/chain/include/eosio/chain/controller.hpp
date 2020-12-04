@@ -65,19 +65,20 @@ namespace eosio { namespace chain {
             flat_set<account_name>   contract_blacklist;
             flat_set< pair<account_name, action_name> > action_blacklist;
             flat_set<public_key_type> key_blacklist;
-            path                     blocks_dir                 =  chain::config::default_blocks_dir_name;
-            path                     state_dir                  =  chain::config::default_state_dir_name;
-            uint64_t                 state_size                 =  chain::config::default_state_size;
-            uint64_t                 state_guard_size           =  chain::config::default_state_guard_size;
-            uint64_t                 reversible_cache_size      =  chain::config::default_reversible_cache_size;
-            uint64_t                 reversible_guard_size      =  chain::config::default_reversible_guard_size;
-            uint32_t                 sig_cpu_bill_pct           =  chain::config::default_sig_cpu_bill_pct;
-            uint16_t                 thread_pool_size           =  chain::config::default_controller_thread_pool_size;
-            fc::microseconds         abi_serializer_max_time_us = fc::microseconds(chain::config::default_abi_serializer_max_time_us);
-            bool                     read_only                  =  false;
-            bool                     force_all_checks           =  false;
-            bool                     disable_replay_opts        =  false;
-            bool                     contracts_console          =  false;
+            path                     blocks_dir             =  chain::config::default_blocks_dir_name;
+            path                     state_dir              =  chain::config::default_state_dir_name;
+            uint64_t                 state_size             =  chain::config::default_state_size;
+            uint64_t                 state_guard_size       =  chain::config::default_state_guard_size;
+            uint64_t                 reversible_cache_size  =  chain::config::default_reversible_cache_size;
+            uint64_t                 reversible_guard_size  =  chain::config::default_reversible_guard_size;
+            uint32_t                 sig_cpu_bill_pct       =  chain::config::default_sig_cpu_bill_pct;
+            uint16_t                 thread_pool_size       =  chain::config::default_controller_thread_pool_size;
+            fc::microseconds     abi_serializer_max_time_us =  fc::microseconds(chain::config::default_abi_serializer_max_time_us);
+            uint32_t   max_nonprivileged_inline_action_size =  chain::config::default_max_nonprivileged_inline_action_size;
+            bool                     read_only              =  false;
+            bool                     force_all_checks       =  false;
+            bool                     disable_replay_opts    =  false;
+            bool                     contracts_console      =  false;
             bool                     allow_ram_billing_in_notify = false;
             uint32_t                 maximum_variable_signature_length = chain::config::default_max_variable_signature_length;
             bool                     disable_all_subjective_mitigations = false; //< for developer & testing purposes, can be configured using `disable-all-subjective-mitigations` when `EOSIO_DEVELOPER` build option is provided
@@ -182,6 +183,7 @@ namespace eosio { namespace chain {
          const authorization_manager&          get_authorization_manager()const;
          authorization_manager&                get_mutable_authorization_manager();
          const protocol_feature_manager&       get_protocol_feature_manager()const;
+         uint32_t                              get_max_nonprivileged_inline_action_size()const;
 
          const flat_set<account_name>&   get_actor_whitelist() const;
          const flat_set<account_name>&   get_actor_blacklist() const;
@@ -305,6 +307,7 @@ namespace eosio { namespace chain {
 
          static fc::optional<uint64_t> convert_exception_to_error_code( const fc::exception& e );
 
+         signal<void(uint32_t)>                        block_start; // block_num
          signal<void(const signed_block_ptr&)>         pre_accepted_block;
          signal<void(const block_state_ptr&)>          accepted_block_header;
          signal<void(const block_state_ptr&)>          accepted_block;
