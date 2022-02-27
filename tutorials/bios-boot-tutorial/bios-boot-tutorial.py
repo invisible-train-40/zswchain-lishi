@@ -291,9 +291,9 @@ def stepInstallSystemContracts():
     run(args.cleos + 'set contract eosio.token ' + args.contracts_dir + '/eosio.token/')
     run(args.cleos + 'set contract eosio.msig ' + args.contracts_dir + '/eosio.msig/')
 def stepCreateTokens():
-    run(args.cleos + 'push action eosio.token create \'["eosio", "10000000000.0000 %s"]\' -p eosio.token' % (args.symbol))
+    run(args.cleos + 'push action eosio.token create \'["zswhq", "10000000000.0000 %s"]\' -p eosio.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
-    run(args.cleos + 'push action eosio.token issue \'["eosio", "%s", "memo"]\' -p eosio' % intToCurrency(totalAllocation))
+    run(args.cleos + 'push action eosio.token issue \'["zswhq", "%s", "memo"]\' -p eosio' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
     # All of the protocol upgrade features introduced in v1.8 first require a special protocol 

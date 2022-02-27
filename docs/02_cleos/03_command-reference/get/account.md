@@ -42,7 +42,7 @@ cleos get account eosio --json
 ```
 ```json
 {
-  "account_name": "eosio",
+  "account_name": "zswhq",
   "privileged": true,
   "last_code_update": "2018-05-23T18:00:25.500",
   "created": "2018-03-02T12:00:00.000",
@@ -91,7 +91,7 @@ cleos get account eosio --json
   "total_resources": null,
   "delegated_bandwidth": null,
   "voter_info": {
-    "owner": "eosio",
+    "owner": "zswhq",
     "proxy": "",
     "producers": [],
     "staked": 0,

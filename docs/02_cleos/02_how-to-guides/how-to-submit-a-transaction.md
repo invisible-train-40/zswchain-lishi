@@ -63,7 +63,7 @@ Push a transaction
       ],
       "data": {
         "from": "han",
-        "to": "eosio",
+        "to": "zswhq",
         "quantity": "0.0001 SYS",
         "memo": "m"
       }

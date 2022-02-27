@@ -18,7 +18,7 @@ cleos get currency stats eosio.token SYS
   "SYS": {
     "supply": "1000000000.0000 SYS",
     "max_supply": "10000000000.0000 SYS",
-    "issuer": "eosio"
+    "issuer": "zswhq"
   }
 }
 ```
