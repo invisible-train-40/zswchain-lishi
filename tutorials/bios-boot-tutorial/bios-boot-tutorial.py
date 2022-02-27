@@ -244,9 +244,9 @@ def msigProposeReplaceSystem(proposer, proposalName):
     requestedPermissions = []
     for i in range(firstProducer, firstProducer + numProducers):
         requestedPermissions.append({'actor': accounts[i]['name'], 'permission': 'active'})
-    trxPermissions = [{'actor': 'eosio', 'permission': 'active'}]
+    trxPermissions = [{'actor': 'zswhq', 'permission': 'active'}]
     with open(fastUnstakeSystem, mode='rb') as f:
-        setcode = {'account': 'eosio', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
+        setcode = {'account': 'zswhq', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
     run(args.cleos + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) + 
         jsonArg(trxPermissions) + 'eosio setcode' + jsonArg(setcode) + ' -p ' + proposer)
 
@@ -260,7 +260,7 @@ def msigExecReplaceSystem(proposer, proposalName):
     retry(args.cleos + 'multisig exec ' + proposer + ' ' + proposalName + ' -p ' + proposer)
 
 def msigReplaceSystem():
-    run(args.cleos + 'push action eosio buyrambytes' + jsonArg(['eosio', accounts[0]['name'], 200000]) + '-p eosio')
+    run(args.cleos + 'push action eosio buyrambytes' + jsonArg(['zswhq', accounts[0]['name'], 200000]) + '-p eosio')
     sleep(1)
     msigProposeReplaceSystem(accounts[0]['name'], 'fast.unstake')
     sleep(1)
@@ -285,15 +285,15 @@ def stepStartWallet():
     startWallet()
     importKeys()
 def stepStartBoot():
-    startNode(0, {'name': 'eosio', 'pvt': args.private_key, 'pub': args.public_key})
+    startNode(0, {'name': 'zswhq', 'pvt': args.private_key, 'pub': args.public_key})
     sleep(1.5)
 def stepInstallSystemContracts():
     run(args.cleos + 'set contract eosio.token ' + args.contracts_dir + '/eosio.token/')
     run(args.cleos + 'set contract eosio.msig ' + args.contracts_dir + '/eosio.msig/')
 def stepCreateTokens():
-    run(args.cleos + 'push action eosio.token create \'["eosio", "10000000000.0000 %s"]\' -p eosio.token' % (args.symbol))
+    run(args.cleos + 'push action eosio.token create \'["zswhq", "10000000000.0000 %s"]\' -p eosio.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
-    run(args.cleos + 'push action eosio.token issue \'["eosio", "%s", "memo"]\' -p eosio' % intToCurrency(totalAllocation))
+    run(args.cleos + 'push action eosio.token issue \'["zswhq", "%s", "memo"]\' -p eosio' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
     # All of the protocol upgrade features introduced in v1.8 first require a special protocol 
@@ -363,9 +363,9 @@ def stepVote():
 def stepProxyVotes():
     proxyVotes(0, 0 + args.num_voters)
 def stepResign():
-    resign('eosio', 'eosio.prods')
+    resign('zswhq', 'eosio.prods')
     for a in systemAccounts:
-        resign(a, 'eosio')
+        resign(a, 'zswhq')
 def stepTransfer():
     while True:
         randomTransfer(0, args.num_senders)

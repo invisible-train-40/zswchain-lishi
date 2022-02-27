@@ -14,7 +14,7 @@ const inBuildkite = (process.env.BUILDKITE === 'true') ? true : false;
 const outputFile = 'test-metrics.json';
 const pipelineWhitelist = // the pipelines for which we run diagnostics
 [
-    'eosio',
+    'zswhq',
     'eosio-base-images',
     'eosio-beta',
     'eosio-build-unpinned',

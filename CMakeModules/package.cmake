@@ -1,5 +1,5 @@
 set(VENDOR "block.one")
-set(PROJECT_NAME "eosio")
+set(PROJECT_NAME "zswhq")
 set(DESC "Software for the EOS.IO network")
 set(URL "https://github.com/eosio/eos")
 set(EMAIL "support@block.one")

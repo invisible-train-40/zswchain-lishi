@@ -432,7 +432,7 @@ EOF
     fi
 fi
 # trigger eosio-sync-from-genesis for every build
-if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
+if [[ "$BUILDKITE_PIPELINE_SLUG" == 'zswhq' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
     cat <<EOF
   - label: ":chains: Sync from Genesis Test"
     trigger: "eosio-sync-from-genesis"
@@ -452,7 +452,7 @@ if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}$
 EOF
 fi
 # trigger eosio-resume-from-state for every build
-if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
+if [[ "$BUILDKITE_PIPELINE_SLUG" == 'zswhq' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
     cat <<EOF
   - label: ":outbox_tray: Resume from State Test"
     trigger: "eosio-resume-from-state"

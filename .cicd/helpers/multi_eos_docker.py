@@ -82,7 +82,7 @@ if not os.path.exists('../tests/multiversion.conf'):
 commits = {}
 config = configparser.ConfigParser()
 config.read('../tests/multiversion.conf')
-for item in config.items('eosio'):
+for item in config.items('zswhq'):
     label = sanitize_label(item[0])
     if is_tag(item[1]):
         commits[label] = get_commit_for_tag(item[1])
