@@ -184,7 +184,7 @@ struct txn_test_gen_plugin_impl {
             trxs.emplace_back(std::move(trx));
          }
 
-         //set newaccountT contract to eosio.token & initialize it
+         //set newaccountT contract to zswhq.token & initialize it
          {
             signed_transaction trx;
 

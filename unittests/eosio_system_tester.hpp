@@ -76,7 +76,7 @@ public:
       create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
 
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
-            get_balance(name("zswhq")) + get_balance(name("eosio.ramfee")) + get_balance(name("eosio.stake")) + get_balance(name("eosio.ram")) );
+            get_balance(name("zswhq")) + get_balance(name("zswhq.ramfee")) + get_balance(name("zswhq.stake")) + get_balance(name("zswhq.ram")) );
    }
 
    action_result open( account_name  owner,
@@ -412,12 +412,12 @@ public:
       abi_serializer msig_abi_ser;
       {
          create_account_with_resources( N(zswhq.msig), config::system_account_name );
-         BOOST_REQUIRE_EQUAL( success(), buyram( name("zswhq"), name("eosio.msig"), core_from_string("5000.0000") ) );
+         BOOST_REQUIRE_EQUAL( success(), buyram( name("zswhq"), name("zswhq.msig"), core_from_string("5000.0000") ) );
          produce_block();
 
          auto trace = base_tester::push_action(config::system_account_name, N(setpriv),
                                                config::system_account_name,  mutable_variant_object()
-                                               ("account", "eosio.msig")
+                                               ("account", "zswhq.msig")
                                                ("is_priv", 1)
          );
 

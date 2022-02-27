@@ -188,12 +188,12 @@ BOOST_AUTO_TEST_SUITE(bootseq_tests)
 BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
     try {
 
-        // Create eosio.msig and eosio.token
+        // Create zswhq.msig and zswhq.token
         create_accounts({N(zswhq.msig), N(zswhq.token), N(zswhq.ram), N(zswhq.ramfee), N(zswhq.stake), N(zswhq.vpay), N(zswhq.bpay), N(zswhq.saving) });
         // Set code for the following accounts:
-        //  - eosio (code: eosio.bios) (already set by tester constructor)
-        //  - eosio.msig (code: eosio.msig)
-        //  - eosio.token (code: eosio.token)
+        //  - eosio (code: zswhq.bios) (already set by tester constructor)
+        //  - zswhq.msig (code: zswhq.msig)
+        //  - zswhq.token (code: zswhq.token)
         // set_code_abi(N(zswhq.msig), contracts::eosio_msig_wasm(), contracts::eosio_msig_abi().data());//, &eosio_active_pk);
         // set_code_abi(N(zswhq.token), contracts::eosio_token_wasm(), contracts::eosio_token_abi().data()); //, &eosio_active_pk);
 
@@ -204,22 +204,22 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
                      contracts::eosio_token_wasm(),
                      contracts::eosio_token_abi().data()); //, &eosio_active_pk);
 
-        // Set privileged for eosio.msig and eosio.token
+        // Set privileged for zswhq.msig and zswhq.token
         set_privileged(N(zswhq.msig));
         set_privileged(N(zswhq.token));
 
-        // Verify eosio.msig and eosio.token is privileged
+        // Verify zswhq.msig and zswhq.token is privileged
         const auto& eosio_msig_acc = get<account_metadata_object, by_name>(N(zswhq.msig));
         BOOST_TEST(eosio_msig_acc.is_privileged() == true);
         const auto& eosio_token_acc = get<account_metadata_object, by_name>(N(zswhq.token));
         BOOST_TEST(eosio_token_acc.is_privileged() == true);
 
 
-        // Create SYS tokens in eosio.token, set its manager as eosio
+        // Create SYS tokens in zswhq.token, set its manager as eosio
         auto max_supply = core_from_string("10000000000.0000"); /// 1x larger than 1B initial tokens
         auto initial_supply = core_from_string("1000000000.0000"); /// 1x larger than 1B initial tokens
         create_currency(N(zswhq.token), config::system_account_name, max_supply);
-        // Issue the genesis supply of 1 billion SYS tokens to eosio.system
+        // Issue the genesis supply of 1 billion SYS tokens to zswhq.system
         issue(N(zswhq.token), config::system_account_name, config::system_account_name, initial_supply);
 
         auto actual = get_balance(config::system_account_name);

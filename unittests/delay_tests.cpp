@@ -269,27 +269,27 @@ BOOST_AUTO_TEST_CASE(delete_auth_test) { try {
    // link auth
    chain.push_action(config::system_account_name, linkauth::get_name(), tester_account, fc::mutable_variant_object()
            ("account", "tester")
-           ("code", "eosio.token")
+           ("code", "zswhq.token")
            ("type", "transfer")
            ("requirement", "first"));
 
    // create CUR token
    chain.produce_blocks();
    chain.push_action(N(zswhq.token), N(create), N(zswhq.token), mutable_variant_object()
-           ("issuer", "eosio.token" )
+           ("issuer", "zswhq.token" )
            ("maximum_supply", "9000000.0000 CUR" )
    );
 
-   // issue to account "eosio.token"
+   // issue to account "zswhq.token"
    chain.push_action(N(zswhq.token), name("issue"), N(zswhq.token), fc::mutable_variant_object()
-           ("to",       "eosio.token")
+           ("to",       "zswhq.token")
            ("quantity", "1000000.0000 CUR")
            ("memo", "for stuff")
    );
 
-   // transfer from eosio.token to tester
+   // transfer from zswhq.token to tester
    trace = chain.push_action(N(zswhq.token), name("transfer"), N(zswhq.token), fc::mutable_variant_object()
-       ("from", "eosio.token")
+       ("from", "zswhq.token")
        ("to", "tester")
        ("quantity", "100.0000 CUR")
        ("memo", "hi" )
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(delete_auth_test) { try {
    // unlink auth
    trace = chain.push_action(config::system_account_name, unlinkauth::get_name(), tester_account, fc::mutable_variant_object()
            ("account", "tester")
-           ("code", "eosio.token")
+           ("code", "zswhq.token")
            ("type", "transfer"));
    BOOST_REQUIRE_EQUAL(transaction_receipt::executed, trace->receipt->status);
 
@@ -2289,7 +2289,7 @@ BOOST_AUTO_TEST_CASE( max_transaction_delay_execute ) { try {
 
    chain.produce_blocks();
    chain.push_action(N(zswhq.token), N(create), N(zswhq.token), mutable_variant_object()
-           ("issuer", "eosio.token" )
+           ("issuer", "zswhq.token" )
            ("maximum_supply", "9000000.0000 CUR" )
    );
    chain.push_action(N(zswhq.token), name("issue"), N(zswhq.token), fc::mutable_variant_object()
@@ -2309,7 +2309,7 @@ BOOST_AUTO_TEST_CASE( max_transaction_delay_execute ) { try {
 
    trace = chain.push_action(config::system_account_name, linkauth::get_name(), tester_account, fc::mutable_variant_object()
                      ("account", "tester")
-                     ("code", "eosio.token")
+                     ("code", "zswhq.token")
                      ("type", "transfer")
                      ("requirement", "first"));
    BOOST_REQUIRE_EQUAL(transaction_receipt::executed, trace->receipt->status);
@@ -2326,7 +2326,7 @@ BOOST_AUTO_TEST_CASE( max_transaction_delay_execute ) { try {
    //should be able to create transaction with delay 60 sec, despite permission delay being 30 days, because max_transaction_delay is 60 sec
    trace = chain.push_action(N(zswhq.token), name("transfer"), N(tester), fc::mutable_variant_object()
                            ("from", "tester")
-                           ("to", "eosio.token")
+                           ("to", "zswhq.token")
                            ("quantity", "9.0000 CUR")
                            ("memo", "" ), 120, 60);
    BOOST_REQUIRE_EQUAL(transaction_receipt::delayed, trace->receipt->status);

@@ -46,11 +46,11 @@ class whitelist_blacklist_tester {
          chain->set_code(N(zswhq.token), contracts::eosio_token_wasm() );
          chain->set_abi(N(zswhq.token), contracts::eosio_token_abi().data() );
          chain->push_action( N(zswhq.token), N(create), N(zswhq.token), mvo()
-              ( "issuer", "eosio.token" )
+              ( "issuer", "zswhq.token" )
               ( "maximum_supply", "1000000.00 TOK" )
          );
          chain->push_action( N(zswhq.token), N(issue), N(zswhq.token), mvo()
-              ( "to", "eosio.token" )
+              ( "to", "zswhq.token" )
               ( "quantity", "1000000.00 TOK" )
               ( "memo", "issue" )
          );
