@@ -51,7 +51,7 @@ EOF
 
 ### Launch producer
 ```bash
-$ ./nodeos -d ~/eos.data/producer_node --config-dir ~/eos.data/producer_node -l ~/eos.data/logging.json --http-server-address "" -p eosio -e
+$ ./nodeos -d ~/eos.data/producer_node --config-dir ~/eos.data/producer_node -l ~/eos.data/logging.json --http-server-address "" -p zswhq -e
 ```
 
 ### Launch non-producer that will generate transactions
@@ -63,7 +63,7 @@ $ ./nodeos -d ~/eos.data/generator_node --config-dir ~/eos.data/generator_node -
 ```bash
 $ ./cleos wallet create --to-console
 $ ./cleos wallet import --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
-$ ./cleos set contract eosio ~/eos/build.release/contracts/eosio.bios/ 
+$ ./cleos set contract zswhq ~/eos/build.release/contracts/eosio.bios/ 
 ```
 
 ### Initialize the accounts txn_test_gen_plugin uses

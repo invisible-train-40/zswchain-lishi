@@ -28,11 +28,11 @@ Open one "terminal" window and perform the following steps:
 Start your own single-node blockchain with this single command:
 
 ```sh
-nodeos -e -p eosio --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin
+nodeos -e -p zswhq --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin
 ```
 
 [[info | Nodeos Minimal Options]]
-| A minimal `nodeos` instance setup for block production requires both `chain_api_plugin` and `history_api_plugin` with the `-e` option (enable stale production) and `-p eosio` option (producer name `eosio`). Alternatively, you can also setup and specify your own account as the producer name.
+| A minimal `nodeos` instance setup for block production requires both `chain_api_plugin` and `history_api_plugin` with the `-e` option (enable stale production) and `-p zswhq` option (producer name `eosio`). Alternatively, you can also setup and specify your own account as the producer name.
 
 After running `nodeos`, you should get log messages similar as below. It means the blocks are successfully produced.
 

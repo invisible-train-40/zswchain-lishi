@@ -530,7 +530,7 @@ namespace eosio { namespace chain {
 
             if( !special_case ) {
                auto min_permission_name = lookup_minimum_permission(declared_auth.actor, act.account, act.name);
-               if( min_permission_name ) { // since special cases were already handled, it should only be false if the permission is eosio.any
+               if( min_permission_name ) { // since special cases were already handled, it should only be false if the permission is zswhq.any
                   const auto& min_permission = get_permission({declared_auth.actor, *min_permission_name});
                   EOS_ASSERT( get_permission(declared_auth).satisfies( min_permission,
                                                                        _db.get_index<permission_index>().indices() ),

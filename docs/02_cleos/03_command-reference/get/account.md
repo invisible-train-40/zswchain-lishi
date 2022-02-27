@@ -13,7 +13,7 @@ Retrieves an account from the blockchain
 ### Get formatted data for user **eosio**
 
 ```sh
-cleos get account eosio
+cleos get account zswhq
 ```
 ```console
 privileged: true
@@ -38,7 +38,7 @@ producers:     <not voted>
 ### Get JSON data for user **eosio**
 
 ```sh
-cleos get account eosio --json
+cleos get account zswhq --json
 ```
 ```json
 {
