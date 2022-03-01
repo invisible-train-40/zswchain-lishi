@@ -1,5 +1,5 @@
 set(VENDOR "zhongshuwen")
-set(PROJECT_NAME "zswhq")
+set(PROJECT_NAME "zswchain-lishi")
 set(DESC "Software for the 中数文联盟链 network")
 set(URL "https://github.com/zhongshuwen/zswchain-lishi")
 set(EMAIL "it@zhongshuwen.com")
