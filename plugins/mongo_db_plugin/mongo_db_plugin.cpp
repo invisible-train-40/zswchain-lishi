@@ -29,7 +29,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 using chain::account_name;
 using chain::action_name;
@@ -1687,5 +1687,5 @@ void mongo_db_plugin::plugin_shutdown()
    my.reset();
 }
 
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 

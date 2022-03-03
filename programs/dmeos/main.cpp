@@ -10,8 +10,8 @@
 #include <fc/crypto/public_key.hpp>
 #include <fc/log/log_message.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
+using namespace eosio;
+using namespace eosio::chain;
 
 using public_key_type = fc::crypto::public_key;
 

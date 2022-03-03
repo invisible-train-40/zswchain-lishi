@@ -73,12 +73,12 @@ fc::logger       _trx_successful_trace_log;
 const fc::string trx_failed_trace_logger_name("transaction_failure_tracing");
 fc::logger       _trx_failed_trace_log;
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _producer_plugin = app().register_plugin<producer_plugin>();
 
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::chain::plugin_interface;
+using namespace eosio::chain;
+using namespace eosio::chain::plugin_interface;
 
 namespace {
    bool exception_is_exhausted(const fc::exception& e, bool deadline_is_subjective) {
@@ -2151,4 +2151,4 @@ void producer_plugin::log_failed_transaction(const transaction_id_type& trx_id, 
            ("txid", trx_id)("why", reason));
 }
 
-} // _NMSPCE_EOSIO_
+} // namespace eosio

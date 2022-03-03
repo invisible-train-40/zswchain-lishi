@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    namespace detail {
       template<typename... Ts>
@@ -76,7 +76,7 @@ _NMSPCE_EOSIO_ { namespace chain {
       signature_type    producer_signature;
    };
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain
 
 FC_REFLECT(eosio::chain::block_header,
            (timestamp)(producer)(confirmed)(previous)

@@ -5,7 +5,7 @@
 #include <string>
 #include <functional>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    namespace chain {
 
       /**
@@ -166,7 +166,7 @@ _NMSPCE_EOSIO_ {
       }
 
    } // namespace chain
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 
 namespace fc {
    inline void to_variant(const eosio::chain::symbol& var, fc::variant& vo) { vo = var.to_string(); }

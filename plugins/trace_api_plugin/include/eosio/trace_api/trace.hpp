@@ -5,7 +5,7 @@
 #include <eosio/chain/block.hpp>
 #include <utility>
 
-_NMSPCE_EOSIO_ { namespace trace_api {
+namespace eosio { namespace trace_api {
 
    struct authorization_trace_v0 {
       chain::name account;

@@ -6,8 +6,8 @@
 #include <eosio/chain/exceptions.hpp>
 #include <eosio/chain/abi_def.hpp>
 
-_NMSPCE_EOSIO_::trace_api::configuration_utils {
-   using _NMSPCE_EOSIO_;
+namespace eosio::trace_api::configuration_utils {
+   using namespace eosio;
 
    /**
     * Given a path (absolute or relative) to a file that contains a JSON-encoded ABI, return the parsed ABI

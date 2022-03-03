@@ -7,7 +7,7 @@
 #include <functional>
 #include <map>
 
-_NMSPCE_EOSIO_ { namespace trace_api {
+namespace eosio { namespace trace_api {
 
 using chain::transaction_id_type;
 using chain::packed_transaction;

@@ -29,7 +29,7 @@
 const fc::string logger_name("http_plugin");
 fc::logger logger;
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
    static appbase::abstract_plugin& _http_plugin = app().register_plugin<http_plugin>();
 

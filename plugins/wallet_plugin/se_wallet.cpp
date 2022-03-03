@@ -11,7 +11,7 @@
 
 #include <future>
 
-_NMSPCE_EOSIO_ { namespace wallet {
+namespace eosio { namespace wallet {
 
 using namespace fc::crypto::r1;
 

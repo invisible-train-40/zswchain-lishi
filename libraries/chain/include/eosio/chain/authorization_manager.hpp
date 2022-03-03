@@ -7,7 +7,7 @@
 #include <utility>
 #include <functional>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class controller;
    struct updateauth;
@@ -132,4 +132,4 @@ _NMSPCE_EOSIO_ { namespace chain {
                                                            )const;
    };
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain

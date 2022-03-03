@@ -3,7 +3,7 @@
 #include <eosio/chain_plugin/chain_plugin.hpp>
 #include <eosio/net_plugin/protocol.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using namespace appbase;
 
    struct connection_status {

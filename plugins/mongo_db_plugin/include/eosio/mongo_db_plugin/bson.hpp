@@ -12,7 +12,7 @@
 
 #include <bson/bson.h>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 void to_bson(const fc::variant_object& o, bsoncxx::builder::core& c);
 void to_bson(const fc::variants& v, bsoncxx::builder::core& c);
 void to_bson(const fc::variant& v, bsoncxx::builder::core& c);
@@ -22,9 +22,9 @@ void from_bson(const bsoncxx::document::view& view, fc::mutable_variant_object& 
 void from_bson(const bsoncxx::array::view& bson_array, fc::variants& a);
 template <typename T> void from_bson(const T& ele, fc::variant& v);
 fc::variant from_bson(const bsoncxx::document::view& view);
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 void to_bson(const fc::variant_object& o, bsoncxx::builder::core& c)
 {
@@ -242,5 +242,5 @@ fc::variant from_bson(const bsoncxx::document::view& view)
    return o;
 }
 
-}   // _NMSPCE_EOSIO_
+}   // namespace eosio
 

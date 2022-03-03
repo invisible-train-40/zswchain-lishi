@@ -6,7 +6,7 @@
 #include <chainbase/chainbase.hpp>
 #include "multi_index_includes.hpp"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    /**
     * @class protocol_state_object

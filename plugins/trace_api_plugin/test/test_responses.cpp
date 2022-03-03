@@ -6,9 +6,9 @@
 #include <eosio/trace_api/request_handler.hpp>
 #include <eosio/trace_api/test_common.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::trace_api;
-using _NMSPCE_EOSIO_::trace_api::test_common;
+using namespace eosio;
+using namespace eosio::trace_api;
+using namespace eosio::trace_api::test_common;
 
 struct response_test_fixture {
    /**

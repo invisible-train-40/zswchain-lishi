@@ -4,7 +4,7 @@
 
 #include "multi_index_includes.hpp"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class code_object : public chainbase::object<code_object_type, code_object> {
       OBJECT_CTOR(code_object, (code))

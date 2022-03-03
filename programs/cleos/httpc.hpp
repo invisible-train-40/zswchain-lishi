@@ -2,7 +2,7 @@
 
 #include "config.hpp"
 
-_NMSPCE_EOSIO_ { namespace client { namespace http {
+namespace eosio { namespace client { namespace http {
 
    namespace detail {
       class http_context_impl;

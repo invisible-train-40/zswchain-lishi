@@ -5,9 +5,9 @@
 
 #include <eosio/trace_api/test_common.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::trace_api;
-using _NMSPCE_EOSIO_::trace_api::test_common;
+using namespace eosio;
+using namespace eosio::trace_api;
+using namespace eosio::trace_api::test_common;
 
 BOOST_AUTO_TEST_SUITE(abi_data_handler_tests)
    BOOST_AUTO_TEST_CASE(empty_data)

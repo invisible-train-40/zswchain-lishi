@@ -12,7 +12,7 @@
 #include <chainbase/chainbase.hpp>
 #include "multi_index_includes.hpp"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    /**
     * a fc::raw::unpack compatible version of the old global_property_object structure stored in

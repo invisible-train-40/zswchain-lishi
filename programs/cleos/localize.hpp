@@ -3,7 +3,7 @@
 #include <libintl.h>
 #include <fc/variant.hpp>
 
-_NMSPCE_EOSIO_ { namespace client { namespace localize {
+namespace eosio { namespace client { namespace localize {
    #if !defined(_)
    #define _(str) str
    #endif

@@ -19,7 +19,7 @@
 #include "config.hpp"
 
 using namespace appbase;
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 namespace detail {
 

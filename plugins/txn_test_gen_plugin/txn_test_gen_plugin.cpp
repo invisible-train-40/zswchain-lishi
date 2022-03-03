@@ -21,9 +21,9 @@
 
 #include <contracts.hpp>
 
-using _NMSPCE_EOSIO_::testing;
+using namespace eosio::testing;
 
-_NMSPCE_EOSIO_ { namespace detail {
+namespace eosio { namespace detail {
   struct txn_test_gen_empty {};
   struct txn_test_gen_status {
      string status;
@@ -33,11 +33,11 @@ _NMSPCE_EOSIO_ { namespace detail {
 FC_REFLECT(eosio::detail::txn_test_gen_empty, );
 FC_REFLECT(eosio::detail::txn_test_gen_status, (status));
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _txn_test_gen_plugin = app().register_plugin<txn_test_gen_plugin>();
 
-using _NMSPCE_EOSIO_::chain;
+using namespace eosio::chain;
 
 #define CALL(api_name, api_handle, call_name, INVOKE, http_response_code) \
 {std::string("/v1/" #api_name "/" #call_name), \

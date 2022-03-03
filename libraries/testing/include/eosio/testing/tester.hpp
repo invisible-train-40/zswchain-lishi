@@ -56,7 +56,7 @@ namespace boost { namespace test_tools { namespace tt_detail {
 
 } } }
 
-_NMSPCE_EOSIO_ { namespace testing {
+namespace eosio { namespace testing {
    enum class setup_policy {
       none,
       old_bios_only,
@@ -72,7 +72,7 @@ _NMSPCE_EOSIO_ { namespace testing {
    std::string          read_binary_snapshot( const char* fn );
    fc::variant          read_json_snapshot( const char* fn );
 
-   using _NMSPCE_EOSIO_::chain;
+   using namespace eosio::chain;
 
    fc::variant_object filter_fields(const fc::variant_object& filter, const fc::variant_object& value);
 

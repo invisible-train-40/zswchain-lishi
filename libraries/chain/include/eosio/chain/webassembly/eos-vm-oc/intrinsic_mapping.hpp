@@ -4,7 +4,7 @@
 #include <boost/hana/tuple.hpp>
 #include <boost/hana/string.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 using namespace boost::hana::literals;
 

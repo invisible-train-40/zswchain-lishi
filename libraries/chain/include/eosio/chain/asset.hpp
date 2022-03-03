@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/symbol.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 /**
 
@@ -101,7 +101,7 @@ struct extended_asset  {
 bool  operator <  (const asset& a, const asset& b);
 bool  operator <= (const asset& a, const asset& b);
 
-}} // _NMSPCE_EOSIO_::chain
+}} // namespace eosio::chain
 
 namespace fc {
 inline void to_variant(const eosio::chain::asset& var, fc::variant& vo) { vo = var.to_string(); }

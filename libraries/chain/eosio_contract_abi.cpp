@@ -1,7 +1,7 @@
 #include <eosio/chain/abi_def.hpp>
 #include <fc/utility.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 vector<type_def> common_type_defs() {
    vector<type_def> types;

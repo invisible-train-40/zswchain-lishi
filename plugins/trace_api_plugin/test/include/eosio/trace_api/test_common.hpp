@@ -13,7 +13,7 @@
 #include <eosio/trace_api/data_log.hpp>
 #include <eosio/trace_api/metadata_log.hpp>
 
-_NMSPCE_EOSIO_::trace_api {
+namespace eosio::trace_api {
    /**
     * Utilities that make writing tests easier
     */
@@ -224,7 +224,7 @@ namespace fc {
 
 }
 
-_NMSPCE_EOSIO_::chain {
+namespace eosio::chain {
    bool operator==(const abi_def& lhs, const abi_def& rhs) {
       return fc::raw::pack(lhs) == fc::raw::pack(rhs);
    }

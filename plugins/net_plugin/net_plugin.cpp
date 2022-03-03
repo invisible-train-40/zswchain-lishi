@@ -27,9 +27,9 @@
 #include <atomic>
 #include <shared_mutex>
 
-using _NMSPCE_EOSIO_::chain::plugin_interface;
+using namespace eosio::chain::plugin_interface;
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    static appbase::abstract_plugin& _net_plugin = app().register_plugin<net_plugin>();
 
    using std::vector;

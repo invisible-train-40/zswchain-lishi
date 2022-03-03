@@ -1,6 +1,6 @@
 #include <eosio/eosio.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 extern "C" {
    void apply( uint64_t receiver, uint64_t first_receiver, uint64_t action ) {

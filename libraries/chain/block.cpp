@@ -1,6 +1,6 @@
 #include <eosio/chain/block.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
    void additional_block_signatures_extension::reflector_init() {
       static_assert( fc::raw::has_feature_reflector_init_on_unpacked_reflected_types,
                      "additional_block_signatures_extension expects FC to support reflector_init" );
@@ -61,4 +61,4 @@ _NMSPCE_EOSIO_ { namespace chain {
 
    }
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain

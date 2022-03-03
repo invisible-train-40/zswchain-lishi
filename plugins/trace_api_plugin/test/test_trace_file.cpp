@@ -5,9 +5,9 @@
 #include <eosio/trace_api/store_provider.hpp>
 #include <boost/filesystem.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::trace_api;
-using _NMSPCE_EOSIO_::trace_api::test_common;
+using namespace eosio;
+using namespace eosio::trace_api;
+using namespace eosio::trace_api::test_common;
 namespace bfs = boost::filesystem;
 using open_state = slice_directory::open_state;
 

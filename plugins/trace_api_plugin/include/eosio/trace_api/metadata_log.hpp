@@ -4,7 +4,7 @@
 #include <eosio/chain/abi_def.hpp>
 #include <eosio/chain/protocol_feature_activation.hpp>
 
-_NMSPCE_EOSIO_ { namespace trace_api {
+namespace eosio { namespace trace_api {
    struct block_entry_v0 {
       chain::block_id_type   id;
       uint32_t               number;

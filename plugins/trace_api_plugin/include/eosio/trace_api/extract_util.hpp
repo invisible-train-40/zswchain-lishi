@@ -3,7 +3,7 @@
 #include <eosio/trace_api/trace.hpp>
 #include <eosio/chain/block_state.hpp>
 
-_NMSPCE_EOSIO_ { namespace trace_api {
+namespace eosio { namespace trace_api {
 
 /// Used by to_transaction_trace_v0 for creation of action_trace_v0
 inline action_trace_v0 to_action_trace_v0( const chain::action_trace& at ) {

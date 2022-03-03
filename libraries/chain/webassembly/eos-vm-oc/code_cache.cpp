@@ -22,7 +22,7 @@
 using namespace IR;
 using namespace Runtime;
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 static constexpr size_t header_offset = 512u;
 static constexpr size_t header_size = 512u;

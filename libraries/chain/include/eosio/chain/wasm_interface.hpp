@@ -9,7 +9,7 @@
 #include "Runtime/Linker.h"
 #include "Runtime/Runtime.h"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class apply_context;
    class wasm_runtime_interface;
@@ -124,7 +124,7 @@ _NMSPCE_EOSIO_ { namespace chain {
 
 } } // eosio::chain
 
-_NMSPCE_EOSIO_{ namespace chain {
+namespace eosio{ namespace chain {
    std::istream& operator>>(std::istream& in, wasm_interface::vm_type& runtime);
 }}
 

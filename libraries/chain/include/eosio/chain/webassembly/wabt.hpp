@@ -11,12 +11,12 @@
 #include <src/common.h>
 #include <src/interp.h>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace wabt_runtime {
+namespace eosio { namespace chain { namespace webassembly { namespace wabt_runtime {
 
 using namespace fc;
 using namespace wabt;
 using namespace wabt::interp;
-using _NMSPCE_EOSIO_::chain::webassembly::common;
+using namespace eosio::chain::webassembly::common;
 
 struct wabt_apply_instance_vars {
    Memory* memory;

@@ -18,7 +18,7 @@ namespace boost { namespace asio {
    class thread_pool;
 }}
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class authorization_manager;
 

@@ -12,7 +12,7 @@
 
 #include <utility>
 
-_NMSPCE_EOSIO_ { namespace detail {
+namespace eosio { namespace detail {
   struct faucet_testnet_empty {};
 
   struct faucet_testnet_keys {
@@ -41,11 +41,11 @@ FC_REFLECT(eosio::detail::faucet_testnet_create_account_params, (account)(keys))
 FC_REFLECT(eosio::detail::faucet_testnet_create_account_alternates_response, (alternates)(message));
 FC_REFLECT(eosio::detail::faucet_testnet_create_account_rate_limited_response, (message));
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _faucet_testnet_plugin = app().register_plugin<faucet_testnet_plugin>();
 
-using _NMSPCE_EOSIO_::chain;
+using namespace eosio::chain;
 using public_key_type = chain::public_key_type;
 using key_pair = std::pair<std::string, std::string>;
 using results_pair = std::pair<uint32_t,fc::variant>;

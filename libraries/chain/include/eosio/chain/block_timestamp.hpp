@@ -8,7 +8,7 @@
 #include <fc/optional.hpp>
 #include <fc/exception/exception.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    /**
    * This class is used in the block headers to represent the block time

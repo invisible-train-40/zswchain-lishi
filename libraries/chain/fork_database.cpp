@@ -10,7 +10,7 @@
 #include <fc/io/fstream.hpp>
 #include <fstream>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
    using boost::multi_index_container;
    using namespace boost::multi_index;
 

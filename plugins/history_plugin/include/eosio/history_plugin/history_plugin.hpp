@@ -5,7 +5,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using chain::transaction_id_type;
    using std::shared_ptr;
    using namespace appbase;
@@ -131,7 +131,7 @@ class history_plugin : public plugin<history_plugin> {
       history_ptr my;
 };
 
-} /// _NMSPCE_EOSIO_
+} /// namespace eosio
 
 FC_REFLECT( eosio::history_apis::read_only::get_actions_params, (account_name)(pos)(offset) )
 FC_REFLECT( eosio::history_apis::read_only::get_actions_result, (actions)(last_irreversible_block)(time_limit_exceeded_error) )

@@ -14,7 +14,7 @@
 #include "config.hpp"
 
 using namespace appbase;
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 void configure_logging(const bfs::path& config_path) {
    try {

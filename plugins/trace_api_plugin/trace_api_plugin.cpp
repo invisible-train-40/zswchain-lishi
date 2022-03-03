@@ -9,8 +9,8 @@
 
 #include <boost/signals2/connection.hpp>
 
-using _NMSPCE_EOSIO_::trace_api;
-using _NMSPCE_EOSIO_::trace_api::configuration_utils;
+using namespace eosio::trace_api;
+using namespace eosio::trace_api::configuration_utils;
 using boost::signals2::scoped_connection;
 
 namespace {
@@ -88,7 +88,7 @@ namespace {
    };
 }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 /**
  * A common source for information shared between the extraction process and the RPC process

@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    struct permission_level {
       account_name    actor;
@@ -93,7 +93,7 @@ _NMSPCE_EOSIO_ { namespace chain {
       account_name receiver;
    };
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain
 
 FC_REFLECT( eosio::chain::permission_level, (actor)(permission) )
 FC_REFLECT( eosio::chain::action, (account)(name)(authorization)(data) )

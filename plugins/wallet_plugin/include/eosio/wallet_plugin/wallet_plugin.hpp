@@ -6,7 +6,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using namespace appbase;
 
    namespace wallet {

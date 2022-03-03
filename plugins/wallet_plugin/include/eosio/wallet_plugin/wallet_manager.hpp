@@ -8,7 +8,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 namespace wallet {
 
 /// Provides associate of wallet name to wallet and manages the interaction with each wallet.
@@ -144,6 +144,6 @@ private:
 };
 
 } // namespace wallet
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 
 

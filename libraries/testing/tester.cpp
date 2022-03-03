@@ -19,7 +19,7 @@ eosio::chain::asset core_from_string(const std::string& s) {
   return eosio::chain::asset::from_string(s + " " CORE_SYMBOL_NAME);
 }
 
-_NMSPCE_EOSIO_ { namespace testing {
+namespace eosio { namespace testing {
    std::string read_wast( const char* fn ) {
       std::ifstream wast_file(fn);
       FC_ASSERT( wast_file.is_open(), "wast file cannot be found" );

@@ -2,7 +2,7 @@
 #include <eosio/chain/thread_utils.hpp>
 #include <boost/asio/thread_pool.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 recover_keys_future transaction_metadata::start_recover_keys( packed_transaction_ptr trx,
                                                               boost::asio::io_context& thread_pool,

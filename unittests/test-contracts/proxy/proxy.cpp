@@ -1,7 +1,7 @@
 #include "proxy.hpp"
 #include <eosio/transaction.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 proxy::proxy( eosio::name self, eosio::name first_receiver, eosio::datastream<const char*> ds )
 :contract( self, first_receiver, ds )

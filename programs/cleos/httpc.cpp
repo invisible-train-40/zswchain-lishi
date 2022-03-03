@@ -26,8 +26,8 @@
 #include "httpc.hpp"
 
 using boost::asio::ip::tcp;
-using _NMSPCE_EOSIO_::chain;
-_NMSPCE_EOSIO_ { namespace client { namespace http {
+using namespace eosio::chain;
+namespace eosio { namespace client { namespace http {
 
    namespace detail {
       class http_context_impl {

@@ -14,7 +14,7 @@
 #include <chrono>
 #include <mutex>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 namespace bacc = boost::accumulators;
 

@@ -21,7 +21,7 @@
 #include <deep_nested.abi.hpp>
 #include <large_nested.abi.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 using namespace chain;
 
 BOOST_AUTO_TEST_SUITE(abi_tests)

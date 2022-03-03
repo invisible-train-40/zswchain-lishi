@@ -2,7 +2,7 @@
 
 #include <string> // std::string
 
-_NMSPCE_EOSIO_ { namespace version {
+namespace eosio { namespace version {
 
    ///< Helper function for `version_client()`
    std::string _version_client();

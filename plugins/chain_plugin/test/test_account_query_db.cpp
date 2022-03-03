@@ -12,10 +12,10 @@
 #define TESTER validating_tester
 #endif
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::testing;
-using _NMSPCE_EOSIO_::chain_apis;
+using namespace eosio;
+using namespace eosio::chain;
+using namespace eosio::testing;
+using namespace eosio::chain_apis;
 
 using params  = account_query_db::get_accounts_by_authorizers_params;
 using results = account_query_db::get_accounts_by_authorizers_result;

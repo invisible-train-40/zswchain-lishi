@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/contract_types.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class apply_context;
 
@@ -29,4 +29,4 @@ _NMSPCE_EOSIO_ { namespace chain {
    void apply_zswhq_canceldelay(apply_context&);
    ///@}  end action handlers
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain

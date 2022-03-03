@@ -2,7 +2,7 @@
 
 #include <eosio/chain/types.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    /**
     *  For each action dispatched this receipt is generated
@@ -19,6 +19,6 @@ _NMSPCE_EOSIO_ { namespace chain {
       digest_type digest()const { return digest_type::hash(*this); }
    };
 
-} }  /// _NMSPCE_EOSIO_::chain
+} }  /// namespace eosio::chain
 
 FC_REFLECT( eosio::chain::action_receipt, (receiver)(act_digest)(global_sequence)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence) )

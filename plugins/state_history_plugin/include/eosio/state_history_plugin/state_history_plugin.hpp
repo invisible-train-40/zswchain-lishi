@@ -12,7 +12,7 @@ namespace fc {
 class variant;
 }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 using chain::bytes;
 using std::shared_ptr;
 
@@ -132,7 +132,7 @@ class state_history_plugin : public plugin<state_history_plugin> {
    state_history_ptr my;
 };
 
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 
 // clang-format off
 FC_REFLECT(eosio::table_delta, (struct_version)(name)(rows));

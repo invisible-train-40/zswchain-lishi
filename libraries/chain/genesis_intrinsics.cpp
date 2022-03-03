@@ -1,6 +1,6 @@
 #include <eosio/chain/genesis_intrinsics.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 const std::vector<const char*> genesis_intrinsics = {
    "__ashrti3",
@@ -173,4 +173,4 @@ const std::vector<const char*> genesis_intrinsics = {
    "memset"
 };
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain

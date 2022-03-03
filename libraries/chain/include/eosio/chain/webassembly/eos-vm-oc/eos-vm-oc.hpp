@@ -12,7 +12,7 @@
 #include <vector>
 #include <list>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 class apply_context;
 

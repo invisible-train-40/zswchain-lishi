@@ -43,7 +43,7 @@ using bpo::options_description;
 using bpo::variables_map;
 using public_key_type = fc::crypto::public_key;
 using private_key_type = fc::crypto::private_key;
-using _NMSPCE_EOSIO_::launcher::config;
+using namespace eosio::launcher::config;
 
 const string block_dir = "blocks";
 const string shared_mem_dir = "state";

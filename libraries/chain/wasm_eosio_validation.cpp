@@ -7,7 +7,7 @@
 #include "IR/Operators.h"
 #include "WASM/WASM.h"
 
-_NMSPCE_EOSIO_ { namespace chain { namespace wasm_validations {
+namespace eosio { namespace chain { namespace wasm_validations {
 using namespace IR;
 
 void noop_validation_visitor::validate( const Module& m ) {
@@ -93,4 +93,4 @@ void ensure_apply_exported_visitor::validate( const IR::Module& m ) {
 
 uint16_t nested_validator::depth = 0;
 bool     nested_validator::disabled = false;
-}}} // _NMSPCE_EOSIO_ chain validation
+}}} // namespace eosio chain validation

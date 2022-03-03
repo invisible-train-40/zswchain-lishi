@@ -4,7 +4,7 @@
 
 #include "multi_index_includes.hpp"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    class permission_usage_object : public chainbase::object<permission_usage_object_type, permission_usage_object> {
       OBJECT_CTOR(permission_usage_object)

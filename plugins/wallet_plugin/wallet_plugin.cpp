@@ -9,7 +9,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _wallet_plugin = app().register_plugin<wallet_plugin>();
 
@@ -64,4 +64,4 @@ void wallet_plugin::plugin_initialize(const variables_map& options) {
    } FC_LOG_AND_RETHROW()
 }
 
-} // _NMSPCE_EOSIO_
+} // namespace eosio

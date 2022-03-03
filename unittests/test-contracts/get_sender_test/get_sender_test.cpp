@@ -1,7 +1,7 @@
 #include "get_sender_test.hpp"
 #include <eosio/transaction.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 void get_sender_test::assertsender( name expected_sender ) {
    check( get_sender() == expected_sender, "sender did not match" );

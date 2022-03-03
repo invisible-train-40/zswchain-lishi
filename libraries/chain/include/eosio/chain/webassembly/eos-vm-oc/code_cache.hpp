@@ -24,7 +24,7 @@ namespace std {
     };
 }
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 using namespace boost::multi_index;
 using namespace boost::asio;

@@ -4,7 +4,7 @@
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 /**
  * @brief Return values in DataRange corresponding to matching Markers
@@ -35,5 +35,5 @@ DataRange filter_data_by_marker(DataRange data, MarkerRange markers, const Marke
    return {range.begin(), range.end()};
 }
 
-}} // _NMSPCE_EOSIO_::chain
+}} // namespace eosio::chain
 

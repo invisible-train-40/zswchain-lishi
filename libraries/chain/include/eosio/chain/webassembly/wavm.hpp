@@ -9,12 +9,12 @@
 #include "IR/Types.h"
 
 
-_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace wavm {
+namespace eosio { namespace chain { namespace webassembly { namespace wavm {
 
 using namespace IR;
 using namespace Runtime;
 using namespace fc;
-using _NMSPCE_EOSIO_::chain::webassembly::common;
+using namespace eosio::chain::webassembly::common;
 
 class wavm_runtime : public eosio::chain::wasm_runtime_interface {
    public:

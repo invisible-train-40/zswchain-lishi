@@ -8,7 +8,7 @@ namespace boost { namespace asio {
    class thread_pool;
 }}
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 class transaction_metadata;
 using transaction_metadata_ptr = std::shared_ptr<transaction_metadata>;

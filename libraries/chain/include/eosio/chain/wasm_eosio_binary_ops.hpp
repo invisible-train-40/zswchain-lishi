@@ -21,7 +21,7 @@
 #include "IR/Operators.h"
 #include "IR/Module.h"
 
-_NMSPCE_EOSIO_ { namespace chain { namespace wasm_ops {
+namespace eosio { namespace chain { namespace wasm_ops {
 
 class instruction_stream {
    public:
@@ -704,7 +704,7 @@ private:
 template <class Op_Types>
 const std::vector<instr*>* EOSIO_OperatorDecoderStream<Op_Types>::_cached_ops;
 
-}}} // _NMSPCE_EOSIO_, chain, wasm_ops
+}}} // namespace eosio, chain, wasm_ops
 
 FC_REFLECT_TEMPLATE( (typename T), eosio::chain::wasm_ops::block< T >, (code)(rt) )
 FC_REFLECT( eosio::chain::wasm_ops::memarg, (a)(o) )

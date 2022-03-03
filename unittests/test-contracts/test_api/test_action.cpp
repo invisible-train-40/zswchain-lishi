@@ -10,7 +10,7 @@
 
 #include "test_api.hpp"
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 void test_action::read_action_normal() {
 

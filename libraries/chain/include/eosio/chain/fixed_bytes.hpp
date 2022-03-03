@@ -11,7 +11,7 @@
 #include <functional>
 #include <type_traits>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
    /// @cond IMPLEMENTATIONS
 

@@ -27,7 +27,7 @@
 
 #endif
 
-_NMSPCE_EOSIO_ { namespace wallet {
+namespace eosio { namespace wallet {
 
 namespace detail {
 
@@ -262,7 +262,7 @@ public:
 
 
 
-_NMSPCE_EOSIO_ { namespace wallet {
+namespace eosio { namespace wallet {
 
 soft_wallet::soft_wallet(const wallet_data& initial_data)
    : my(new detail::soft_wallet_impl(*this, initial_data))

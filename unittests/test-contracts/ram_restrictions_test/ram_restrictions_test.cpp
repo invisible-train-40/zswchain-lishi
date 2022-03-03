@@ -1,7 +1,7 @@
 #include "ram_restrictions_test.hpp"
 #include <eosio/transaction.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 template <typename Table>
 void _setdata(name self, int len, name payer) {

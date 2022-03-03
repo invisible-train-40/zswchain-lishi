@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/config.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 /**
  * @brief Producer-voted blockchain configuration parameters
@@ -101,7 +101,7 @@ struct chain_config {
 
 };
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain
 
 FC_REFLECT(eosio::chain::chain_config,
            (max_block_net_usage)(target_block_net_usage_pct)

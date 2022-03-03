@@ -3,8 +3,8 @@
 #include <eosio/chain/unapplied_transaction_queue.hpp>
 #include <eosio/chain/contract_types.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
+using namespace eosio;
+using namespace eosio::chain;
 
 BOOST_AUTO_TEST_SUITE(unapplied_transaction_queue_tests)
 

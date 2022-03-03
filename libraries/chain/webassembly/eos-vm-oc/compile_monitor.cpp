@@ -12,7 +12,7 @@
 #include <boost/asio/local/datagram_protocol.hpp>
 #include <boost/signals2.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 using namespace boost::asio;
 

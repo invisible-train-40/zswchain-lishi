@@ -3,7 +3,7 @@
 #include <ios>
 #include <fc/io/cfile.hpp>
 
-_NMSPCE_EOSIO_::trace_api {
+namespace eosio::trace_api {
 
    class compressed_file_datastream;
    struct compressed_file_impl;

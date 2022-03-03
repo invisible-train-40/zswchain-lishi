@@ -122,12 +122,12 @@ Options:
 #include "httpc.hpp"
 
 using namespace std;
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::client::help;
-using _NMSPCE_EOSIO_::client::http;
-using _NMSPCE_EOSIO_::client::localize;
-using _NMSPCE_EOSIO_::client::config;
+using namespace eosio;
+using namespace eosio::chain;
+using namespace eosio::client::help;
+using namespace eosio::client::http;
+using namespace eosio::client::localize;
+using namespace eosio::client::config;
 using namespace boost::filesystem;
 using auth_type = fc::static_variant<public_key_type, permission_level>;
 

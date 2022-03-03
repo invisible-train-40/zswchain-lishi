@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 using shared_public_key_data = fc::static_variant<fc::ecc::public_key_shim, fc::crypto::r1::public_key_shim, shared_string>;
 
@@ -297,7 +297,7 @@ inline bool validate( const Authority& auth ) {
    return total_weight >= auth.threshold;
 }
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain
 
 namespace fc {
    void to_variant(const eosio::chain::shared_public_key& var, fc::variant& vo);

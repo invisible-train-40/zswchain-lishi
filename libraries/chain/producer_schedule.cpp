@@ -1,6 +1,6 @@
 #include <eosio/chain/producer_schedule.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 fc::variant producer_authority::get_abi_variant() const {
       auto authority_variant = authority.visit([](const auto& a){

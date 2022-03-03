@@ -7,7 +7,7 @@
 #include <vector>
 #include <iterator>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace eosvmoc {
+namespace eosio { namespace chain { namespace webassembly { namespace eosvmoc {
 
 class eosvmoc_instantiated_module : public wasm_instantiated_module_interface {
    public:

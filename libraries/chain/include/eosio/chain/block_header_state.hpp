@@ -5,7 +5,7 @@
 #include <eosio/chain/chain_snapshot.hpp>
 #include <future>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 namespace legacy {
 
@@ -157,7 +157,7 @@ struct block_header_state : public detail::block_header_state_common {
 
 using block_header_state_ptr = std::shared_ptr<block_header_state>;
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain
 
 FC_REFLECT( eosio::chain::detail::block_header_state_common,
             (block_num)

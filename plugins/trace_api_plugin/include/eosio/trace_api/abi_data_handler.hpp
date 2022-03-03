@@ -4,7 +4,7 @@
 #include <eosio/trace_api/trace.hpp>
 #include <eosio/trace_api/common.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    namespace chain {
       struct abi_serializer;
    }

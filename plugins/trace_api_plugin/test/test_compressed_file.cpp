@@ -6,8 +6,8 @@
 #include <eosio/trace_api/compressed_file.hpp>
 #include <eosio/trace_api/test_common.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::trace_api;
+using namespace eosio;
+using namespace eosio::trace_api;
 
 namespace bfs = boost::filesystem;
 

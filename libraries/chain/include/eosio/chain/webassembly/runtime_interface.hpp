@@ -6,7 +6,7 @@ namespace IR {
   struct Module;
 }
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 class apply_context;
 

@@ -2,7 +2,7 @@
 #include <eosio/chain/exceptions.hpp>
 #include <limits>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    namespace detail {
       bool is_builtin_activated( const protocol_feature_activation_set_ptr& pfa,
@@ -472,4 +472,4 @@ _NMSPCE_EOSIO_ { namespace chain {
    }
 
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain

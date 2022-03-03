@@ -4,7 +4,7 @@
 
 #include <fc/reflect/reflect.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using namespace appbase;
 
    /**

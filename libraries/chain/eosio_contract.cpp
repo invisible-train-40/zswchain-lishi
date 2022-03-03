@@ -20,7 +20,7 @@
 #include <eosio/chain/authorization_manager.hpp>
 #include <eosio/chain/resource_limits.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 
 
@@ -463,4 +463,4 @@ void apply_zswhq_canceldelay(apply_context& context) {
    context.cancel_deferred_transaction(transaction_id_to_sender_id(trx_id), account_name());
 }
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain

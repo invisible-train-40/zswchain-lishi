@@ -11,7 +11,7 @@
 #include <contracts.hpp>
 #include <snapshots.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 using namespace testing;
 using namespace chain;
 

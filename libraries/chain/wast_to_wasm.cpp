@@ -10,7 +10,7 @@
 #include <fc/exception/exception.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    std::vector<uint8_t> wast_to_wasm( const std::string& wast ) 
    { 

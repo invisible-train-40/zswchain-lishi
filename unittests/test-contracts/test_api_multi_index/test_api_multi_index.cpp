@@ -1,6 +1,6 @@
 #include "test_api_multi_index.hpp"
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 #include <cmath>
 #include <limits>

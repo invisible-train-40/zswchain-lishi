@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <eosio/testing/tester.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 using namespace testing;
 using namespace chain;
 

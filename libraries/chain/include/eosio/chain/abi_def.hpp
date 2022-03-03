@@ -2,7 +2,7 @@
 
 #include <eosio/chain/types.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 using type_name      = string;
 using field_name     = string;
@@ -127,7 +127,7 @@ vector<type_def> common_type_defs();
 
 extern unsigned char eosio_abi_bin[2132];
 
-} } /// _NMSPCE_EOSIO_::chain
+} } /// namespace eosio::chain
 
 namespace fc {
 

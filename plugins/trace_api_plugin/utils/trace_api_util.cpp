@@ -4,7 +4,7 @@
 
 #include <boost/program_options.hpp>
 
-using _NMSPCE_EOSIO_::trace_api;
+using namespace eosio::trace_api;
 namespace bpo = boost::program_options;
 
 command_registration* command_registration::_list = nullptr;

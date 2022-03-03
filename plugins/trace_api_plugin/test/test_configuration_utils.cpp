@@ -6,8 +6,8 @@
 #include <eosio/trace_api/configuration_utils.hpp>
 #include <eosio/trace_api/test_common.hpp>
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::trace_api::configuration_utils;
+using namespace eosio;
+using namespace eosio::trace_api::configuration_utils;
 
 namespace bfs = boost::filesystem;
 

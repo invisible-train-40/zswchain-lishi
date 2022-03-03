@@ -99,7 +99,7 @@ static void disassembleFunction(U8* bytes,Uptr numBytes)
 }
 #endif
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 namespace LLVMJIT
 {

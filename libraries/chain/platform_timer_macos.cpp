@@ -11,7 +11,7 @@
 
 #include <sys/event.h>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 //a kqueue & thread is shared for all platform_timer_macos instances
 static std::mutex timer_ref_mutex;

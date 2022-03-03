@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 class memory {
       static constexpr uint64_t wasm_memory_size                  = eosio::chain::wasm_constraints::maximum_linear_memory;

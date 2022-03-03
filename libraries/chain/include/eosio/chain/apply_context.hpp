@@ -9,7 +9,7 @@
 
 namespace chainbase { class database; }
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 class controller;
 class transaction_context;
@@ -625,6 +625,6 @@ class apply_context {
 
 using apply_handler = std::function<void(apply_context&)>;
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain
 
 //FC_REFLECT(eosio::chain::apply_context::apply_results, (applied_actions)(deferred_transaction_requests)(deferred_transactions_count))

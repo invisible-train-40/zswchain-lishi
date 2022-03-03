@@ -3,7 +3,7 @@
 
 #include <memory>
 
-_NMSPCE_EOSIO_ { namespace testing {
+namespace eosio { namespace testing {
 
 /**
  * Utility class to create and tear down a temporary chainbase::database using RAII

@@ -3,7 +3,7 @@
 #include <eosio/chain_plugin/chain_plugin.hpp>
 #include <eosio/http_plugin/http_plugin.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    /**
     * Plugin that runs both a data extraction  and the HTTP RPC in the same application
     */

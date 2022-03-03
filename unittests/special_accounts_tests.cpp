@@ -15,7 +15,7 @@
 #include <boost/range/algorithm/permutation.hpp>
 #include <boost/test/unit_test.hpp>
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 using namespace chain;
 using tester = eosio::testing::tester;
 

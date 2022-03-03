@@ -1,6 +1,6 @@
 #include <eosio/chain/protocol_state_object.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    namespace detail {
 

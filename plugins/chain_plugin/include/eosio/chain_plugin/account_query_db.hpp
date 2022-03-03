@@ -3,7 +3,7 @@
 #include <eosio/chain/block_state.hpp>
 #include <eosio/chain/trace.hpp>
 
-_NMSPCE_EOSIO_::chain_apis {
+namespace eosio::chain_apis {
    /**
     * This class manages the ephemeral indices and data that provide the `get_accounts_by_authorizers` RPC call
     * There is no persistence and the indices/caches are recreated when the class is instantiated based on the

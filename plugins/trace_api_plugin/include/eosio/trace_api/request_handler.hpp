@@ -5,7 +5,7 @@
 #include <eosio/trace_api/data_log.hpp>
 #include <eosio/trace_api/common.hpp>
 
-_NMSPCE_EOSIO_::trace_api {
+namespace eosio::trace_api {
    using data_handler_function = std::function<fc::variant(const action_trace_v0&, const yield_function&)>;
 
    namespace detail {

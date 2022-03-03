@@ -26,7 +26,7 @@
 
 extern "C" int arch_prctl(int code, unsigned long* addr);
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 static constexpr auto signal_sentinel = 0x4D56534F45534559ul;
 

@@ -2,7 +2,7 @@
 #include <appbase/application.hpp>
 #include <eosio/http_plugin/http_plugin.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 using namespace appbase;
 

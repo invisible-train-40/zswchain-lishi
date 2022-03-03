@@ -5,7 +5,7 @@
 #include <fc/variant_object.hpp>
 
 namespace {
-   using _NMSPCE_EOSIO_::trace_api;
+   using namespace eosio::trace_api;
 
    std::string to_iso8601_datetime( const fc::time_point& t) {
       return (std::string)t + "Z";
@@ -98,7 +98,7 @@ namespace {
 
 }
 
-_NMSPCE_EOSIO_::trace_api::detail {
+namespace eosio::trace_api::detail {
    fc::variant process_block_trace( const block_trace_v0& trace, bool irreversible, const data_handler_function& data_handler, const yield_function& yield ) {
       return fc::mutable_variant_object()
          ("id", trace.id.str() )

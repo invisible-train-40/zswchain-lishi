@@ -34,7 +34,7 @@
 
 #include <new>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 using resource_limits::resource_limits_manager;
 

@@ -3,11 +3,11 @@
 
 #include <fc/io/json.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _chain_api_plugin = app().register_plugin<chain_api_plugin>();
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 class chain_api_plugin_impl {
 public:

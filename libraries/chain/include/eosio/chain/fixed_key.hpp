@@ -6,7 +6,7 @@
 
 #include <fc/exception/exception.hpp>
 #include <eosio/chain/exceptions.hpp>
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
    using chain::uint128_t;
 

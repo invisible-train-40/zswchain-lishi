@@ -20,7 +20,7 @@
 #define FC_FOPEN(p, m) _wfopen(p, FC_PREL(m))
 #endif
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    const uint32_t block_log::min_supported_version = 1;
 

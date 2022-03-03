@@ -36,7 +36,7 @@ FC_REFLECT(chainbase::environment, (debug)(os)(arch)(boost_version)(compiler) )
 const fc::string deep_mind_logger_name("deep-mind");
 fc::logger _deep_mind_log;
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 //declare operator<< and validate funciton for read_mode in the same namespace as read_mode itself
 namespace chain {
@@ -117,10 +117,10 @@ void validate(boost::any& v,
 
 }
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::chain::config;
-using _NMSPCE_EOSIO_::chain::plugin_interface;
+using namespace eosio;
+using namespace eosio::chain;
+using namespace eosio::chain::config;
+using namespace eosio::chain::plugin_interface;
 using vm_type = wasm_interface::vm_type;
 using fc::flat_map;
 
@@ -2716,6 +2716,6 @@ chain::symbol read_only::extract_core_symbol()const {
 }
 
 } // namespace chain_apis
-} // _NMSPCE_EOSIO_
+} // namespace eosio
 
 FC_REFLECT( eosio::chain_apis::detail::ram_market_exchange_state_t, (ignore1)(ignore2)(ignore3)(core_symbol)(ignore4) )

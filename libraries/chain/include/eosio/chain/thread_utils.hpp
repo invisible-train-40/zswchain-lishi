@@ -7,7 +7,7 @@
 #include <future>
 #include <memory>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    /**
     * Wrapper class for boost asio thread pool and io_context run.

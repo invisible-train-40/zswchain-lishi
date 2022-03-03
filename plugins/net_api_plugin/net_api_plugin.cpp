@@ -7,17 +7,17 @@
 
 #include <chrono>
 
-_NMSPCE_EOSIO_ { namespace detail {
+namespace eosio { namespace detail {
   struct net_api_plugin_empty {};
 }}
 
 FC_REFLECT(eosio::detail::net_api_plugin_empty, );
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 
 static appbase::abstract_plugin& _net_api_plugin = app().register_plugin<net_api_plugin>();
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 #define CALL(api_name, api_handle, call_name, INVOKE, http_response_code) \
 {std::string("/v1/" #api_name "/" #call_name), \

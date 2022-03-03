@@ -1,6 +1,6 @@
 #include <eosio/chain/webassembly/eos-vm-oc/intrinsic.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 static intrinsic_map_t& the_intrinsic_map() {
    static intrinsic_map_t intrinsic_map;

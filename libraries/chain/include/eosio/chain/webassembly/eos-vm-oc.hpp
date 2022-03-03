@@ -16,14 +16,14 @@
 
 #include <boost/hana/equal.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace eosvmoc {
+namespace eosio { namespace chain { namespace webassembly { namespace eosvmoc {
 
 using namespace IR;
 using namespace Runtime;
 using namespace fc;
-using _NMSPCE_EOSIO_::chain::webassembly::common;
+using namespace eosio::chain::webassembly::common;
 
-using _NMSPCE_EOSIO_::chain::eosvmoc;
+using namespace eosio::chain::eosvmoc;
 
 class eosvmoc_instantiated_module;
 

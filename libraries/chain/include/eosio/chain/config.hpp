@@ -4,7 +4,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
-_NMSPCE_EOSIO_ { namespace chain { namespace config {
+namespace eosio { namespace chain { namespace config {
 
 typedef __uint128_t uint128_t;
 
@@ -127,7 +127,7 @@ template<typename T>
 constexpr uint64_t billable_size_v = ((billable_size<T>::value + billable_alignment - 1) / billable_alignment) * billable_alignment;
 
 
-} } } // _NMSPCE_EOSIO_::chain::config
+} } } // namespace eosio::chain::config
 
 constexpr uint64_t EOS_PERCENT(uint64_t value, uint32_t percentage) {
    return (value * percentage) / eosio::chain::config::percent_100;

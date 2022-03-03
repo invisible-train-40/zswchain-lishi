@@ -6,7 +6,7 @@
 
 namespace fc { class variant; }
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using namespace appbase;
    typedef std::shared_ptr<class test_control_plugin_impl> test_control_ptr;
 

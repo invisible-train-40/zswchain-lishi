@@ -17,7 +17,7 @@ namespace {
    static_assert(sizeof(seek_point_count_type) == expected_seek_point_count_size, "Unexpected size for seek point count");
 }
 
-_NMSPCE_EOSIO_::trace_api {
+namespace eosio::trace_api {
 
 struct compressed_file_impl {
    static constexpr size_t read_buffer_size = 4*1024;

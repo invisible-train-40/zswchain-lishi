@@ -3,7 +3,7 @@
 #include <chainbase/chainbase.hpp>
 #include <eosio/chain/types.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
 using chain::account_name;
 using chain::permission_name;
 using chain::shared_vector;

@@ -7,9 +7,9 @@
 #include "IR/Operators.h"
 #include "WASM/WASM.h"
 
-_NMSPCE_EOSIO_ { namespace chain { namespace wasm_injections {
+namespace eosio { namespace chain { namespace wasm_injections {
 using namespace IR;
-using _NMSPCE_EOSIO_::chain::wasm_constraints;
+using namespace eosio::chain::wasm_constraints;
 
 std::map<std::vector<uint16_t>, uint32_t> injector_utils::type_slots;
 std::map<std::string, uint32_t>           injector_utils::registered_injected;
@@ -49,4 +49,4 @@ std::queue<std::vector<size_t>>      checktime_block_type::orderings;
 std::queue<std::map<size_t, size_t>> checktime_block_type::bcnt_tables;
 size_t  checktime_function_end::fcnt = 0;
 
-}}} // _NMSPCE_EOSIO_, chain, injectors
+}}} // namespace eosio, chain, injectors

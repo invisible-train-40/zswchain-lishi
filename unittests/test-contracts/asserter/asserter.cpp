@@ -1,6 +1,6 @@
 #include "asserter.hpp"
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 static int global_variable = 45;
 

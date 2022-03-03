@@ -3,7 +3,7 @@
 // these are required to serialize a genesis_state
 #include <fc/smart_ref_impl.hpp>   // required for gcc in release mode
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
 genesis_state::genesis_state() {
    initial_timestamp = fc::time_point::from_iso_string( "2018-06-01T12:00:00" );
@@ -16,4 +16,4 @@ chain::chain_id_type genesis_state::compute_chain_id() const {
    return chain_id_type{enc.result()};
 }
 
-} } // _NMSPCE_EOSIO_::chain
+} } // namespace eosio::chain

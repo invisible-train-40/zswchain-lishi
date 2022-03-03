@@ -27,9 +27,9 @@
 #define TESTER validating_tester
 #endif
 
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::testing;
+using namespace eosio;
+using namespace eosio::chain;
+using namespace eosio::testing;
 using namespace fc;
 
 BOOST_AUTO_TEST_SUITE(chain_plugin_tests)

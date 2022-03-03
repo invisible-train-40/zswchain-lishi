@@ -1,7 +1,7 @@
 #include <eosio/chain/webassembly/eos-vm-oc/ipc_helpers.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 static constexpr size_t max_message_size = 8192;
 static constexpr size_t max_num_fds = 4;

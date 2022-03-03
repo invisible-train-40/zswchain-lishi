@@ -1,6 +1,6 @@
 #include "payloadless.hpp"
 
-using _NMSPCE_EOSIO_;
+using namespace eosio;
 
 void payloadless::doit() {
    print("Im a payloadless action");

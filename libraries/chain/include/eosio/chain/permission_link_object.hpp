@@ -3,7 +3,7 @@
 
 #include "multi_index_includes.hpp"
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
    /**
     * @brief The permission_link_object class assigns permission_objects to message types
     *

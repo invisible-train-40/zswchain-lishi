@@ -2,7 +2,7 @@
 #include <appbase/application.hpp>
 #include <fc/network/http/http_client.hpp>
 
-_NMSPCE_EOSIO_ {
+namespace eosio {
    using namespace appbase;
    using fc::http_client;
 

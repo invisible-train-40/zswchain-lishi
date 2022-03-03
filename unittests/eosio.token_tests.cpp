@@ -9,10 +9,10 @@
 
 #include <contracts.hpp>
 
-using _NMSPCE_EOSIO_::testing;
-using _NMSPCE_EOSIO_;
-using _NMSPCE_EOSIO_::chain;
-using _NMSPCE_EOSIO_::testing;
+using namespace eosio::testing;
+using namespace eosio;
+using namespace eosio::chain;
+using namespace eosio::testing;
 using namespace fc;
 using namespace std;
 

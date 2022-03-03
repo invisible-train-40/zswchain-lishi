@@ -3,7 +3,7 @@
 #include <eosio/chain/block.hpp>
 #include <eosio/chain/genesis_state.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain {
+namespace eosio { namespace chain {
 
    namespace detail { class block_log_impl; }
 

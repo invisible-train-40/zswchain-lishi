@@ -4,7 +4,7 @@
 #include <eosio/chain/webassembly/eos-vm-oc/eos-vm-oc.hpp>
 #include <eosio/chain/types.hpp>
 
-_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
+namespace eosio { namespace chain { namespace eosvmoc {
 
 struct initialize_message {
    //Two sent fds: 1) communication socket for this instance  2) the cache file 
