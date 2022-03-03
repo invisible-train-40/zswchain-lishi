@@ -1,6 +1,6 @@
 #include <eosio/testing/tester_network.hpp>
 
-namespace eosio { namespace testing {
+_NMSPCE_EOSIO_ { namespace testing {
 
    void tester_network::connect_blockchain(base_tester &new_blockchain) {
       if (blockchains.count(&new_blockchain))

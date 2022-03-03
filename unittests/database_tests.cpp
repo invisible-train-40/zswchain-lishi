@@ -11,8 +11,8 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 namespace bfs = boost::filesystem;
 
 BOOST_AUTO_TEST_SUITE(database_tests)

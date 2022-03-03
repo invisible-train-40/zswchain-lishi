@@ -4,7 +4,7 @@
 #include <tuple>
 #include <eosio/trace_api/data_log.hpp>
 
-namespace eosio::trace_api {
+_NMSPCE_EOSIO_::trace_api {
    /**
     * A function used to separate cooperative or external concerns from long running tasks
     * calling code should expect that this can throw yield_exception and gracefully unwind if it does

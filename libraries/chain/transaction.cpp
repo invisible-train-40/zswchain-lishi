@@ -11,7 +11,7 @@
 #include <eosio/chain/exceptions.hpp>
 #include <eosio/chain/transaction.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 void deferred_transaction_generation_context::reflector_init() {
       static_assert( fc::raw::has_feature_reflector_init_on_unpacked_reflected_types,

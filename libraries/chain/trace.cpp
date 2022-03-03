@@ -1,7 +1,7 @@
 #include <eosio/chain/exceptions.hpp>
 #include <eosio/chain/trace.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 action_trace::action_trace(
    const transaction_trace& trace, const action& act, account_name receiver, bool context_free,

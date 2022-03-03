@@ -6,7 +6,7 @@
 #include <fc/variant_object.hpp>
 #include <fc/scoped_exit.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 using std::map;
 using std::string;
@@ -796,7 +796,7 @@ namespace impl {
       const variant_object& vo = v.get_object();
       fc::reflector<M>::visit( abi_from_variant_visitor<M, decltype(resolver)>( vo, o, resolver, ctx ) );
    }
-} /// namespace eosio::chain::impl
+} /// _NMSPCE_EOSIO_::chain::impl
 
 template<typename T, typename Resolver>
 void abi_serializer::to_variant( const T& o, variant& vo, Resolver resolver, const yield_function_t& yield ) try {

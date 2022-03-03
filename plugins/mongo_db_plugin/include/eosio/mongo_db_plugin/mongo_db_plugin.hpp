@@ -4,7 +4,7 @@
 #include <appbase/application.hpp>
 #include <memory>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 using mongo_db_plugin_impl_ptr = std::shared_ptr<class mongo_db_plugin_impl>;
 

@@ -1,7 +1,7 @@
 #include <eosio/chain/block_state.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    namespace {
       constexpr auto additional_sigs_eid = additional_block_signatures_extension::extension_id();

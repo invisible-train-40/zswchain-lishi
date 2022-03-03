@@ -2,8 +2,8 @@
 
 #include <vector>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 extern const std::vector<const char*> genesis_intrinsics;
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain

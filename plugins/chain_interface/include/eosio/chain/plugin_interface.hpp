@@ -8,8 +8,8 @@
 #include <eosio/chain/transaction_metadata.hpp>
 #include <eosio/chain/trace.hpp>
 
-namespace eosio { namespace chain { namespace plugin_interface {
-   using namespace eosio::chain;
+_NMSPCE_EOSIO_ { namespace chain { namespace plugin_interface {
+   using _NMSPCE_EOSIO_::chain;
    using namespace appbase;
 
    template<typename T>

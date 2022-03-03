@@ -12,7 +12,7 @@
 #include <eosio/trace_api/data_log.hpp>
 #include <eosio/trace_api/compressed_file.hpp>
 
-namespace eosio::trace_api {
+_NMSPCE_EOSIO_::trace_api {
    using namespace boost::filesystem;
 
    class path_does_not_exist : public std::runtime_error {

@@ -9,7 +9,7 @@
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
    using boost::multi_index_container;
    using namespace boost::multi_index;
    /**

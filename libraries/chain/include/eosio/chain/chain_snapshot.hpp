@@ -2,7 +2,7 @@
 
 #include <eosio/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 struct chain_snapshot_header {
    /**

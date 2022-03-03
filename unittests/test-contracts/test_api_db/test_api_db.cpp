@@ -1,8 +1,8 @@
 #include "test_api_db.hpp"
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
-using namespace eosio::internal_use_do_not_use;
+using _NMSPCE_EOSIO_::internal_use_do_not_use;
 
 void test_api_db::primary_i64_general()
 {

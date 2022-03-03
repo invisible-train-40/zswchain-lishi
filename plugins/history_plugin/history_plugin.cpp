@@ -10,7 +10,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/signals2/connection.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    using namespace chain;
    using boost::signals2::scoped_connection;
 
@@ -73,12 +73,12 @@ namespace eosio {
       >
    >;
 
-} /// namespace eosio
+} /// _NMSPCE_EOSIO_
 
 CHAINBASE_SET_INDEX_TYPE(eosio::account_history_object, eosio::account_history_index)
 CHAINBASE_SET_INDEX_TYPE(eosio::action_history_object, eosio::action_history_index)
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
    template<typename MultiIndex, typename LookupType>
    static void remove(chainbase::database& db, const account_name& account_name, const permission_name& permission)
@@ -578,4 +578,4 @@ namespace eosio {
 
 
 
-} /// namespace eosio
+} /// _NMSPCE_EOSIO_

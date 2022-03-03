@@ -14,8 +14,8 @@
 
 #include "fork_test_utilities.hpp"
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 
 BOOST_AUTO_TEST_SUITE(forked_tests)
 

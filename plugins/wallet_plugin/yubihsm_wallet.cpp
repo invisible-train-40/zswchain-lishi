@@ -11,7 +11,7 @@
 #include <boost/asio/posix/stream_descriptor.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>
 
-namespace eosio { namespace wallet {
+_NMSPCE_EOSIO_ { namespace wallet {
 
 using namespace fc::crypto::r1;
 

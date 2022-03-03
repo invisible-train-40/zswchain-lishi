@@ -4,9 +4,9 @@
 #include <eosio/wallet_plugin/wallet_api.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using _NMSPCE_EOSIO_::chain;
 
-namespace eosio { namespace wallet {
+_NMSPCE_EOSIO_ { namespace wallet {
 
 namespace detail {
 struct yubihsm_wallet_impl;

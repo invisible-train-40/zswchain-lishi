@@ -18,7 +18,7 @@ namespace ws = boost::beast::websocket;
 
 extern const char* const state_history_plugin_abi;
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 using namespace chain;
 using boost::signals2::scoped_connection;
 
@@ -659,4 +659,4 @@ void state_history_plugin::plugin_shutdown() {
    my->stopping = true;
 }
 
-} // namespace eosio
+} // _NMSPCE_EOSIO_

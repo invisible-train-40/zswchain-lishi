@@ -51,7 +51,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 using namespace IR;
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 namespace LLVMJIT
 {
 	static std::string getExternalFunctionName(Uptr functionDefIndex)

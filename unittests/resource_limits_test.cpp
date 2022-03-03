@@ -6,9 +6,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-using namespace eosio::chain::resource_limits;
-using namespace eosio::testing;
-using namespace eosio::chain;
+using _NMSPCE_EOSIO_::chain::resource_limits;
+using _NMSPCE_EOSIO_::testing;
+using _NMSPCE_EOSIO_::chain;
 
 class resource_limits_fixture: private chainbase_fixture<1024*1024>, public resource_limits_manager
 {

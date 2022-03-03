@@ -128,7 +128,7 @@
        fc::optional<uint64_t> error_code; \
    };
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    enum class system_error_code : uint64_t {
       generic_system_error = 10000000000000000000ULL,

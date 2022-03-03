@@ -9,9 +9,9 @@
 #include <eosio/trace_api/test_common.hpp>
 #include <eosio/trace_api/chain_extraction.hpp>
 
-using namespace eosio;
-using namespace eosio::trace_api;
-using namespace eosio::trace_api::test_common;
+using _NMSPCE_EOSIO_;
+using _NMSPCE_EOSIO_::trace_api;
+using _NMSPCE_EOSIO_::trace_api::test_common;
 using eosio::chain::name;
 using eosio::chain::digest_type;
 

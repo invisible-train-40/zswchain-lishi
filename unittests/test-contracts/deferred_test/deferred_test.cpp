@@ -3,7 +3,7 @@
 #include <eosio/datastream.hpp>
 #include <eosio/crypto.hpp>
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 void deferred_test::defercall( name payer, uint64_t sender_id, name contract, uint64_t payload ) {
    print( "defercall called on ", get_self(), "\n" );

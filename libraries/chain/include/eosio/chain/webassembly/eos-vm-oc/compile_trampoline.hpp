@@ -1,6 +1,6 @@
 #pragma once
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 
 void run_compile_trampoline(int fd);
 

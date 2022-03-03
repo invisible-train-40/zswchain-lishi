@@ -7,7 +7,7 @@
 #include <boost/filesystem.hpp>
 #include <fc/exception/exception.hpp>
 
-using namespace eosio::trace_api;
+using _NMSPCE_EOSIO_::trace_api;
 namespace bpo = boost::program_options;
 namespace bfs = boost::filesystem;
 

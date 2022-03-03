@@ -3,7 +3,7 @@
 #include <eosio/chain/action.hpp>
 #include <numeric>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    struct deferred_transaction_generation_context : fc::reflect_init {
       static constexpr uint16_t extension_id() { return 0; }
@@ -207,7 +207,7 @@ namespace eosio { namespace chain {
 
    uint128_t transaction_id_to_sender_id( const transaction_id_type& tid );
 
-} } /// namespace eosio::chain
+} } /// _NMSPCE_EOSIO_::chain
 
 FC_REFLECT(eosio::chain::deferred_transaction_generation_context, (sender_trx_id)(sender_id)(sender) )
 FC_REFLECT( eosio::chain::transaction_header, (expiration)(ref_block_num)(ref_block_prefix)

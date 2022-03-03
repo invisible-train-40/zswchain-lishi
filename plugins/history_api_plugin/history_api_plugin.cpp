@@ -3,9 +3,9 @@
 
 #include <fc/io/json.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 static appbase::abstract_plugin& _history_api_plugin = app().register_plugin<history_api_plugin>();
 

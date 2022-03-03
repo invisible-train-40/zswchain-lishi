@@ -1,7 +1,7 @@
 #include <eosio/chain/merkle.hpp>
 #include <fc/io/raw.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 /**
  * in order to keep proofs concise, before hashing we set the first bit

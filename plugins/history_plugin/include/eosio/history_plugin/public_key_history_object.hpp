@@ -3,7 +3,7 @@
 #include <chainbase/chainbase.hpp>
 #include <fc/array.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 using chain::account_name;
 using chain::public_key_type;
 using chain::permission_name;

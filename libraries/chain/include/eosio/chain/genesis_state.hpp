@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 struct genesis_state {
    genesis_state();
@@ -56,7 +56,7 @@ struct genesis_state {
 
 };
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain
 
 
 FC_REFLECT(eosio::chain::genesis_state,

@@ -9,7 +9,7 @@
 #include <sys/syscall.h>
 #include <linux/memfd.h>
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 
 class wrapped_fd {
    public:

@@ -15,7 +15,7 @@
 
 #include <shared_mutex>
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 using namespace boost::multi_index;
 using namespace boost::bimaps;
 
@@ -123,7 +123,7 @@ namespace std {
 
 }
 
-namespace eosio::chain_apis {
+_NMSPCE_EOSIO_::chain_apis {
    /**
     * Implementation details of the account query DB
     */

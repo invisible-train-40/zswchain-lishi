@@ -120,8 +120,8 @@ FC_REFLECT( invalid_access_action, (code)(val)(index)(store) )
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_;
+using _NMSPCE_EOSIO_::testing;
 using namespace chain;
 using namespace fc;
 

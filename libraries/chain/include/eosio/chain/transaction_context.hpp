@@ -4,7 +4,7 @@
 #include <eosio/chain/platform_timer.hpp>
 #include <signal.h>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    class action_id_type {
       public:

@@ -2,7 +2,7 @@
 
 #include <eosio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 struct protocol_feature_activation : fc::reflect_init {
    static constexpr uint16_t extension_id() { return 0; }
@@ -39,7 +39,7 @@ struct protocol_feature_activation_set {
 };
 
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain
 
 FC_REFLECT(eosio::chain::protocol_feature_activation,     (protocol_features))
 FC_REFLECT(eosio::chain::protocol_feature_activation_set, (protocol_features))

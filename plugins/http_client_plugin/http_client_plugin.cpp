@@ -3,7 +3,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <fstream>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 http_client_plugin::http_client_plugin():my(new http_client()){}
 http_client_plugin::~http_client_plugin(){}

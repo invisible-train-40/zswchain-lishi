@@ -4,7 +4,7 @@
 #include <fc/exception/exception.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-namespace eosio::chain {
+_NMSPCE_EOSIO_::chain {
 
    void name::set( std::string_view str ) {
       const auto len = str.size();

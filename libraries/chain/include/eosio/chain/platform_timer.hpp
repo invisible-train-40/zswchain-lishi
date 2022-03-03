@@ -9,7 +9,7 @@
 
 #include <signal.h>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 struct platform_timer {
    platform_timer();

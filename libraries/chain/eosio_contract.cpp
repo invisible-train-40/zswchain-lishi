@@ -20,7 +20,7 @@
 #include <eosio/chain/authorization_manager.hpp>
 #include <eosio/chain/resource_limits.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 
 
@@ -63,7 +63,7 @@ void validate_authority_precondition( const apply_context& context, const author
 /**
  *  This method is called assuming precondition_system_newaccount succeeds a
  */
-void apply_eosio_newaccount(apply_context& context) {
+void apply_zswhq_newaccount(apply_context& context) {
    auto create = context.get_action().data_as<newaccount>();
    try {
    context.require_authorization(create.creator);
@@ -126,7 +126,7 @@ void apply_eosio_newaccount(apply_context& context) {
 
 } FC_CAPTURE_AND_RETHROW( (create) ) }
 
-void apply_eosio_setcode(apply_context& context) {
+void apply_zswhq_setcode(apply_context& context) {
    const auto& cfg = context.control.get_global_properties().configuration;
 
    auto& db = context.db;
@@ -213,7 +213,7 @@ void apply_eosio_setcode(apply_context& context) {
    }
 }
 
-void apply_eosio_setabi(apply_context& context) {
+void apply_zswhq_setabi(apply_context& context) {
    auto& db  = context.db;
    auto  act = context.get_action().data_as<setabi>();
 
@@ -257,7 +257,7 @@ void apply_eosio_setabi(apply_context& context) {
    }
 }
 
-void apply_eosio_updateauth(apply_context& context) {
+void apply_zswhq_updateauth(apply_context& context) {
 
    auto update = context.get_action().data_as<updateauth>();
    context.require_authorization(update.account); // only here to mark the single authority on this action as used
@@ -331,7 +331,7 @@ void apply_eosio_updateauth(apply_context& context) {
    }
 }
 
-void apply_eosio_deleteauth(apply_context& context) {
+void apply_zswhq_deleteauth(apply_context& context) {
 //   context.require_write_lock( config::eosio_auth_scope );
 
    auto remove = context.get_action().data_as<deleteauth>();
@@ -366,7 +366,7 @@ void apply_eosio_deleteauth(apply_context& context) {
    context.add_ram_usage( remove.account, -old_size, ram_trace(context.get_action_id(), event_id.c_str(), "auth", "remove", "deleteauth") );
 }
 
-void apply_eosio_linkauth(apply_context& context) {
+void apply_zswhq_linkauth(apply_context& context) {
 //   context.require_write_lock( config::eosio_auth_scope );
 
    auto requirement = context.get_action().data_as<linkauth>();
@@ -428,7 +428,7 @@ void apply_eosio_linkauth(apply_context& context) {
   } FC_CAPTURE_AND_RETHROW((requirement))
 }
 
-void apply_eosio_unlinkauth(apply_context& context) {
+void apply_zswhq_unlinkauth(apply_context& context) {
 //   context.require_write_lock( config::eosio_auth_scope );
 
    auto& db = context.db;
@@ -454,7 +454,7 @@ void apply_eosio_unlinkauth(apply_context& context) {
    db.remove(*link);
 }
 
-void apply_eosio_canceldelay(apply_context& context) {
+void apply_zswhq_canceldelay(apply_context& context) {
    auto cancel = context.get_action().data_as<canceldelay>();
    context.require_authorization(cancel.canceling_auth.actor); // only here to mark the single authority on this action as used
 
@@ -463,4 +463,4 @@ void apply_eosio_canceldelay(apply_context& context) {
    context.cancel_deferred_transaction(transaction_id_to_sender_id(trx_id), account_name());
 }
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain

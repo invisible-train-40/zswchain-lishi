@@ -7,7 +7,7 @@
 #include <eosio/eosio.hpp>
 #include <eosio/crypto.hpp>
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 class [[eosio::contract]] get_table_test : public eosio::contract {
     public:

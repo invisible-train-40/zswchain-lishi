@@ -22,7 +22,7 @@
 
 namespace fc { class variant; }
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    using chain::controller;
    using std::unique_ptr;
    using std::pair;

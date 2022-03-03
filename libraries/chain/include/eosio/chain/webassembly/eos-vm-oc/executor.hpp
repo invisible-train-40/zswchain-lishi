@@ -9,7 +9,7 @@
 #include <vector>
 #include <cstddef>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 class apply_context;
 

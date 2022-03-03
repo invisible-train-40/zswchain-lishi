@@ -2,7 +2,7 @@
 #include <eosio/chain/exceptions.hpp>
 #include <fc/scoped_exit.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 variant_snapshot_writer::variant_snapshot_writer(fc::mutable_variant_object& snapshot)
 : snapshot(snapshot)

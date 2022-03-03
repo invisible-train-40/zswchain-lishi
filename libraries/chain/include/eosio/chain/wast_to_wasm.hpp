@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 std::vector<uint8_t> wast_to_wasm( const std::string& wast );
 std::string  wasm_to_wast( const std::vector<uint8_t>& wasm, bool strip_names );

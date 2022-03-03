@@ -12,7 +12,7 @@
 #include <eosio/chain/protocol_state_object.hpp>
 
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    using authorization_index_set = index_set<
       permission_index,
@@ -643,4 +643,4 @@ namespace eosio { namespace chain {
       return checker.used_keys();
    }
 
-} } /// namespace eosio::chain
+} } /// _NMSPCE_EOSIO_::chain

@@ -6,7 +6,7 @@
 #include "multi_index_includes.hpp"
 
 
-namespace eosio { namespace chain { namespace resource_limits {
+_NMSPCE_EOSIO_ { namespace chain { namespace resource_limits {
 
    namespace impl {
       template<typename T>

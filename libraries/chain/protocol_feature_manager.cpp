@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <boost/assign/list_of.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    const std::unordered_map<builtin_protocol_feature_t, builtin_protocol_feature_spec, enum_hash<builtin_protocol_feature_t>>
    builtin_protocol_feature_codenames =

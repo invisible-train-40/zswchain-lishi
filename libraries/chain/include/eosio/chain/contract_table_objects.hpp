@@ -7,7 +7,7 @@
 #include <array>
 #include <type_traits>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    /**
     * @brief The table_id_object class tracks the mapping of (scope, code, table) to an opaque identifier
@@ -282,7 +282,7 @@ namespace config {
 
 } // namespace config
 
-} }  // namespace eosio::chain
+} }  // _NMSPCE_EOSIO_::chain
 
 CHAINBASE_SET_INDEX_TYPE(eosio::chain::table_id_object, eosio::chain::table_id_multi_index)
 CHAINBASE_SET_INDEX_TYPE(eosio::chain::key_value_object, eosio::chain::key_value_index)

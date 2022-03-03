@@ -2,7 +2,7 @@
 
 #include <eosio/eosio.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    namespace internal_use_do_not_use {
       extern "C" {
          __attribute__((eosio_wasm_import))
@@ -11,7 +11,7 @@ namespace eosio {
    }
 }
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    name get_sender() {
       return name( internal_use_do_not_use::get_sender() );
    }

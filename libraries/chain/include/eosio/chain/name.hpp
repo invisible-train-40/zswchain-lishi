@@ -3,7 +3,7 @@
 #include <fc/reflect/reflect.hpp>
 #include <iosfwd>
 
-namespace eosio::chain {
+_NMSPCE_EOSIO_::chain {
   struct name;
 }
 namespace fc {
@@ -12,7 +12,7 @@ namespace fc {
   void from_variant(const fc::variant& v, eosio::chain::name& check);
 } // fc
 
-namespace eosio::chain {
+_NMSPCE_EOSIO_::chain {
    static constexpr uint64_t char_to_symbol( char c ) {
       if( c >= 'a' && c <= 'z' )
          return (c - 'a') + 6;

@@ -8,7 +8,7 @@
 #include <boost/filesystem/path.hpp>
 #include <fc/reflect/reflect.hpp>
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 
 struct config {
    uint64_t cache_size = 1024u*1024u*1024u;

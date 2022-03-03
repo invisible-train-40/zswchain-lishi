@@ -8,7 +8,7 @@
 #include <src/binary-reader-interp.h>
 #include <src/error-formatter.h>
 
-namespace eosio { namespace chain { namespace webassembly { namespace wabt_runtime {
+_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace wabt_runtime {
 
 //yep 🤮
 static wabt_apply_instance_vars* static_wabt_vars;

@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <iterator>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 enum class protocol_feature_t : uint32_t {
    builtin
@@ -369,7 +369,7 @@ private:
    std::function<fc::logger*()>           _get_deep_mind_logger;
 };
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain
 
 FC_REFLECT(eosio::chain::protocol_feature_subjective_restrictions,
                (earliest_allowed_activation_time)(preactivation_required)(enabled))

@@ -9,7 +9,7 @@
 #include <mutex>
 #include <thread>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 //a thread is shared for all instances
 static std::mutex timer_ref_mutex;

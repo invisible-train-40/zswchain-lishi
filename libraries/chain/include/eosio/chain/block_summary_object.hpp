@@ -3,7 +3,7 @@
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
    /**
     *  @brief tracks minimal information about past blocks to implement TaPOS
     *  @ingroup object

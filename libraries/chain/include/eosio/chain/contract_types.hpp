@@ -3,7 +3,7 @@
 #include <eosio/chain/authority.hpp>
 #include <eosio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 using action_name    = eosio::chain::action_name;
 
@@ -152,7 +152,7 @@ struct onerror {
    }
 };
 
-} } /// namespace eosio::chain
+} } /// _NMSPCE_EOSIO_::chain
 
 FC_REFLECT( eosio::chain::newaccount                       , (creator)(name)(owner)(active) )
 FC_REFLECT( eosio::chain::setcode                          , (account)(vmtype)(vmversion)(code) )

@@ -4,7 +4,7 @@
 #include <fc/io/raw.hpp>
 #include <softfloat.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    template<typename ...Indices>
    class index_set;

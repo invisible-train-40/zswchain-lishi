@@ -6,7 +6,7 @@
 #include <boost/core/demangle.hpp>
 #include <ostream>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
    /**
     * History:
     * Version 1: initial version with string identified sections and rows

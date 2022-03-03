@@ -29,13 +29,13 @@
 #endif
 
 using namespace fc;
-using namespace eosio::chain::webassembly;
+using _NMSPCE_EOSIO_::chain::webassembly;
 using namespace IR;
 using namespace Runtime;
 
 using boost::multi_index_container;
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    namespace eosvmoc { struct config; }
 

@@ -15,7 +15,7 @@
 
 using namespace IR;
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 
 void run_compile(wrapped_fd&& response_sock, wrapped_fd&& wasm_code) noexcept {  //noexcept; we'll just blow up if anything tries to cross this boundry
    std::vector<uint8_t> wasm = vector_for_memfd(wasm_code);

@@ -4,9 +4,9 @@
 #include <eosio/chain/transaction.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using _NMSPCE_EOSIO_::chain;
 
-namespace eosio { namespace wallet {
+_NMSPCE_EOSIO_ { namespace wallet {
 
 class wallet_api
 {

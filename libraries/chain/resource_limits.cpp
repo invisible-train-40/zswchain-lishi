@@ -7,7 +7,7 @@
 #include <eosio/chain/database_utils.hpp>
 #include <algorithm>
 
-namespace eosio { namespace chain { namespace resource_limits {
+_NMSPCE_EOSIO_ { namespace chain { namespace resource_limits {
 
 using resource_index_set = index_set<
    resource_limits_index,

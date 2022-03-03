@@ -7,9 +7,9 @@
 #include <fc/crypto/base58.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using _NMSPCE_EOSIO_::chain;
 
-namespace eosio { namespace wallet {
+_NMSPCE_EOSIO_ { namespace wallet {
 
 typedef uint16_t transaction_handle_type;
 

@@ -4,7 +4,7 @@
 #include <fc/bitutil.hpp>
 #include <algorithm>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
    digest_type block_header::digest()const
    {
       return digest_type::hash(*this);

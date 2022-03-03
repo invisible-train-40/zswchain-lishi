@@ -5,7 +5,7 @@
 #include <eosio/chain/authority.hpp>
 #include <eosio/chain/snapshot.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    namespace legacy {
       /**

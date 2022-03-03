@@ -12,7 +12,7 @@
 #include <eosio/vm/backend.hpp>
 
 // eosio specific specializations
-namespace eosio { namespace vm {
+_NMSPCE_EOSIO_ { namespace vm {
 
    template<>
    struct wasm_type_converter<eosio::chain::name> {
@@ -109,11 +109,11 @@ namespace eosio { namespace vm {
 
 }} // ns eosio::vm
 
-namespace eosio { namespace chain { namespace webassembly { namespace eos_vm_runtime {
+_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace eos_vm_runtime {
 
 using namespace fc;
-using namespace eosio::vm;
-using namespace eosio::chain::webassembly::common;
+using _NMSPCE_EOSIO_::vm;
+using _NMSPCE_EOSIO_::chain::webassembly::common;
 
 template<typename Backend>
 class eos_vm_runtime : public eosio::chain::wasm_runtime_interface {

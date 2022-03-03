@@ -8,7 +8,7 @@
 #include <chainbase/chainbase.hpp>
 #include <set>
 
-namespace eosio { namespace chain { namespace resource_limits {
+_NMSPCE_EOSIO_ { namespace chain { namespace resource_limits {
    namespace impl {
       template<typename T>
       struct ratio {

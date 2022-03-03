@@ -2,8 +2,8 @@
 
 #include <eosio/testing/tester.hpp>
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 
 private_key_type get_private_key( name keyname, string role );
 

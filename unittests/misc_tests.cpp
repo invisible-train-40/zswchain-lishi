@@ -18,8 +18,8 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
@@ -78,7 +78,7 @@ FC_REFLECT( base_reflect, (bv) )
 FC_REFLECT_DERIVED( derived_reflect, (base_reflect), (dv) )
 FC_REFLECT_DERIVED( final_reflect, (derived_reflect), (fv) )
 
-namespace eosio
+_NMSPCE_EOSIO_
 {
 using namespace chain;
 using namespace std;
@@ -1179,4 +1179,4 @@ BOOST_AUTO_TEST_CASE(bad_alloc_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-} // namespace eosio
+} // _NMSPCE_EOSIO_

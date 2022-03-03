@@ -12,7 +12,7 @@
 
 #include <functional>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 namespace detail {
    using meta_permission_key = std::tuple<uint32_t, int>;
@@ -274,4 +274,4 @@ namespace detail {
                                                             checktime );
    }
 
-} } // namespace eosio::chain
+} } // _NMSPCE_EOSIO_::chain

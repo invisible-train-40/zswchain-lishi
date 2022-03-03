@@ -4,7 +4,7 @@
 
 struct hello;
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
    class net_plugin_impl;
    struct handshake_message;
@@ -53,7 +53,7 @@ namespace chain {
          friend struct snapshot_global_property_object;
    };
 
-} }  // namespace eosio::chain
+} }  // _NMSPCE_EOSIO_::chain
 
 namespace fc {
   class variant;

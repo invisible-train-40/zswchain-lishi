@@ -5,9 +5,9 @@
 //eos-vm includes
 #include <eosio/vm/backend.hpp>
 
-namespace eosio { namespace chain { namespace webassembly { namespace eos_vm_runtime {
+_NMSPCE_EOSIO_ { namespace chain { namespace webassembly { namespace eos_vm_runtime {
 
-using namespace eosio::vm;
+using _NMSPCE_EOSIO_::vm;
 
 namespace wasm_constraints = eosio::chain::wasm_constraints;
 

@@ -5,7 +5,7 @@
 #include <appbase/application.hpp>
 #include <eosio/chain/controller.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 class login_plugin : public plugin<login_plugin> {
  public:
@@ -78,7 +78,7 @@ class login_plugin : public plugin<login_plugin> {
    unique_ptr<class login_plugin_impl> my;
 };
 
-} // namespace eosio
+} // _NMSPCE_EOSIO_
 
 FC_REFLECT(eosio::login_plugin::start_login_request_params, (expiration_time))
 FC_REFLECT(eosio::login_plugin::start_login_request_results, (server_ephemeral_pub_key))

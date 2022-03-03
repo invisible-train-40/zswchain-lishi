@@ -24,7 +24,7 @@
 #define FOPEN(p, m) _wfopen(p, PREL(m))
 #endif
 
-using namespace eosio::chain;
+using _NMSPCE_EOSIO_::chain;
 namespace bfs = boost::filesystem;
 namespace bpo = boost::program_options;
 using bpo::options_description;

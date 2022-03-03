@@ -5,7 +5,7 @@
 #include <eosio/chain/transaction_metadata.hpp>
 #include <eosio/chain/action_receipt.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    struct block_state : public block_header_state {
       block_state( const block_header_state& prev,
@@ -67,6 +67,6 @@ namespace eosio { namespace chain {
    using block_state_ptr = std::shared_ptr<block_state>;
    using branch_type = std::vector<block_state_ptr>;
 
-} } /// namespace eosio::chain
+} } /// _NMSPCE_EOSIO_::chain
 
 FC_REFLECT_DERIVED( eosio::chain::block_state, (eosio::chain::block_header_state), (block)(validated) )

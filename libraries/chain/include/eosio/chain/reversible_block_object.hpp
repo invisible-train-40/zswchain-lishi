@@ -6,7 +6,7 @@
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    class reversible_block_object : public chainbase::object<reversible_block_object_type, reversible_block_object> {
       OBJECT_CTOR(reversible_block_object,(packedblock) )

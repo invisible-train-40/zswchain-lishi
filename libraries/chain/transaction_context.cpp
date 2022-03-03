@@ -19,7 +19,7 @@
 
 #include <chrono>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    transaction_checktime_timer::transaction_checktime_timer(platform_timer& timer)
          : expired(timer.expired), _timer(timer) {

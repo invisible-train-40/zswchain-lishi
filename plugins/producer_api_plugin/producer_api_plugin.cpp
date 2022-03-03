@@ -6,7 +6,7 @@
 
 #include <chrono>
 
-namespace eosio { namespace detail {
+_NMSPCE_EOSIO_ { namespace detail {
   struct producer_api_plugin_response {
      std::string result;
   };
@@ -14,11 +14,11 @@ namespace eosio { namespace detail {
 
 FC_REFLECT(eosio::detail::producer_api_plugin_response, (result));
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 static appbase::abstract_plugin& _producer_api_plugin = app().register_plugin<producer_api_plugin>();
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 struct async_result_visitor : public fc::visitor<fc::variant> {
    template<typename T>

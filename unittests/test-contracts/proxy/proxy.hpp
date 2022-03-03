@@ -5,7 +5,7 @@
 #include <eosio/asset.hpp>
 
 // Extacted from eosio.token contract:
-namespace eosio {
+_NMSPCE_EOSIO_ {
    class [[eosio::contract("zswhq.token")]] token : public eosio::contract {
    public:
       using eosio::contract::contract;

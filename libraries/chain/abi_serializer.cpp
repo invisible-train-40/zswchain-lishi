@@ -8,7 +8,7 @@
 using namespace boost;
 
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    const size_t abi_serializer::max_recursion_depth;
 

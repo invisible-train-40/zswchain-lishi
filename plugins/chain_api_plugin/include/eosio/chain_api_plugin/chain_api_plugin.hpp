@@ -5,7 +5,7 @@
 #include <appbase/application.hpp>
 #include <eosio/chain/controller.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    using eosio::chain::controller;
    using std::unique_ptr;
    using namespace appbase;

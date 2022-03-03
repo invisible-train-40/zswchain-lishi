@@ -5,7 +5,7 @@
 
 #include <appbase/application.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 using boost::signals2::signal;
 

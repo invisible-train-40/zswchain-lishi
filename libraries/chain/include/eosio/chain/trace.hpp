@@ -4,7 +4,7 @@
 #include <eosio/chain/action_receipt.hpp>
 #include <eosio/chain/block.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    struct account_delta {
       account_delta( const account_name& n, int64_t d):account(n),delta(d){}
@@ -106,7 +106,7 @@ namespace eosio { namespace chain {
              auth.permission == eosio::chain::config::active_name;
    }
 
-} }  /// namespace eosio::chain
+} }  /// _NMSPCE_EOSIO_::chain
 
 FC_REFLECT( eosio::chain::account_delta,
             (account)(delta) )

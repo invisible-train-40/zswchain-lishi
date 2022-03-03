@@ -7,7 +7,7 @@
 
 using namespace fc;
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
    class apply_context;
    class transaction_context;

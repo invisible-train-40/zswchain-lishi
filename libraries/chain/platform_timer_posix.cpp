@@ -10,7 +10,7 @@
 #include <signal.h>
 #include <time.h>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 static_assert(std::atomic_bool::is_always_lock_free, "Only lock-free atomics AS-safe.");
 

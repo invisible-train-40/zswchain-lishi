@@ -10,7 +10,7 @@
 #include <fc/log/logger.hpp>
 #include <fc/io/cfile.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 /*
  *   *.log:
@@ -292,6 +292,6 @@ class state_history_log {
    }
 }; // state_history_log
 
-} // namespace eosio
+} // _NMSPCE_EOSIO_
 
 FC_REFLECT(eosio::state_history_log_header, (magic)(block_id)(payload_size))

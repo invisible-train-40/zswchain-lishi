@@ -3,7 +3,7 @@
 #include <eosio/http_plugin/http_plugin.hpp>
 #include <eosio/chain_plugin/chain_plugin.hpp>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 using namespace appbase;
 

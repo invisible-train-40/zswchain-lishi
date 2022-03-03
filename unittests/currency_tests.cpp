@@ -20,9 +20,9 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 using namespace fc;
 
 class currency_tester : public TESTER {

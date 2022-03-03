@@ -5,7 +5,7 @@
 #include <fc/time.hpp>
 #include <fc/exception/exception.hpp>
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 using namespace chain;
 
 BOOST_AUTO_TEST_SUITE(block_timestamp_tests)

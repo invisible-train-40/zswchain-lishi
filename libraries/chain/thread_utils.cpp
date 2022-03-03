@@ -1,7 +1,7 @@
 #include <eosio/chain/thread_utils.hpp>
 #include <fc/log/logger_config.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 
 //

@@ -8,7 +8,7 @@
 #include <sys/mman.h>
 #include <linux/memfd.h>
 
-namespace eosio { namespace chain { namespace eosvmoc {
+_NMSPCE_EOSIO_ { namespace chain { namespace eosvmoc {
 
 memory::memory() {
    int fd = syscall(SYS_memfd_create, "eosvmoc_mem", MFD_CLOEXEC);

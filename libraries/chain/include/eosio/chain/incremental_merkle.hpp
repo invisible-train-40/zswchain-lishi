@@ -3,7 +3,7 @@
 #include <eosio/chain/merkle.hpp>
 #include <fc/io/raw.hpp>
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 namespace detail {
 

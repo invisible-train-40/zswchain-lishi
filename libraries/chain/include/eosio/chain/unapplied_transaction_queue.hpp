@@ -15,7 +15,7 @@ namespace fc {
   }
 }
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 using namespace boost::multi_index;
 

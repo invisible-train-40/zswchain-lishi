@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <chrono>
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
    using namespace chain;
    using namespace fc;
 
@@ -145,7 +145,7 @@ namespace eosio {
                                       signed_block,         // which = 7
                                       packed_transaction>;  // which = 8
 
-} // namespace eosio
+} // _NMSPCE_EOSIO_
 
 FC_REFLECT( eosio::select_ids<fc::sha256>, (mode)(pending)(ids) )
 FC_REFLECT( eosio::chain_size_message,

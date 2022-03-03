@@ -1,4 +1,4 @@
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
 
 // Initial value for eosio ABI. This value affects consensus; if different
 // nodeos versions have different versions of the initial eosio ABI, then

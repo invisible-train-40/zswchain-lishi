@@ -9,7 +9,7 @@
 #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #pragma clang diagnostic ignored "-Wsign-compare"
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 CONTRACT test_ram_limit : public contract {
    public:

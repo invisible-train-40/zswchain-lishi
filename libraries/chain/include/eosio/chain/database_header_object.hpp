@@ -3,7 +3,7 @@
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+_NMSPCE_EOSIO_ { namespace chain {
       /**
        *  @brief tracks the version of the application data stored in the database
        *  @ingroup object

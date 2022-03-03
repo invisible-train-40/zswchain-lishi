@@ -8,17 +8,17 @@
 
 #include <chrono>
 
-namespace eosio { namespace detail {
+_NMSPCE_EOSIO_ { namespace detail {
   struct wallet_api_plugin_empty {};
 }}
 
 FC_REFLECT(eosio::detail::wallet_api_plugin_empty, );
 
-namespace eosio {
+_NMSPCE_EOSIO_ {
 
 static appbase::abstract_plugin& _wallet_api_plugin = app().register_plugin<wallet_api_plugin>();
 
-using namespace eosio;
+using _NMSPCE_EOSIO_;
 
 #define CALL(api_name, api_handle, call_name, INVOKE, http_response_code) \
 {std::string("/v1/" #api_name "/" #call_name), \

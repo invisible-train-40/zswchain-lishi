@@ -7,8 +7,8 @@
 
 #include <contracts.hpp>
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using _NMSPCE_EOSIO_::chain;
+using _NMSPCE_EOSIO_::testing;
 using namespace fc;
 
 using mvo = fc::mutable_variant_object;
@@ -21,7 +21,7 @@ using mvo = fc::mutable_variant_object;
 #endif
 #endif
 
-namespace eosio_system {
+_NMSPCE_EOSIO__system {
 
 class eosio_system_tester : public TESTER {
 public:
