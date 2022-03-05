@@ -102,7 +102,7 @@ public:
    /// Imports a WIF Private Key into specified wallet.
    /// Wallet must be opened and unlocked.
    /// @param name the name of the wallet to import into.
-   /// @param wif_key the WIF Private Key to import, e.g. 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+   /// @param wif_key the WIF Private Key to import, e.g. 5KUhXKkRG9hST5x579mU26zAimAaRFWpxC3jHZoYqoBt9GZxdcJ
    /// @throws fc::exception if wallet not found or locked.
    void import_key(const std::string& name, const std::string& wif_key);
 

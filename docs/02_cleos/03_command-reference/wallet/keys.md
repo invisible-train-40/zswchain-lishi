@@ -19,7 +19,7 @@ cleos wallet keys
 ```console
 [[
     "PUB_K1_5mk8TsUDDszMJPte932L3n5P2hBbBhDfeyDV6feMaYWvPE1hYk",
-    "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
+    "5KUhXKkRG9hST5x579mU26zAimAaRFWpxC3jHZoYqoBt9GZxdcJ"
   ]
 ]
 ```

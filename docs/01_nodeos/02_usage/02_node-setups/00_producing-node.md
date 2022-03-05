@@ -61,7 +61,7 @@ You will need to set the private key for your producer. The public key should ha
 signature-provider = PUBLIC_SIGNING_KEY=KEY:PRIVATE_SIGNING_KEY
 
 //Example
-//signature-provider = PUB_K1_5mk8TsUDDszMJPte932L3n5P2hBbBhDfeyDV6feMaYWvPE1hYk=KEY:5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+//signature-provider = PUB_K1_5mk8TsUDDszMJPte932L3n5P2hBbBhDfeyDV6feMaYWvPE1hYk=KEY:5KUhXKkRG9hST5x579mU26zAimAaRFWpxC3jHZoYqoBt9GZxdcJ
 ```
 
 #### Using Keosd:
