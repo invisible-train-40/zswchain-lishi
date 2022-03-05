@@ -75,7 +75,7 @@ cleos --wallet-url http://127.0.0.1:8899 wallet import --private-key 5KQwrPbwdL6
 ```
 
 ```console
-imported private key for: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+imported private key for: PUB_K1_5mk8TsUDDszMJPte932L3n5P2hBbBhDfeyDV6feMaYWvPE1hYk
 ```
 
 ### 4. Start the First Producer Node
