@@ -24,4 +24,4 @@
 [submodule "libraries/fc"]
 	path = libraries/fc
 	url = https://github.com/invisible-train-40/fc
-	branch = updkey
+	branch = zsw-lishi
