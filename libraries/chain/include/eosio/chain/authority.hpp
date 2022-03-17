@@ -66,8 +66,8 @@ struct shared_public_key {
          [&](const fc::crypto::r1::public_key_shim& r1) {
             return r1._data == r._storage.get<fc::crypto::r1::public_key_shim>()._data;
          },
-         [&](const fc::crypto::gm::public_key_shim& r1) {
-            return r1._data == r._storage.get<fc::crypto::gm::public_key_shim>()._data;
+         [&](const fc::crypto::gm::public_key_shim& gm) {
+            return gm._data == r._storage.get<fc::crypto::gm::public_key_shim>()._data;
          },
          [&](const shared_string& wa) {
             fc::datastream ds(wa.data(), wa.size());
