@@ -37,7 +37,7 @@ endif()
 set( CLI_CLIENT_EXECUTABLE_NAME cleos )
 set( NODE_EXECUTABLE_NAME nodeos )
 set( KEY_STORE_EXECUTABLE_NAME keosd )
-
+set( FULL_STATIC_BUILD true )
 # http://stackoverflow.com/a/18369825
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
